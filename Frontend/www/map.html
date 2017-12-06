@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>TravelInfo</title>
+    <title>Map</title>
     <!--Bootstrap CSS-->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
     <!-- LESS основний файл -->
@@ -19,8 +19,8 @@
             </div>
             <div class="col-xs-4 menu">
                 <ul class="nav nav-pills">
-                    <li class="active"><a href="index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
-                    <li><a href="map.html"><span class="glyphicon glyphicon-globe"></span> Map</a></li>
+                    <li><a href="index.html"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+                    <li class="active"><a href="map.html"><span class="glyphicon glyphicon-globe"></span> Map</a></li>
                     <li><a href="#">Link</a></li>
                 </ul>
             </div>
@@ -29,17 +29,14 @@
             </div>
         </div>
     </div>
-    <div class="start-container">
-        <div class="title-container">
-            <h1>Discover incredible places
-                with city guides by locals and
-                another tourists</h1>
-        </div>
-    </div>
 </div>
+<div id="maps"></div>
 <!-- jQuery JavaScript -->
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
 <!--Bootsrap JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+<!--Own JavaScript -->
+<script type="text/javascript" src="assets/js/map.js"></script>
+<script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCKuZRx16PoUDO1jo5Ah1MfwYU4HepKhak"></script>
 </body>
 </html>
