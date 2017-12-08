@@ -14,6 +14,7 @@ function configureEndpoints(app) {
 
     app.get('/', pages.mainPage);
     app.get('/map.html', pages.mapPage);
+    app.get('/city.html', pages.cityPage);
     // app.get('/login.html', pages.loginPage);
 
     app.use(express.static(path.join(__dirname, '../Frontend/www')));
