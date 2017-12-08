@@ -4,6 +4,7 @@ var cities = [
         city: "New York",
         country: 'USA'
     }
+
 ];
 
 module.exports = cities;
