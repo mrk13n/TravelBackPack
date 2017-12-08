@@ -8,7 +8,10 @@ var cities = [
     {
         id: 2,
         city: "New York",
+<<<<<<< HEAD
         country: 'USA',
+=======
+>>>>>>> 08e9d3d9c5e26d5140eca0aef1606f28048968fc
         icon: 'assets/images/new_york.jpg'
     },
     {
@@ -57,7 +60,7 @@ var cities = [
         id: 10,
         city: "Rome",
         country: "Italy",
-        icon: 'assets/images/rome.jpg'
+        icon: 'assets/images/rome.jpeg'
     },
     {
         id: 11,
@@ -105,13 +108,13 @@ var cities = [
         id: 18,
         city: "Venice",
         country: "Italy",
-        icon: 'assets/images/venice.jpg'
+        icon: 'assets/images/venice.jpeg'
     },
     {
         id: 19,
         city: "Prague",
         country: "Czech Republic",
-        icon: 'assets/images/prague.jpg'
+        icon: 'assets/images/prague.jpeg'
     },
     {
         id: 20,
