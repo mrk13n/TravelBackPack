@@ -53,7 +53,7 @@ function showCities(list) {
         var html_code = Templates.City_OneItem({city: city});
 
         var $node = $(html_code);
-
+        console.log($node);
         $cities.append($node);
     }
 
@@ -77,7 +77,7 @@ exports.initialiseCities = initialiseCities;
 var ejs = require('ejs');
 
 
-exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4\">\n    <div class=\"thumbnail\">\n        <img src=\"assets/images/backpack.png\" alt=\"...\">\n        <div class=\"caption\">\n            <h3>Thumbnail label</h3>\n            <p>Nomad List is the biggest database of cities in the world</p>\n            <p><a href=\"#\" class=\"btn btn-primary\" role=\"button\">Button</a> <a href=\"#\" class=\"btn btn-default\" role=\"button\">Button</a></p>\n        </div>\n    </div>\n</div>");
+exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"thumbnail\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
 },{"ejs":6}],4:[function(require,module,exports){
 $(function () {
     var GetCities = require('./Cities/GetCities');
