@@ -92,14 +92,9 @@ exports.set = function (key, value) {
 var ejs = require('ejs');
 
 
-<<<<<<< HEAD
-exports.City_OneItem = ejs.compile("<a href=\"<%= city.href%>\">\r\n    <div class=\"col-sm-6 col-md-4 card\">\r\n        <div class=\"thumbnail city-card\" style=\"background-image: url(<%= city.icon%>)\">\r\n            <h2 class=\"thumb-name\"><%= city.city%></h2>\r\n        </div>\r\n    </div>\r\n</a>");
-},{"ejs":6}],4:[function(require,module,exports){
-=======
-exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
-exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\n    <div class=\"title-box\">\n        <p>experience</p>\n        <h1 class=\"city-name\"><%= city.city%></h1>\n        <p>like a local</p>\n        <div class=\"city-info\">\n\n        </div>\n    </div>\n</div>");
+exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\r\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\r\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\r\n    </div>\r\n</div>");
+exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\r\n    <div class=\"title-box\">\r\n        <p>experience</p>\r\n        <h1 class=\"city-name\"><%= city.city%></h1>\r\n        <p>like a local</p>\r\n        <div class=\"city-info\">\r\n\r\n        </div>\r\n    </div>\r\n</div>");
 },{"ejs":8}],5:[function(require,module,exports){
->>>>>>> dfe7a7ac345549bb6f9a2935c2635fa159f1d125
 $(function () {
     var GetCities = require('./Cities/GetCities');
     GetCities.initialiseCities();
