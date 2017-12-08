@@ -3,4 +3,5 @@ var ejs = require('ejs');
 
 
 exports.City_OneItem = ejs.compile(fs.readFileSync('./Frontend/templates/City_OneItem.ejs', "utf8"));
+exports.Comment_OneItem = ejs.compile(fs.readFileSync('./Frontend/templates/Comment_OneItem.ejs', "utf8"));
 exports.InfoCity = ejs.compile(fs.readFileSync('./Frontend/templates/InfoCity.ejs', "utf8"));

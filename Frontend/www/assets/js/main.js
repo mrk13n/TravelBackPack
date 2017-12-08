@@ -33,8 +33,8 @@ exports.getCitiesList = function(callback) {
     backendGet("/api/get-cities/", callback);
 };
 
-exports.getComments = function (callback) {
-  backendGet("/api/get-comments/", callback);
+exports.getComments = function (city, callback) {
+  backendPost("/api/get-comments/", city, callback);
 };
 
 exports.writeComment = function (comment, callback) {
@@ -93,6 +93,7 @@ var ejs = require('ejs');
 
 
 exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
+exports.Comment_OneItem = ejs.compile("<div class=\"col-lg-6\">\n    <div class=\"col-sm-2\">\n        <div class=\"thumbnail thumb_city\">\n            <img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\">\n        </div>\n    </div>\n\n    <div class=\"col-sm-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <strong>username</strong> <span class=\"text-muted\">commented 5 days ago</span>\n            </div>\n            <div class=\"panel-body\">\n                Panel content\n            </div>\n        </div>\n    </div>\n</div>");
 exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\n    <div class=\"title-box\">\n        <p>experience</p>\n        <h1 class=\"city-name\"><%= city.city%></h1>\n        <p>like a local</p>\n        <div class=\"city-info\">\n\n        </div>\n    </div>\n</div>");
 },{"ejs":8}],5:[function(require,module,exports){
 $(function () {

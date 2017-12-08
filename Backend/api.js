@@ -30,16 +30,4 @@ exports.writeComment = function (req, res) {
 exports.getComment = function (req, res) {
     var city = req.body.city;
     var comments = [];
-    Comments.findOne(
-        {
-            city: city
-        },
-        function (err, comment) {
-            for (var i = 0; i < comment.length; i++)
-            {
-                comments.unshift(comment[i]);
-            }
-            res.send(comments);
-        }
-    );
 };

@@ -14,6 +14,7 @@ function showInfo() {
             for (var i = 0; i < Cities.length; i++) {
                 if (id == Cities[i].id) {
                     city = Cities[i];
+                    Storage.set('city', city.city);
                     break;
                 }
             }
@@ -22,10 +23,6 @@ function showInfo() {
             $city.append($node);
         }
     });
-}
-
-function getInfo() {
-
 }
 
 exports.showInfo = showInfo;
