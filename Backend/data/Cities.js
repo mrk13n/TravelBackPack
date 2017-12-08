@@ -54,12 +54,6 @@ var cities = [
         icon: 'assets/images/madrid.jpg'
     },
     {
-<<<<<<< HEAD
-        id: 7,
-        city: "London",
-        icon: 'assets/images/paris.jpg',
-=======
->>>>>>> 9d357ec60d156275e475c584ffc17316ef643ca2
         id: 10,
         city: "Rome",
         country: "Italy",
