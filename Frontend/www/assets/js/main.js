@@ -75,11 +75,7 @@ exports.initialiseCities = initialiseCities;
 var ejs = require('ejs');
 
 
-<<<<<<< HEAD
-exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\r\n    <div class=\"thumbnail city-card\" style=\"background-image: url(<%= city.icon%>)\">\r\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\r\n    </div>\r\n</div>");
-=======
 exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"thumbnail city-card\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
->>>>>>> f21f60766e4027e9a7ebae2615e2d532151dd9d7
 },{"ejs":6}],4:[function(require,module,exports){
 $(function () {
     var GetCities = require('./Cities/GetCities');
