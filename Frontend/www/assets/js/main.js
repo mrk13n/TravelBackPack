@@ -1,5 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var API_URL = "http://localhost:4545";
+var API_URL = "http://localhost:5050";
 
 function backendGet(url, callback) {
     $.ajax({
@@ -53,7 +53,7 @@ function showCities(list) {
         var html_code = Templates.City_OneItem({city: city});
 
         var $node = $(html_code);
-        console.log($node);
+
         $cities.append($node);
     }
 
@@ -62,12 +62,10 @@ function showCities(list) {
 
 function initialiseCities() {
     API.getCitiesList(function (err, data) {
-        if (!err) {
-            Cities = data;
-            showCities(Cities);
-        } else {
-            console.log(err.status);
-        }
+       if (!err) {
+           Cities = data;
+           showCities(Cities);
+       }
     });
 }
 
@@ -77,7 +75,7 @@ exports.initialiseCities = initialiseCities;
 var ejs = require('ejs');
 
 
-exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"thumbnail\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
+exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"thumbnail city-card\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
 },{"ejs":6}],4:[function(require,module,exports){
 $(function () {
     var GetCities = require('./Cities/GetCities');
