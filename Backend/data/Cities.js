@@ -53,12 +53,6 @@ var cities = [
         icon: 'assets/images/madrid.jpg'
     },
     {
-<<<<<<< HEAD
-        id: 7,
-        city: "London",
-        icon: 'assets/images/paris.jpg',
-=======
->>>>>>> f21f60766e4027e9a7ebae2615e2d532151dd9d7
         id: 10,
         city: "Rome",
         country: "Italy",
@@ -130,7 +124,6 @@ var cities = [
         country: "Poland",
         icon: 'assets/images/warsaw.jpg'
     }
-
 ];
 
 module.exports = cities;
