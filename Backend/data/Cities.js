@@ -123,20 +123,32 @@ var cities = [
         id: 21,
         city: "Warsaw",
         country: "Poland",
+<<<<<<< HEAD
         icon: 'assets/images/warsaw.jpg',
         href: '/city.html'
+=======
+        icon: 'assets/images/warsaw.jpg'
+>>>>>>> 8a96599d0216db1cefb05651687bf6d1414cd375
     },
     {
         id: 22,
         city: "Odesa",
         country: "Ukraine",
+<<<<<<< HEAD
         icon: 'asserts/images/odesa.jpg'
+=======
+        icon: 'assets/images/odesa.jpg'
+>>>>>>> 8a96599d0216db1cefb05651687bf6d1414cd375
     },
     {
         id: 23,
         city: "Lviv",
         country: "Ukraine",
+<<<<<<< HEAD
         icon: 'asserts/images/lviv.jpg'
+=======
+        icon: 'assets/images/lviv.jpg'
+>>>>>>> 8a96599d0216db1cefb05651687bf6d1414cd375
     }
 ];
 
