@@ -1,26 +1,86 @@
-.title-box{
-  margin-top:50px;
-  color:white;
-  text-align:center;
+.title-box {
+  margin-top: 50px;
+  color: white;
+  text-align: center;
   text-transform: uppercase;
-  p{
-    margin:0;
-    font-size:30px;
+  p {
+    margin: 0;
+    font-size: 30px;
     text-transform: uppercase;
     text-shadow: 2px 1px 4px #000;
   }
 }
 
-.city-name{
-  margin:0;
-  font-size:65px;
+.city-name {
+  margin: 0;
+  font-size: 65px;
   text-transform: uppercase;
   text-shadow: 2px 1px 4px #000;
 }
 
-.new-city-hero{
+.new-city-hero {
   padding: 15px 10px;
   background-size: cover;
   background-position-y: 50%;
-  height:350px;
+  height: 350px;
+}
+
+.thumb_city {
+  padding: 0;
+}
+
+.panel {
+  position: relative;
+}
+
+.panel > .panel-heading:after, .panel > .panel-heading:before {
+  position: absolute;
+  top: 11px;
+  left: -16px;
+  right: 100%;
+  width: 0;
+  height: 0;
+  display: block;
+  content: " ";
+  border-color: transparent;
+  border-style: solid solid outset;
+  pointer-events: none;
+}
+
+.panel > .panel-heading:after {
+  border-width: 7px;
+  border-right-color: #f7f7f7;
+  margin-top: 1px;
+  margin-left: 2px;
+}
+
+.panel > .panel-heading:before {
+  border-right-color: #ddd;
+  border-width: 8px;
+}
+
+.row {
+  margin-left: 4px;
+}
+
+.btn-glyphicon {
+  padding:8px;
+  background:#ffffff;
+  margin-right:4px;
+}
+.icon-btn {
+  padding: 1px 15px 3px 2px;
+  border-radius:50px;
+}
+
+.btn-add {
+  position:relative;
+  top:50%;
+  left:41%;
+  width: 200px;
+  padding: 14px;
+  margin-top: 30px;
+  background-color: @mainColor;
+  border-color: transparent;
+  font-size: 20px;
 }
