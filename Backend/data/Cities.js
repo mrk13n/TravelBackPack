@@ -8,12 +8,10 @@ var cities = [
     {
         id: 2,
         city: "New York",
-<<<<<<< HEAD
         icon: 'assets/images/paris.jpg'
     },
     {
         id: 3,
-=======
         country: 'USA',
         icon: 'assets/images/new_york.jpg'
     },
@@ -37,7 +35,6 @@ var cities = [
     },
     {
         id: 6,
->>>>>>> 4af5499e5e3e050c733437bace4b98ebd3dfeb22
         city: "Berlin",
         country: 'Germany',
         icon: 'assets/images/paris.jpg'
@@ -61,11 +58,6 @@ var cities = [
         icon: 'assets/images/madrid.jpg'
     },
     {
-<<<<<<< HEAD
-        id: 7,
-        city: "London",
-        icon: 'assets/images/paris.jpg'
-=======
         id: 10,
         city: "Rome",
         country: "Italy",
@@ -136,7 +128,6 @@ var cities = [
         city: "Warsaw",
         country: "Poland",
         icon: 'assets/images/warsaw.jpg'
->>>>>>> 4af5499e5e3e050c733437bace4b98ebd3dfeb22
     }
 
 ];
