@@ -75,7 +75,11 @@ exports.initialiseCities = initialiseCities;
 var ejs = require('ejs');
 
 
+<<<<<<< HEAD
+exports.City_OneItem = ejs.compile("<a href=\"<%= city.href%>\">\r\n    <div class=\"col-sm-6 col-md-4 card\">\r\n        <div class=\"thumbnail city-card\" style=\"background-image: url(<%= city.icon%>)\">\r\n            <h2 class=\"thumb-name\"><%= city.city%></h2>\r\n        </div>\r\n    </div>\r\n</a>");
+=======
 exports.City_OneItem = ejs.compile("<a href=\"<%= city.href%>\">\n    <div class=\"col-sm-6 col-md-4 card\">\n        <div class=\"thumbnail city-card\" style=\"background-image: url(<%= city.icon%>)\">\n            <h2 class=\"thumb-name\"><%= city.city%></h2>\n        </div>\n    </div>\n</a>");
+>>>>>>> 1f24a3eaa54e9a30c0ad41a57e88c9b9bdcf4f15
 },{"ejs":6}],4:[function(require,module,exports){
 $(function () {
     var GetCities = require('./Cities/GetCities');
