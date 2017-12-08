@@ -134,6 +134,8 @@ var cities = [
         id: 22,
         city: "Odesa",
         country: "Ukraine",
+<<<<<<< HEAD
+        icon: 'asserts/images/odesa.jpg'
 =======
         icon: 'assets/images/odesa.jpg'
 >>>>>>> 8a96599d0216db1cefb05651687bf6d1414cd375
