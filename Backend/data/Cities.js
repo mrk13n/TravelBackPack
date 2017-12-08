@@ -8,6 +8,7 @@ var cities = [
     {
         id: 2,
         city: "New York",
+        country: 'USA',
         icon: 'assets/images/new_york.jpg'
     },
     {
