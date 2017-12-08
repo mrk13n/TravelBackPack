@@ -145,7 +145,19 @@ var cities = [
         country: "Poland",
         icon: 'assets/images/warsaw.jpg',
         href: '/city.html'
-    }
+    },
+    // {
+    //     id: 22,
+    //     city: "Odesa",
+    //     country: "Ukraine",
+    //     icon: 'asserts/images/odesa.jpg'
+    // },
+    // {
+    //     id: 23,
+    //     city: "Lviv",
+    //     country: "Ukraine",
+    //     icon: 'asserts/images/lviv.jpg'
+    // }
 ];
 
 module.exports = cities;
