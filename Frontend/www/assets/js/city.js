@@ -44,39 +44,34 @@ exports.writeComment = function (comment, callback) {
 var Templates = require('../Teamplates');
 var Cities;
 var API = require('../API');
-var $cities = $("#cities");
 var Storage = require('../LocalStorage');
+var $city = $('#info');
 
-function showCities(list) {
-    $cities.html("");
-
-    function showOneCity(city) {
-        var html_code = Templates.City_OneItem({city: city});
-
-        var $node = $(html_code);
-
-        $node.find('.city-card').click(function () {
-            var id = this.id;
-            Storage.set('id', id);
-            document.location.href = '/city.html'
-        });
-
-        $cities.append($node);
-    }
-
-    list.forEach(showOneCity);
-}
-
-function initialiseCities() {
+function showInfo() {
+    $city.html("");
+    var id = Storage.get('id');
+    var city;
     API.getCitiesList(function (err, data) {
-       if (!err) {
-           Cities = data;
-           showCities(Cities);
-       }
+        if (!err) {
+            Cities = data;
+            for (var i = 0; i < Cities.length; i++) {
+                if (id == Cities[i].id) {
+                    city = Cities[i];
+                    break;
+                }
+            }
+            var html_code = Templates.InfoCity({city: city});
+            var $node = $(html_code);
+            $city.append($node);
+        }
     });
 }
 
-exports.initialiseCities = initialiseCities;
+function getInfo() {
+
+}
+
+exports.showInfo = showInfo;
 },{"../API":1,"../LocalStorage":3,"../Teamplates":4}],3:[function(require,module,exports){
 var basil = require('basil.js');
 basil = new basil();
@@ -92,19 +87,14 @@ exports.set = function (key, value) {
 var ejs = require('ejs');
 
 
-<<<<<<< HEAD
-exports.City_OneItem = ejs.compile("<a href=\"<%= city.href%>\">\r\n    <div class=\"col-sm-6 col-md-4 card\">\r\n        <div class=\"thumbnail city-card\" style=\"background-image: url(<%= city.icon%>)\">\r\n            <h2 class=\"thumb-name\"><%= city.city%></h2>\r\n        </div>\r\n    </div>\r\n</a>");
-},{"ejs":6}],4:[function(require,module,exports){
-=======
 exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
 exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\n    <div class=\"title-box\">\n        <p>experience</p>\n        <h1 class=\"city-name\"><%= city.city%></h1>\n        <p>like a local</p>\n        <div class=\"city-info\">\n\n        </div>\n    </div>\n</div>");
 },{"ejs":8}],5:[function(require,module,exports){
->>>>>>> dfe7a7ac345549bb6f9a2935c2635fa159f1d125
 $(function () {
-    var GetCities = require('./Cities/GetCities');
-    GetCities.initialiseCities();
+    var GetInfoCity = require('./Cities/GetInfoCity');
+    GetInfoCity.showInfo();
 });
-},{"./Cities/GetCities":2}],6:[function(require,module,exports){
+},{"./Cities/GetInfoCity":2}],6:[function(require,module,exports){
 (function () {
 	// Basil
 	var Basil = function (options) {
@@ -1530,34 +1520,30 @@ exports.cache = {
 
 },{}],10:[function(require,module,exports){
 module.exports={
-  "_args": [
-    [
-      "ejs@2.5.7",
-      "C:\\Users\\Maria\\Documents\\GitHub\\TravelBackPack"
-    ]
-  ],
-  "_from": "ejs@2.5.7",
+  "_from": "ejs@^2.5.7",
   "_id": "ejs@2.5.7",
   "_inBundle": false,
   "_integrity": "sha1-zIcsFoiArjxxiXYv1f/ACJbJUYo=",
   "_location": "/ejs",
   "_phantomChildren": {},
   "_requested": {
-    "type": "version",
+    "type": "range",
     "registry": true,
-    "raw": "ejs@2.5.7",
+    "raw": "ejs@^2.5.7",
     "name": "ejs",
     "escapedName": "ejs",
-    "rawSpec": "2.5.7",
+    "rawSpec": "^2.5.7",
     "saveSpec": null,
-    "fetchSpec": "2.5.7"
+    "fetchSpec": "^2.5.7"
   },
   "_requiredBy": [
+    "#USER",
     "/"
   ],
   "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz",
-  "_spec": "2.5.7",
-  "_where": "C:\\Users\\Maria\\Documents\\GitHub\\TravelBackPack",
+  "_shasum": "cc872c168880ae3c7189762fd5ffc00896c9518a",
+  "_spec": "ejs@^2.5.7",
+  "_where": "/home/mrk13/Documents/GitHub/TravelBackPack",
   "author": {
     "name": "Matthew Eernisse",
     "email": "mde@fleegix.org",
@@ -1566,6 +1552,7 @@ module.exports={
   "bugs": {
     "url": "https://github.com/mde/ejs/issues"
   },
+  "bundleDependencies": false,
   "contributors": [
     {
       "name": "Timothy Gu",
@@ -1574,6 +1561,7 @@ module.exports={
     }
   ],
   "dependencies": {},
+  "deprecated": false,
   "description": "Embedded JavaScript templates",
   "devDependencies": {
     "browserify": "^13.0.1",

@@ -2,6 +2,7 @@ var Templates = require('../Teamplates');
 var Cities;
 var API = require('../API');
 var $cities = $("#cities");
+var Storage = require('../LocalStorage');
 
 function showCities(list) {
     $cities.html("");
@@ -10,6 +11,12 @@ function showCities(list) {
         var html_code = Templates.City_OneItem({city: city});
 
         var $node = $(html_code);
+
+        $node.find('.city-card').click(function () {
+            var id = this.id;
+            Storage.set('id', id);
+            document.location.href = '/city.html'
+        });
 
         $cities.append($node);
     }

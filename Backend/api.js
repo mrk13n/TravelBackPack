@@ -1,7 +1,6 @@
 var Cities = require('./data/Cities');
 var Comments = require('./database');
 
-
 exports.getCities = function(req, res) {
     res.send(Cities);
 };
