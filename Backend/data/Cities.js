@@ -38,7 +38,7 @@ var cities = [
         id: 6,
         city: "Berlin",
         country: 'Germany',
-        icon: 'assets/images/paris.jpg',
+        icon: 'assets/images/berlin.jpg',
         href: '/city.html'
     },
     {
