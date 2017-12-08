@@ -13,3 +13,9 @@ exports.mapPage = function(req, res) {
         mapActive: true
     })
 };
+
+exports.cityPage = function (req, res) {
+    res.render('cityPage', {
+        pageTitle: 'a'
+    })
+};
