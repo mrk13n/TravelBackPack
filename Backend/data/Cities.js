@@ -2,68 +2,124 @@ var cities = [
     {
         id: 1,
         city: "Paris",
+        country: "France",
         icon: 'assets/images/paris.jpg'
     },
     {
         id: 2,
         city: "New York",
-<<<<<<< HEAD
-<<<<<<< HEAD
-        country: 'USA'
+        country: 'USA',
+        icon: 'assets/images/new_york.jpg'
     },
     {
         id: 2,
-        city: "Paris",
-        country: 'France'
+        city: "Budapest",
+        country: 'Hungary',
+        icon: 'assets/images/budapest.jpg'
     },
     {
         id: 3,
         city: "Berlin",
-        country: 'Germany'
-=======
-=======
->>>>>>> 1a6b2f32a5797fdab2f00c60ac9e5a69929b50df
-        icon: 'assets/images/paris.jpg'
+        country: 'Germany',
+        icon: 'assets/images/berlin.jpg'
     },
     {
         id: 3,
         city: "London",
-        icon: 'assets/images/paris.jpg'
+        country: "Great Britain",
+        icon: 'assets/images/london.jpg'
     },
     {
         id: 4,
         city: "Saint Petersburg",
-        icon: 'assets/images/paris.jpg'
+        country: "Russia",
+        icon: 'assets/images/saintp.jpg'
     },
     {
         id: 5,
         city: "Barcelona",
-        icon: 'assets/images/paris.jpg'
+        country: "Spain",
+        icon: 'assets/images/barselona.jpg'
     },
     {
         id: 6,
         city: "Madrid",
-        icon: 'assets/images/paris.jpg'
+        country: "Spain",
+        icon: 'assets/images/madrid.jpg'
     },
     {
         id: 7,
-        city: "Paris",
-        icon: 'assets/images/paris.jpg'
+        city: "Rome",
+        country: "Italy",
+        icon: 'assets/images/rome.jpg'
     },
     {
         id: 8,
-        city: "New York",
-        icon: 'assets/images/paris.jpg'
+        city: "Florence",
+        country: "Italy",
+        icon: 'assets/images/florence.jpg'
     },
     {
         id: 9,
-        city: "London",
-        icon: 'assets/images/paris.jpg'
-<<<<<<< HEAD
->>>>>>> 1a6b2f32a5797fdab2f00c60ac9e5a69929b50df
-=======
->>>>>>> 1a6b2f32a5797fdab2f00c60ac9e5a69929b50df
+        city: "Krakow",
+        country: "Poland",
+        icon: 'assets/images/krakow.jpg'
+    },
+    {
+        id: 10,
+        city: "Kyiv",
+        country: "Ukraine",
+        icon: 'assets/images/kyiv.jpg'
+    },
+    {
+        id: 11,
+        city: "Marseille",
+        country: "France",
+        icon: 'assets/images/marseille.jpg'
+    },
+    {
+        id: 12,
+        city: "Milan",
+        country: "Italy",
+        icon: 'assets/images/milan.jpg'
+    },
+    {
+        id: 13,
+        city: "Munich",
+        country: "Germany",
+        icon: 'assets/images/munich.jpg'
+    },
+    {
+        id: 14,
+        city: "Nice",
+        country: "France",
+        icon: 'assets/images/nice.jpg'
+    },
+    {
+        id: 15,
+        city: "Venice",
+        country: "Italy",
+        icon: 'assets/images/venice.jpg'
+    },
+    {
+        id: 16,
+        city: "Prague",
+        country: "Czech Republic",
+        icon: 'assets/images/prague.jpg'
+    },
+    {
+        id: 17,
+        city: "Vienna",
+        country: "Austria",
+        icon: 'assets/images/vienna.jpg'
+    },
+    {
+        id: 18,
+        city: "Warsaw",
+        country: "Poland",
+        icon: 'assets/images/warsaw.jpg'
     }
+
 
 ];
 
