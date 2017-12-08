@@ -123,26 +123,20 @@ var cities = [
         id: 21,
         city: "Warsaw",
         country: "Poland",
-<<<<<<< HEAD
-        icon: 'assets/images/warsaw.jpg',
-        href: '/city.html'
-    },
-    // {
-    //     id: 22,
-    //     city: "Odesa",
-    //     country: "Ukraine",
-    //     icon: 'asserts/images/odesa.jpg'
-    // },
-    // {
-    //     id: 23,
-    //     city: "Lviv",
-    //     country: "Ukraine",
-    //     icon: 'asserts/images/lviv.jpg'
-    // }
-=======
         icon: 'assets/images/warsaw.jpg'
+    },
+    {
+        id: 22,
+        city: "Odesa",
+        country: "Ukraine",
+        icon: 'assets/images/odesa.jpg'
+    },
+    {
+        id: 23,
+        city: "Lviv",
+        country: "Ukraine",
+        icon: 'assets/images/lviv.jpg'
     }
->>>>>>> dfe7a7ac345549bb6f9a2935c2635fa159f1d125
 ];
 
 module.exports = cities;
