@@ -1,5 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var API_URL = "http://localhost:4545";
+var API_URL = "http://localhost:5050";
 
 function backendGet(url, callback) {
     $.ajax({
@@ -53,7 +53,7 @@ function showCities(list) {
         var html_code = Templates.City_OneItem({city: city});
 
         var $node = $(html_code);
-        console.log($node);
+
         $cities.append($node);
     }
 
@@ -62,12 +62,10 @@ function showCities(list) {
 
 function initialiseCities() {
     API.getCitiesList(function (err, data) {
-        if (!err) {
-            Cities = data;
-            showCities(Cities);
-        } else {
-            console.log(err.status);
-        }
+       if (!err) {
+           Cities = data;
+           showCities(Cities);
+       }
     });
 }
 
@@ -77,7 +75,11 @@ exports.initialiseCities = initialiseCities;
 var ejs = require('ejs');
 
 
-exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\r\n    <div class=\"thumbnail\" style=\"background-image: url(<%= city.icon%>)\">\r\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\r\n    </div>\r\n</div>");
+<<<<<<< HEAD
+exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\r\n    <div class=\"thumbnail city-card\" style=\"background-image: url(<%= city.icon%>)\">\r\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\r\n    </div>\r\n</div>");
+=======
+exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"thumbnail city-card\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
+>>>>>>> f21f60766e4027e9a7ebae2615e2d532151dd9d7
 },{"ejs":6}],4:[function(require,module,exports){
 $(function () {
     var GetCities = require('./Cities/GetCities');
@@ -1121,34 +1123,30 @@ exports.cache = {
 
 },{}],8:[function(require,module,exports){
 module.exports={
-  "_args": [
-    [
-      "ejs@2.5.7",
-      "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack"
-    ]
-  ],
-  "_from": "ejs@2.5.7",
+  "_from": "ejs@^2.5.7",
   "_id": "ejs@2.5.7",
   "_inBundle": false,
   "_integrity": "sha1-zIcsFoiArjxxiXYv1f/ACJbJUYo=",
   "_location": "/ejs",
   "_phantomChildren": {},
   "_requested": {
-    "type": "version",
+    "type": "range",
     "registry": true,
-    "raw": "ejs@2.5.7",
+    "raw": "ejs@^2.5.7",
     "name": "ejs",
     "escapedName": "ejs",
-    "rawSpec": "2.5.7",
+    "rawSpec": "^2.5.7",
     "saveSpec": null,
-    "fetchSpec": "2.5.7"
+    "fetchSpec": "^2.5.7"
   },
   "_requiredBy": [
+    "#USER",
     "/"
   ],
   "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz",
-  "_spec": "2.5.7",
-  "_where": "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack",
+  "_shasum": "cc872c168880ae3c7189762fd5ffc00896c9518a",
+  "_spec": "ejs@^2.5.7",
+  "_where": "/home/mrk13/Documents/GitHub/TravelBackPack",
   "author": {
     "name": "Matthew Eernisse",
     "email": "mde@fleegix.org",
@@ -1157,6 +1155,7 @@ module.exports={
   "bugs": {
     "url": "https://github.com/mde/ejs/issues"
   },
+  "bundleDependencies": false,
   "contributors": [
     {
       "name": "Timothy Gu",
@@ -1165,6 +1164,7 @@ module.exports={
     }
   ],
   "dependencies": {},
+  "deprecated": false,
   "description": "Embedded JavaScript templates",
   "devDependencies": {
     "browserify": "^13.0.1",
