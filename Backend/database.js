@@ -12,9 +12,9 @@ db.once('open', function callback () {
 
 var comments = new mongoose.Schema({
     city: {type: String, unique: true},
-    comments: {nickname: {type: String}, comment: {type: String}}
-
+    comments: [{nickname: {type: String}, comment: {type: String}}]
 });
 
 var Comments = mongoose.model('comments', comments);
+
 module.exports = Comments;

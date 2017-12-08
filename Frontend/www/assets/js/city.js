@@ -33,14 +33,46 @@ exports.getCitiesList = function(callback) {
     backendGet("/api/get-cities/", callback);
 };
 
-exports.getComments = function (callback) {
-  backendGet("/api/get-comments/", callback);
+exports.getComments = function (city, callback) {
+  backendPost("/api/get-comments/", city, callback);
 };
 
 exports.writeComment = function (comment, callback) {
   backendPost("/api/write-comments/", comment, callback);
 };
 },{}],2:[function(require,module,exports){
+var Templates = require('../Teamplates');
+var Storage = require('../LocalStorage');
+var API = require('../API');
+var $comments = $("#comments");
+var city = {
+    city: Storage.get('city')
+};
+
+function showComments() {
+    $comments.html("");
+
+    function showOneComment(comment) {
+        var html_code = Templates.Comment_OneItem({comment: comment});
+
+        var $node = $(html_code);
+
+        $comments.append($node);
+    }
+
+    list.forEach(showOneComment);
+}
+
+function initialiseComments() {
+    API.getComments(city, function (err, data) {
+        if (!err) {
+            console.log(data);
+        }
+    });
+}
+
+exports.initialiseComments = initialiseComments;
+},{"../API":1,"../LocalStorage":4,"../Teamplates":5}],3:[function(require,module,exports){
 var Templates = require('../Teamplates');
 var Cities;
 var API = require('../API');
@@ -57,6 +89,7 @@ function showInfo() {
             for (var i = 0; i < Cities.length; i++) {
                 if (id == Cities[i].id) {
                     city = Cities[i];
+                    Storage.set('city', city.city);
                     break;
                 }
             }
@@ -67,12 +100,8 @@ function showInfo() {
     });
 }
 
-function getInfo() {
-
-}
-
 exports.showInfo = showInfo;
-},{"../API":1,"../LocalStorage":3,"../Teamplates":4}],3:[function(require,module,exports){
+},{"../API":1,"../LocalStorage":4,"../Teamplates":5}],4:[function(require,module,exports){
 var basil = require('basil.js');
 basil = new basil();
 
@@ -82,19 +111,22 @@ exports.get = function (key) {
 exports.set = function (key, value) {
     return basil.set(key, value);
 };
-},{"basil.js":6}],4:[function(require,module,exports){
+},{"basil.js":7}],5:[function(require,module,exports){
 
 var ejs = require('ejs');
 
 
-exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\r\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\r\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\r\n    </div>\r\n</div>");
-exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\r\n    <div class=\"title-box\">\r\n        <p>experience</p>\r\n        <h1 class=\"city-name\"><%= city.city%></h1>\r\n        <p>like a local</p>\r\n        <div class=\"city-info\">\r\n\r\n        </div>\r\n    </div>\r\n</div>");
-},{"ejs":8}],5:[function(require,module,exports){
+exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
+exports.Comment_OneItem = ejs.compile("<div class=\"col-lg-6\">\n    <div class=\"col-sm-2\">\n        <div class=\"thumbnail thumb_city\">\n            <img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\">\n        </div>\n    </div>\n\n    <div class=\"col-sm-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <strong>username</strong> <span class=\"text-muted\">commented 5 days ago</span>\n            </div>\n            <div class=\"panel-body\">\n                Panel content\n            </div>\n        </div>\n    </div>\n</div>");
+exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\n    <div class=\"title-box\">\n        <p>experience</p>\n        <h1 class=\"city-name\"><%= city.city%></h1>\n        <p>like a local</p>\n        <div class=\"city-info\">\n\n        </div>\n    </div>\n</div>");
+},{"ejs":9}],6:[function(require,module,exports){
 $(function () {
     var GetInfoCity = require('./Cities/GetInfoCity');
+    var GetComments = require('./Cities/GetComments');
     GetInfoCity.showInfo();
+    GetComments.initialiseComments();
 });
-},{"./Cities/GetInfoCity":2}],6:[function(require,module,exports){
+},{"./Cities/GetComments":2,"./Cities/GetInfoCity":3}],7:[function(require,module,exports){
 (function () {
 	// Basil
 	var Basil = function (options) {
@@ -482,9 +514,9 @@ $(function () {
 
 })();
 
-},{}],7:[function(require,module,exports){
-
 },{}],8:[function(require,module,exports){
+
+},{}],9:[function(require,module,exports){
 /*
  * EJS Embedded JavaScript templates
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
@@ -1352,7 +1384,7 @@ if (typeof window != 'undefined') {
   window.ejs = exports;
 }
 
-},{"../package.json":10,"./utils":9,"fs":7,"path":11}],9:[function(require,module,exports){
+},{"../package.json":11,"./utils":10,"fs":8,"path":12}],10:[function(require,module,exports){
 /*
  * EJS Embedded JavaScript templates
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
@@ -1518,36 +1550,32 @@ exports.cache = {
   }
 };
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 module.exports={
-  "_args": [
-    [
-      "ejs@2.5.7",
-      "C:\\Users\\Maria\\Documents\\GitHub\\TravelBackPack"
-    ]
-  ],
-  "_from": "ejs@2.5.7",
+  "_from": "ejs@^2.5.7",
   "_id": "ejs@2.5.7",
   "_inBundle": false,
   "_integrity": "sha1-zIcsFoiArjxxiXYv1f/ACJbJUYo=",
   "_location": "/ejs",
   "_phantomChildren": {},
   "_requested": {
-    "type": "version",
+    "type": "range",
     "registry": true,
-    "raw": "ejs@2.5.7",
+    "raw": "ejs@^2.5.7",
     "name": "ejs",
     "escapedName": "ejs",
-    "rawSpec": "2.5.7",
+    "rawSpec": "^2.5.7",
     "saveSpec": null,
-    "fetchSpec": "2.5.7"
+    "fetchSpec": "^2.5.7"
   },
   "_requiredBy": [
+    "#USER",
     "/"
   ],
   "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz",
-  "_spec": "2.5.7",
-  "_where": "C:\\Users\\Maria\\Documents\\GitHub\\TravelBackPack",
+  "_shasum": "cc872c168880ae3c7189762fd5ffc00896c9518a",
+  "_spec": "ejs@^2.5.7",
+  "_where": "/home/mrk13/Documents/GitHub/TravelBackPack",
   "author": {
     "name": "Matthew Eernisse",
     "email": "mde@fleegix.org",
@@ -1556,6 +1584,7 @@ module.exports={
   "bugs": {
     "url": "https://github.com/mde/ejs/issues"
   },
+  "bundleDependencies": false,
   "contributors": [
     {
       "name": "Timothy Gu",
@@ -1564,6 +1593,7 @@ module.exports={
     }
   ],
   "dependencies": {},
+  "deprecated": false,
   "description": "Embedded JavaScript templates",
   "devDependencies": {
     "browserify": "^13.0.1",
@@ -1602,7 +1632,7 @@ module.exports={
   "version": "2.5.7"
 }
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -1830,7 +1860,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":12}],12:[function(require,module,exports){
+},{"_process":13}],13:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -2016,4 +2046,4 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}]},{},[5]);
+},{}]},{},[6]);

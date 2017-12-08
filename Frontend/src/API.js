@@ -32,8 +32,8 @@ exports.getCitiesList = function(callback) {
     backendGet("/api/get-cities/", callback);
 };
 
-exports.getComments = function (callback) {
-  backendGet("/api/get-comments/", callback);
+exports.getComments = function (city, callback) {
+  backendPost("/api/get-comments/", city, callback);
 };
 
 exports.writeComment = function (comment, callback) {
