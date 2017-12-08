@@ -8,10 +8,6 @@ var cities = [
     {
         id: 2,
         city: "New York",
-        icon: 'assets/images/paris.jpg'
-    },
-    {
-        id: 3,
         country: 'USA',
         icon: 'assets/images/new_york.jpg'
     },
@@ -58,12 +54,6 @@ var cities = [
         icon: 'assets/images/madrid.jpg'
     },
     {
-<<<<<<< HEAD
-        id: 7,
-        city: "London",
-        icon: 'assets/images/paris.jpg',
-=======
->>>>>>> f21f60766e4027e9a7ebae2615e2d532151dd9d7
         id: 10,
         city: "Rome",
         country: "Italy",
