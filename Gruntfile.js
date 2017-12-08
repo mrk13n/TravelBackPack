@@ -20,7 +20,10 @@ module.exports = function(grunt) {
                 }
             },
 
-            //Збірка з назвою піца
+            cities: {
+                src:        'Frontend/src/main.js',
+                dest:       'Frontend/www/assets/js/main.js'
+            },
             map: {
                 src:        'Frontend/src/map.js',
                 dest:       'Frontend/www/assets/js/map.js'
@@ -38,7 +41,10 @@ module.exports = function(grunt) {
             //На зміни в яких файлах реагувати
             files: ['Frontend/src/**/*.js', 'Frontend/**/*.ejs', 'Frontend/src/*.js'],
             //Які завдання виконувати під час зміни в файлах
-            tasks: ['browserify:map']
+            tasks: [
+                'browserify:cities',
+                'browserify:map'
+            ]
         }
     };
 
@@ -55,6 +61,7 @@ module.exports = function(grunt) {
     //Список завданнь по замовчування
     grunt.registerTask('default',
         [
+            'browserify:cities',
             'browserify:map'
         ]
     );
