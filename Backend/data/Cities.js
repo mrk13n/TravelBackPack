@@ -130,12 +130,6 @@ var cities = [
         city: "Odesa",
         country: "Ukraine",
         icon: 'assets/images/odesa.jpg'
-    },
-    {
-        id: 23,
-        city: "Lviv",
-        country: "Ukraine",
-        icon: 'assets/images/lviv.jpg'
     }
 ];
 
