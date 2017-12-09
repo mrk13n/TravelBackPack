@@ -11,6 +11,11 @@ exports.writeComment = function (req, res) {
     var nickname = req.body.nickname;
     var comment = req.body.comment;
     var city = req.body.city;
+    var year = req.body.year;
+    var day = req.body.day;
+    var month = req.body.month;
+    var hours = req.body.hours;
+    var minutes = req.body.minutes;
     var current_comment;
 
     Comments.findOne(
@@ -21,7 +26,12 @@ exports.writeComment = function (req, res) {
             if (current_city) {
                 current_comment = new One_Comment({
                     nickname: nickname,
-                    comment: comment
+                    comment: comment,
+                    year: year,
+                    day: day,
+                    month: month,
+                    hours: hours,
+                    minutes: minutes
                 });
                 var a = current_city.comments;
                 a.push(current_comment);
@@ -40,7 +50,12 @@ exports.writeComment = function (req, res) {
             } else {
                 current_comment = new One_Comment({
                     nickname: nickname,
-                    comment: comment
+                    comment: comment,
+                    year: year,
+                    day: day,
+                    month: month,
+                    hours: hours,
+                    minutes: minutes
                 });
 
                 var newCity = new Comments({

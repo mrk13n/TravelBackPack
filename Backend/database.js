@@ -12,7 +12,12 @@ db.once('open', function callback () {
 
 var one_comment = new mongoose.Schema({
     nickname: {type: String},
-    comment: {type: String}
+    comment: {type: String},
+    year: {type: String},
+    day: {type: String},
+    month: {type: String},
+    hours: {type: String},
+    minutes: {type: String}
 });
 
 var comments = new mongoose.Schema({

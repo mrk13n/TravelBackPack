@@ -34,11 +34,35 @@ function showInfo() {
                 }
             });
             $node2.find('.btn-send').click(function () {
+                var today = new Date();
+                var dd = today.getDate();
+                var mm = today.getMonth()+1;
+                var yyyy = today.getFullYear();
+                var hh = today.getHours();
+                var mn = today.getMinutes();
+                if(dd<10) {
+                    dd = '0'+dd;
+                }
+
+                if(mm<10) {
+                    mm = '0'+mm;
+                }
+                if (hh<10) {
+                    hh = '0'+hh;
+                }
+                if (mn<10) {
+                    mn = '0'+mn;
+                }
                 var comment = $('.form-control').val();
                 var send_comment = {
                     nickname: 'username',
                     comment: comment,
-                    city: current_city.city
+                    city: current_city.city,
+                    year: yyyy,
+                    day: dd,
+                    month: mm,
+                    hours: hh,
+                    minutes: mn
                 };
                 if (comment.length !== 0) {
                     API.writeComment(send_comment, function (err, data) {

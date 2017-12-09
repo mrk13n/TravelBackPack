@@ -77,11 +77,35 @@ function showInfo() {
                 }
             });
             $node2.find('.btn-send').click(function () {
+                var today = new Date();
+                var dd = today.getDate();
+                var mm = today.getMonth()+1;
+                var yyyy = today.getFullYear();
+                var hh = today.getHours();
+                var mn = today.getMinutes();
+                if(dd<10) {
+                    dd = '0'+dd;
+                }
+
+                if(mm<10) {
+                    mm = '0'+mm;
+                }
+                if (hh<10) {
+                    hh = '0'+hh;
+                }
+                if (mn<10) {
+                    mn = '0'+mn;
+                }
                 var comment = $('.form-control').val();
                 var send_comment = {
                     nickname: 'username',
                     comment: comment,
-                    city: current_city.city
+                    city: current_city.city,
+                    year: yyyy,
+                    day: dd,
+                    month: mm,
+                    hours: hh,
+                    minutes: mn
                 };
                 if (comment.length !== 0) {
                     API.writeComment(send_comment, function (err, data) {
@@ -139,7 +163,7 @@ var ejs = require('ejs');
 
 
 exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
-exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\n    <div class=\"col-xs-2\">\n        <div class=\"thumbnail thumb_city\">\n            <img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\">\n        </div>\n    </div>\n\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <strong><%= comment.nickname%></strong> <span class=\"text-muted\">commented 5 days ago</span>\n            </div>\n            <div class=\"panel-body\">\n                <%= comment.comment%>\n            </div>\n        </div>\n    </div>\n</div>");
+exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\n    <div class=\"col-xs-2\">\n        <div class=\"thumbnail thumb_city\">\n            <img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\">\n        </div>\n    </div>\n\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <strong><%= comment.nickname%></strong> <span class=\"text-muted\"> commented <%= comment.day%>-<%= comment.month%>-<%= comment.year%> <%= comment.hours%>:<%= comment.minutes%></span>\n            </div>\n            <div class=\"panel-body\">\n                <%= comment.comment%>\n            </div>\n        </div>\n    </div>\n</div>");
 exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\n    <div class=\"title-box\">\n        <p>experience</p>\n        <h1 class=\"city-name\"><%= city.city%></h1>\n        <p>like a local</p>\n        <div class=\"city-info\">\n\n        </div>\n    </div>\n</div>");
 exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\n    <div class=\"col-xs-2\">\n        <div class=\"thumbnail thumb_city\">\n            <img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\">\n        </div>\n    </div>\n\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <strong>username</strong>\n            </div>\n            <div class=\"panel-body\">\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\"></textarea>\n                <button type=\"submit\" class=\"btn btn-send\">\n                    Send <span class=\"glyphicon glyphicon-send\"></span>\n                </button>\n            </div>\n        </div>\n    </div>\n</div>");
 },{"ejs":8}],5:[function(require,module,exports){

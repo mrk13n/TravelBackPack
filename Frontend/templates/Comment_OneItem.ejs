@@ -8,7 +8,7 @@
     <div class="col-xs-10">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <strong><%= comment.nickname%></strong> <span class="text-muted">commented 5 days ago</span>
+                <strong><%= comment.nickname%></strong> <span class="text-muted">commented <%= comment.day%>-<%= comment.month%>-<%= comment.year%> <%= comment.hours%>:<%= comment.minutes%></span>
             </div>
             <div class="panel-body">
                 <%= comment.comment%>
