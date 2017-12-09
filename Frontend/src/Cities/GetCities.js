@@ -32,5 +32,4 @@ function initialiseCities() {
        }
     });
 }
-
 exports.initialiseCities = initialiseCities;

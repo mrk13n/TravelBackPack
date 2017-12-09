@@ -1,5 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var API_URL = "http://localhost:5050";
+var API_URL = "http://localhost:4040";
 
 function backendGet(url, callback) {
     $.ajax({
@@ -75,7 +75,6 @@ function initialiseCities() {
        }
     });
 }
-
 exports.initialiseCities = initialiseCities;
 },{"../API":1,"../LocalStorage":3,"../Teamplates":4}],3:[function(require,module,exports){
 var basil = require('basil.js');
@@ -92,14 +91,10 @@ exports.set = function (key, value) {
 var ejs = require('ejs');
 
 
-<<<<<<< HEAD
-exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\r\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\r\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\r\n    </div>\r\n</div>");
-exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\r\n    <div class=\"title-box\">\r\n        <p>experience</p>\r\n        <h1 class=\"city-name\"><%= city.city%></h1>\r\n        <p>like a local</p>\r\n        <div class=\"city-info\">\r\n\r\n        </div>\r\n    </div>\r\n</div>");
-=======
 exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
-exports.Comment_OneItem = ejs.compile("<div class=\"col-lg-6\">\n    <div class=\"col-sm-2\">\n        <div class=\"thumbnail thumb_city\">\n            <img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\">\n        </div>\n    </div>\n\n    <div class=\"col-sm-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <strong>username</strong> <span class=\"text-muted\">commented 5 days ago</span>\n            </div>\n            <div class=\"panel-body\">\n                Panel content\n            </div>\n        </div>\n    </div>\n</div>");
+exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\n    <div class=\"col-xs-2\">\n        <div class=\"thumbnail thumb_city\">\n            <img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\">\n        </div>\n    </div>\n\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <strong><%= comment.nickname%></strong> <span class=\"text-muted\">commented 5 days ago</span>\n            </div>\n            <div class=\"panel-body\">\n                <%= comment.comment%>\n            </div>\n        </div>\n    </div>\n</div>");
 exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\n    <div class=\"title-box\">\n        <p>experience</p>\n        <h1 class=\"city-name\"><%= city.city%></h1>\n        <p>like a local</p>\n        <div class=\"city-info\">\n\n        </div>\n    </div>\n</div>");
->>>>>>> b4d1286242bbf034a08fed0d1fd66a6f37a50136
+exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\n    <div class=\"col-xs-2\">\n        <div class=\"thumbnail thumb_city\">\n            <img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\">\n        </div>\n    </div>\n\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <strong>username</strong>\n            </div>\n            <div class=\"panel-body\">\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\"></textarea>\n                <button type=\"submit\" class=\"btn btn-send\">\n                    Send <span class=\"glyphicon glyphicon-send\"></span>\n                </button>\n            </div>\n        </div>\n    </div>\n</div>");
 },{"ejs":8}],5:[function(require,module,exports){
 $(function () {
     var GetCities = require('./Cities/GetCities');
@@ -1531,34 +1526,30 @@ exports.cache = {
 
 },{}],10:[function(require,module,exports){
 module.exports={
-  "_args": [
-    [
-      "ejs@2.5.7",
-      "C:\\Users\\Maria\\Documents\\GitHub\\TravelBackPack"
-    ]
-  ],
-  "_from": "ejs@2.5.7",
+  "_from": "ejs@^2.5.7",
   "_id": "ejs@2.5.7",
   "_inBundle": false,
   "_integrity": "sha1-zIcsFoiArjxxiXYv1f/ACJbJUYo=",
   "_location": "/ejs",
   "_phantomChildren": {},
   "_requested": {
-    "type": "version",
+    "type": "range",
     "registry": true,
-    "raw": "ejs@2.5.7",
+    "raw": "ejs@^2.5.7",
     "name": "ejs",
     "escapedName": "ejs",
-    "rawSpec": "2.5.7",
+    "rawSpec": "^2.5.7",
     "saveSpec": null,
-    "fetchSpec": "2.5.7"
+    "fetchSpec": "^2.5.7"
   },
   "_requiredBy": [
+    "#USER",
     "/"
   ],
   "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz",
-  "_spec": "2.5.7",
-  "_where": "C:\\Users\\Maria\\Documents\\GitHub\\TravelBackPack",
+  "_shasum": "cc872c168880ae3c7189762fd5ffc00896c9518a",
+  "_spec": "ejs@^2.5.7",
+  "_where": "/home/mrk13/Documents/GitHub/TravelBackPack",
   "author": {
     "name": "Matthew Eernisse",
     "email": "mde@fleegix.org",
@@ -1567,6 +1558,7 @@ module.exports={
   "bugs": {
     "url": "https://github.com/mde/ejs/issues"
   },
+  "bundleDependencies": false,
   "contributors": [
     {
       "name": "Timothy Gu",
@@ -1575,6 +1567,7 @@ module.exports={
     }
   ],
   "dependencies": {},
+  "deprecated": false,
   "description": "Embedded JavaScript templates",
   "devDependencies": {
     "browserify": "^13.0.1",

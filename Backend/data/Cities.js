@@ -123,11 +123,6 @@ var cities = [
         id: 21,
         city: "Warsaw",
         country: "Poland",
-<<<<<<< HEAD
-        icon: 'assets/images/warsaw.jpg',
-        href: '/city.html'
-    },
-=======
         icon: 'assets/images/warsaw.jpg'
     },
     {
@@ -142,7 +137,6 @@ var cities = [
         country: "Ukraine",
         icon: 'assets/images/lviv.jpg'
     }
->>>>>>> b4d1286242bbf034a08fed0d1fd66a6f37a50136
 ];
 
 module.exports = cities;

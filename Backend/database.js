@@ -10,11 +10,18 @@ db.once('open', function callback () {
     console.log("Connected to DB!");
 });
 
+var one_comment = new mongoose.Schema({
+    nickname: {type: String},
+    comment: {type: String}
+});
+
 var comments = new mongoose.Schema({
     city: {type: String, unique: true},
-    comments: [{nickname: {type: String}, comment: {type: String}}]
+    comments: [one_comment]
 });
 
 var Comments = mongoose.model('comments', comments);
+var One_Comment = mongoose.model('one_comment', one_comment);
 
-module.exports = Comments;
+exports.Comments = Comments;
+exports.One_Comment = One_Comment;
