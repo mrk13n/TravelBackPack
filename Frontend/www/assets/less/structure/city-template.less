@@ -127,3 +127,71 @@
 .panel-body {
   overflow-x: hidden;
 }
+
+
+nav.blend ul li a {
+  position: relative;
+  border-radius: 5px;
+  overflow: hidden;
+  z-index: 1;
+}
+nav.blend ul li a:hover {
+  color: #fff;
+}
+nav.blend ul li a:before,
+nav.blend ul li a:after {
+  position: absolute;
+  width: 0px;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  background: #D35400;
+  transition: all .5s;
+  margin: auto;
+  content: '.';
+  color: transparent;
+  z-index: -1;
+  opacity: 0.75;
+}
+nav.blend ul li a:before {
+  left: 0;
+}
+nav.blend ul li a:after {
+  right: 0;
+}
+
+nav.blend ul li a:hover:after,
+nav.blend ul li a:hover:before {
+  width: 100%;
+}
+
+/* DROWN */
+
+nav.drown ul li a {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+}
+
+nav.drown ul li a:hover {
+  color: #fff;
+}
+
+nav.drown ul li a:before {
+  background: #fff;
+  content: '.';
+  color: transparent;
+  position: absolute;
+  width: 500%;
+  top: 100px;
+  right: 300px;
+  height: 300px;
+  z-index: -1;
+}
+nav.drown ul li a:hover:before {
+  left: auto;
+  bottom: auto;
+  right: -50%;
+  top: 0;
+  background: #89C52B;
+}
