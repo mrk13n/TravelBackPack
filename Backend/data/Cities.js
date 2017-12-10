@@ -123,8 +123,6 @@ var cities = [
         id: 21,
         city: "Warsaw",
         country: "Poland",
-        icon: 'assets/images/warsaw.jpg',
-        href: '/city.html',
         icon: 'assets/images/warsaw.jpg'
     },
     {
