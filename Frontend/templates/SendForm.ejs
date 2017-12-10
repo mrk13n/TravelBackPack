@@ -1,4 +1,4 @@
-<div class="col-md-6 col-xs-12">
+<div class="col-md-6 col-xs-12" id="form">
     <div class="col-xs-2">
         <div class="thumbnail thumb_city">
             <img class="img-responsive user-photo" src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
@@ -8,10 +8,13 @@
     <div class="col-xs-10">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <strong><%= comment.nickname%></strong> <span class="text-muted">commented <%= comment.day%>-<%= comment.month%>-<%= comment.year%> <%= comment.hours%>:<%= comment.minutes%></span>
+                <strong>username</strong>
             </div>
             <div class="panel-body">
-                <%= comment.comment%>
+                <textarea class="form-control" rows="5" id="comment"></textarea>
+                <button type="submit" class="btn btn-send">
+                    Send <span class="glyphicon glyphicon-send"></span>
+                </button>
             </div>
         </div>
     </div>

@@ -1,5 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var API_URL = "http://localhost:5050";
+var API_URL = "http://localhost:4040";
 
 function backendGet(url, callback) {
     $.ajax({
@@ -42,14 +42,97 @@ exports.writeComment = function (comment, callback) {
 };
 },{}],2:[function(require,module,exports){
 var Templates = require('../Teamplates');
-var Storage = require('../LocalStorage');
+var Cities;
 var API = require('../API');
+var Storage = require('../LocalStorage');
+var $city = $('#info');
 var $comments = $("#comments");
-var city = {
-    city: Storage.get('city')
-};
+var current_city;
 
-function showComments() {
+function showInfo() {
+    $city.html("");
+    var id = Storage.get('id');
+    var city;
+    API.getCitiesList(function (err, data) {
+        if (!err) {
+            Cities = data;
+            for (var i = 0; i < Cities.length; i++) {
+                if (id == Cities[i].id) {
+                    city = Cities[i];
+                    break;
+                }
+            }
+            var html_code = Templates.InfoCity({city: city});
+            var $node = $(html_code);
+            $city.append($node);
+            current_city = {city: city.city};
+            var html_code2 = Templates.SendForm();
+            var $node2 = $(html_code2);
+            API.getComments(current_city, function (err, data) {
+                if (!err) {
+                    if (!data.emptyForm) {
+                        showComments(data);
+                    }
+                    $comments.append($node2);
+                }
+            });
+            $node2.find('.btn-send').click(function () {
+                var today = new Date();
+                var dd = today.getDate();
+                var mm = today.getMonth()+1;
+                var yyyy = today.getFullYear();
+                var hh = today.getHours();
+                var mn = today.getMinutes();
+                if(dd<10) {
+                    dd = '0'+dd;
+                }
+
+                if(mm<10) {
+                    mm = '0'+mm;
+                }
+                if (hh<10) {
+                    hh = '0'+hh;
+                }
+                if (mn<10) {
+                    mn = '0'+mn;
+                }
+                var comment = $('.form-control').val();
+                var send_comment = {
+                    nickname: 'username',
+                    comment: comment,
+                    city: current_city.city,
+                    year: yyyy,
+                    day: dd,
+                    month: mm,
+                    hours: hh,
+                    minutes: mn
+                };
+                if (comment.length !== 0) {
+                    API.writeComment(send_comment, function (err, data) {
+                        if (data.success) {
+                            document.location.href = '/city.html'
+                        }
+                    })
+                }
+            });
+            var a = true;
+            $('.btn-add').click(function () {
+                $('#form').slideToggle(400);
+                if (a) {
+                    $('#right').removeClass('glyphicon glyphicon-chevron-right img-circle');
+                    $('#right').addClass('glyphicon glyphicon-chevron-up img-circle');
+                    a = !a;
+                } else {
+                    $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
+                    $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
+                    a = !a;
+                }
+            });
+        }
+    });
+}
+
+function showComments(list) {
     $comments.html("");
 
     function showOneComment(comment) {
@@ -63,45 +146,8 @@ function showComments() {
     list.forEach(showOneComment);
 }
 
-function initialiseComments() {
-    API.getComments(city, function (err, data) {
-        if (!err) {
-            console.log(data);
-        }
-    });
-}
-
-exports.initialiseComments = initialiseComments;
-},{"../API":1,"../LocalStorage":4,"../Teamplates":5}],3:[function(require,module,exports){
-var Templates = require('../Teamplates');
-var Cities;
-var API = require('../API');
-var Storage = require('../LocalStorage');
-var $city = $('#info');
-
-function showInfo() {
-    $city.html("");
-    var id = Storage.get('id');
-    var city;
-    API.getCitiesList(function (err, data) {
-        if (!err) {
-            Cities = data;
-            for (var i = 0; i < Cities.length; i++) {
-                if (id == Cities[i].id) {
-                    city = Cities[i];
-                    Storage.set('city', city.city);
-                    break;
-                }
-            }
-            var html_code = Templates.InfoCity({city: city});
-            var $node = $(html_code);
-            $city.append($node);
-        }
-    });
-}
-
 exports.showInfo = showInfo;
-},{"../API":1,"../LocalStorage":4,"../Teamplates":5}],4:[function(require,module,exports){
+},{"../API":1,"../LocalStorage":3,"../Teamplates":4}],3:[function(require,module,exports){
 var basil = require('basil.js');
 basil = new basil();
 
@@ -111,22 +157,28 @@ exports.get = function (key) {
 exports.set = function (key, value) {
     return basil.set(key, value);
 };
-},{"basil.js":7}],5:[function(require,module,exports){
+},{"basil.js":6}],4:[function(require,module,exports){
 
 var ejs = require('ejs');
 
 
+<<<<<<< HEAD
 exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\r\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\r\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\r\n    </div>\r\n</div>");
 exports.Comment_OneItem = ejs.compile("<div class=\"col-lg-6\">\r\n    <div class=\"col-sm-2\">\r\n        <div class=\"thumbnail thumb_city\">\r\n            <img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\">\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"col-sm-10\">\r\n        <div class=\"panel panel-default\">\r\n            <div class=\"panel-heading\">\r\n                <strong>username</strong> <span class=\"text-muted\">commented 5 days ago</span>\r\n            </div>\r\n            <div class=\"panel-body\">\r\n                Panel content\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>");
 exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\r\n    <div class=\"title-box\">\r\n        <p>experience</p>\r\n        <h1 class=\"city-name\"><%= city.city%></h1>\r\n        <p>like a local</p>\r\n        <div class=\"city-info\">\r\n\r\n        </div>\r\n    </div>\r\n</div>");
 },{"ejs":9}],6:[function(require,module,exports){
+=======
+exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
+exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\n    <div class=\"col-xs-2\">\n        <div class=\"thumbnail thumb_city\">\n            <img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\">\n        </div>\n    </div>\n\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <strong><%= comment.nickname%></strong> <span class=\"text-muted\"> commented <%= comment.day%>-<%= comment.month%>-<%= comment.year%> <%= comment.hours%>:<%= comment.minutes%></span>\n            </div>\n            <div class=\"panel-body\">\n                <%= comment.comment%>\n            </div>\n        </div>\n    </div>\n</div>");
+exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\n    <div class=\"title-box\">\n        <p>experience</p>\n        <h1 class=\"city-name\"><%= city.city%></h1>\n        <p>like a local</p>\n        <div class=\"city-info\">\n\n        </div>\n    </div>\n</div>");
+exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\n    <div class=\"col-xs-2\">\n        <div class=\"thumbnail thumb_city\">\n            <img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\">\n        </div>\n    </div>\n\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <strong>username</strong>\n            </div>\n            <div class=\"panel-body\">\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\"></textarea>\n                <button type=\"submit\" class=\"btn btn-send\">\n                    Send <span class=\"glyphicon glyphicon-send\"></span>\n                </button>\n            </div>\n        </div>\n    </div>\n</div>");
+},{"ejs":8}],5:[function(require,module,exports){
+>>>>>>> 0f50fa4e4cd1bca5d18ee04bef8ccacf8762ccf5
 $(function () {
     var GetInfoCity = require('./Cities/GetInfoCity');
-    var GetComments = require('./Cities/GetComments');
     GetInfoCity.showInfo();
-    GetComments.initialiseComments();
 });
-},{"./Cities/GetComments":2,"./Cities/GetInfoCity":3}],7:[function(require,module,exports){
+},{"./Cities/GetInfoCity":2}],6:[function(require,module,exports){
 (function () {
 	// Basil
 	var Basil = function (options) {
@@ -514,9 +566,9 @@ $(function () {
 
 })();
 
-},{}],8:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 
-},{}],9:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 /*
  * EJS Embedded JavaScript templates
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
@@ -1384,7 +1436,7 @@ if (typeof window != 'undefined') {
   window.ejs = exports;
 }
 
-},{"../package.json":11,"./utils":10,"fs":8,"path":12}],10:[function(require,module,exports){
+},{"../package.json":10,"./utils":9,"fs":7,"path":11}],9:[function(require,module,exports){
 /*
  * EJS Embedded JavaScript templates
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
@@ -1550,7 +1602,7 @@ exports.cache = {
   }
 };
 
-},{}],11:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 module.exports={
   "_args": [
     [
@@ -1634,7 +1686,7 @@ module.exports={
   "version": "2.5.7"
 }
 
-},{}],12:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -1862,7 +1914,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":13}],13:[function(require,module,exports){
+},{"_process":12}],12:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -2048,4 +2100,4 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}]},{},[6]);
+},{}]},{},[5]);

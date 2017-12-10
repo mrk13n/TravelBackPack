@@ -123,20 +123,18 @@ var cities = [
         id: 21,
         city: "Warsaw",
         country: "Poland",
+<<<<<<< HEAD
         icon: 'assets/images/warsaw.jpg',
         href: '/city.html'
+=======
+        icon: 'assets/images/warsaw.jpg'
+>>>>>>> 0f50fa4e4cd1bca5d18ee04bef8ccacf8762ccf5
     },
     {
         id: 22,
         city: "Odesa",
         country: "Ukraine",
         icon: 'assets/images/odesa.jpg'
-    },
-    {
-        id: 23,
-        city: "Lviv",
-        country: "Ukraine",
-        icon: 'assets/images/lviv.jpg'
     }
 ];
 
