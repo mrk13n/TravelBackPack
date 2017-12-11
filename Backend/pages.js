@@ -21,6 +21,6 @@ exports.cityPage = function (req, res) {
         pageTitle: 'City',
         mainActive: false,
         mapActive: false,
-        cityActive: true,
+        cityActive: true
     })
 };
