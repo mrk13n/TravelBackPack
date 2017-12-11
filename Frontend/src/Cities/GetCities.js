@@ -14,7 +14,7 @@ function showCities(list) {
 
         $node.find('.city-card').click(function () {
             var id = this.id;
-            Storage.set('id', id);
+            Storage.set('id', id);11111111111
             document.location.href = '/city.html'
         });
 
