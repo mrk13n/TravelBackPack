@@ -170,7 +170,41 @@ exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\r
 $(function () {
     var GetInfoCity = require('./Cities/GetInfoCity');
     GetInfoCity.showInfo();
+
+    function allNotActive() {
+        $("#filter-food").removeClass("active");
+        $("#filter-house").removeClass("active");
+        $("#filter-hitchhiking").removeClass("active");
+        $("#filter-abandoned").removeClass("active");
+    }
+
+    $("#filter-food").click(function () {
+        allNotActive();
+        // filterComments("food"); TODO
+        $("#filter-food").addClass("active");
+    });
+
+    $("#filter-house").click(function () {
+        allNotActive();
+        // filterComments("food"); TODO
+        $("#filter-house").addClass("active");
+    });
+
+    $("#filter-hitchhiking").click(function () {
+        allNotActive();
+        // filterComments("food"); TODO
+        $("#filter-hitchhiking").addClass("active");
+    });
+
+    $("#filter-abandoned").click(function () {
+        allNotActive();
+        // filterComments("food"); TODO
+        $("#filter-abandoned").addClass("active");
+    });
+
 });
+
+
 },{"./Cities/GetInfoCity":2}],6:[function(require,module,exports){
 (function () {
 	// Basil
@@ -1600,7 +1634,7 @@ module.exports={
   "_args": [
     [
       "ejs@2.5.7",
-      "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack"
+      "C:\\Users\\Maria\\Documents\\GitHub\\TravelBackPack"
     ]
   ],
   "_from": "ejs@2.5.7",
@@ -1624,7 +1658,7 @@ module.exports={
   ],
   "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz",
   "_spec": "2.5.7",
-  "_where": "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack",
+  "_where": "C:\\Users\\Maria\\Documents\\GitHub\\TravelBackPack",
   "author": {
     "name": "Matthew Eernisse",
     "email": "mde@fleegix.org",

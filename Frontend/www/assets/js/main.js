@@ -57,7 +57,7 @@ function showCities(list) {
 
         $node.find('.city-card').click(function () {
             var id = this.id;
-            Storage.set('id', id);11111111111
+            Storage.set('id', id);
             document.location.href = '/city.html'
         });
 
@@ -107,6 +107,8 @@ $(function () {
     });
 
 });
+
+
 },{"./Cities/GetCities":2}],6:[function(require,module,exports){
 (function () {
 	// Basil
@@ -1536,11 +1538,7 @@ module.exports={
   "_args": [
     [
       "ejs@2.5.7",
-<<<<<<< HEAD
       "C:\\Users\\Maria\\Documents\\GitHub\\TravelBackPack"
-=======
-      "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack"
->>>>>>> d0e380b52ba2610737d6f4b6e5b6def1c6b93d9d
     ]
   ],
   "_from": "ejs@2.5.7",
@@ -1564,11 +1562,7 @@ module.exports={
   ],
   "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz",
   "_spec": "2.5.7",
-<<<<<<< HEAD
   "_where": "C:\\Users\\Maria\\Documents\\GitHub\\TravelBackPack",
-=======
-  "_where": "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack",
->>>>>>> d0e380b52ba2610737d6f4b6e5b6def1c6b93d9d
   "author": {
     "name": "Matthew Eernisse",
     "email": "mde@fleegix.org",
