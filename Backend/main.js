@@ -10,12 +10,9 @@ function configureEndpoints(app) {
     app.get('/api/get-cities/', api.getCities);
     app.post('/api/get-comments/', api.getComment);
     app.post('/api/write-comments/', api.writeComment);
-    //app.post('/api/login/', api.login);
 
     app.get('/', pages.mainPage);
-    app.get('/map.html', pages.mapPage);
     app.get('/city.html', pages.cityPage);
-    // app.get('/login.html', pages.loginPage);
 
     app.use(express.static(path.join(__dirname, '../Frontend/www')));
 }
