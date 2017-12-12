@@ -125,12 +125,6 @@ var cities = [
         country: "Poland",
         icon: 'assets/images/warsaw.jpg'
     },
-    {
-        id: 22,
-        city: "Odesa",
-        country: "Ukraine",
-        icon: 'assets/images/odesa.jpg'
-    }
 ];
 
 module.exports = cities;
