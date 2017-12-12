@@ -124,7 +124,7 @@ var cities = [
         city: "Warsaw",
         country: "Poland",
         icon: 'assets/images/warsaw.jpg'
-    },
+    }
 ];
 
 module.exports = cities;
