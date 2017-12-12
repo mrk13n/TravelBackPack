@@ -24,10 +24,6 @@ module.exports = function(grunt) {
                 src:        'Frontend/src/main.js',
                 dest:       'Frontend/www/assets/js/main.js'
             },
-            map: {
-                src:        'Frontend/src/map.js',
-                dest:       'Frontend/www/assets/js/map.js'
-            },
             city: {
                 src:        'Frontend/src/city.js',
                 dest:       'Frontend/www/assets/js/city.js'
@@ -47,7 +43,6 @@ module.exports = function(grunt) {
             //Які завдання виконувати під час зміни в файлах
             tasks: [
                 'browserify:cities',
-                'browserify:map',
                 'browserify:city'
             ]
         }
@@ -67,7 +62,6 @@ module.exports = function(grunt) {
     grunt.registerTask('default',
         [
             'browserify:cities',
-            'browserify:map',
             'browserify:city'
         ]
     );

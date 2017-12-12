@@ -1,5 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var API_URL = "http://localhost:4040";
+var API_URL = "http://localhost:2020";
 
 function backendGet(url, callback) {
     $.ajax({
@@ -46,8 +46,6 @@ var Cities;
 var API = require('../API');
 var Storage = require('../LocalStorage');
 var $city = $('#info');
-var $comments = $("#comments");
-var current_city;
 
 function showInfo() {
     $city.html("");
@@ -65,17 +63,149 @@ function showInfo() {
             var html_code = Templates.InfoCity({city: city});
             var $node = $(html_code);
             $city.append($node);
+        }
+    });
+}
+
+exports.showInfo = showInfo;
+},{"../API":1,"../LocalStorage":3,"../Teamplates":4}],3:[function(require,module,exports){
+var basil = require('basil.js');
+basil = new basil();
+
+exports.get = function (key) {
+    return basil.get(key);
+};
+exports.set = function (key, value) {
+    return basil.set(key, value);
+};
+},{"basil.js":6}],4:[function(require,module,exports){
+
+var ejs = require('ejs');
+
+
+exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
+exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\n    <div class=\"col-xs-2\">\n        <div class=\"thumbnail thumb_city\">\n            <img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\">\n        </div>\n    </div>\n\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <strong><%= comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.day%>-<%= comment.month%>-<%= comment.year%> <%= comment.hours%>:<%= comment.minutes%></span>\n            </div>\n            <div class=\"panel-body\">\n                <%= comment.comment%>\n            </div>\n        </div>\n    </div>\n</div>");
+exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\n    <div class=\"title-box\">\n        <p>experience</p>\n        <h1 class=\"city-name\"><%= city.city%></h1>\n        <p>like a local</p>\n        <div class=\"city-info\">\n\n        </div>\n    </div>\n</div>");
+exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\n    <div class=\"col-xs-2\">\n        <div class=\"thumbnail thumb_city\">\n            <img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\">\n        </div>\n    </div>\n\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <strong>username</strong>\n            </div>\n            <div class=\"panel-body\">\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\"></textarea>\n                <button type=\"submit\" class=\"btn btn-send\">\n                    Send <span class=\"glyphicon glyphicon-send\"></span>\n                </button>\n            </div>\n        </div>\n    </div>\n</div>");
+},{"ejs":8}],5:[function(require,module,exports){
+var Storage = require('./LocalStorage');
+var Templates = require('./Teamplates');
+var API = require('./API');
+var Cities;
+var $comments = $("#comments");
+var a;
+
+$(function () {
+    var GetInfoCity = require('./Cities/GetInfoCity');
+    GetInfoCity.showInfo();
+    var type;
+    a = true;
+    initializeComments('food');
+
+    $("#filter-food").click(function () {
+        allNotActive();
+        $("#filter-food").addClass("active");
+        type = 'food';
+        initializeComments(type);
+        $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
+        $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
+    });
+
+    $("#filter-house").click(function () {
+        allNotActive();
+        $("#filter-house").addClass("active");
+        type = 'house';
+        initializeComments(type);
+        $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
+        $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
+    });
+
+    $("#filter-hitchhiking").click(function () {
+        allNotActive();
+        $("#filter-hitchhiking").addClass("active");
+        type = 'hitchhiking';
+        initializeComments(type);
+        $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
+        $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
+    });
+
+    $("#filter-abandoned").click(function () {
+        allNotActive();
+        $("#filter-abandoned").addClass("active");
+        type = 'abandoned';
+        initializeComments(type);
+        $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
+        $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
+    });
+
+    $('.btn-add').click(function () {
+        $('#form').slideToggle(400);
+        if (a) {
+            $('#right').removeClass('glyphicon glyphicon-chevron-right img-circle');
+            $('#right').addClass('glyphicon glyphicon-chevron-up img-circle');
+            a = !a;
+        } else {
+            $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
+            $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
+            a = !a;
+        }
+    });
+
+});
+
+function allNotActive() {
+    $("#filter-food").removeClass("active");
+    $("#filter-house").removeClass("active");
+    $("#filter-hitchhiking").removeClass("active");
+    $("#filter-abandoned").removeClass("active");
+}
+
+function showComments(list) {
+    $comments.html("");
+
+    function showOneComment(comment) {
+        var html_code = Templates.Comment_OneItem({comment: comment});
+
+        var $node = $(html_code);
+
+        $comments.append($node);
+    }
+
+    list.forEach(showOneComment);
+}
+
+function initializeComments(type) {
+    $comments.html('');
+    var html_code2 = Templates.SendForm();
+    var $node2 = $(html_code2);
+    var comments = [];
+    var id = Storage.get('id');
+    var city;
+    var current_city;
+    API.getCitiesList(function (err, data) {
+        if (!err) {
+            Cities = data;
+            for (var i = 0; i < Cities.length; i++) {
+                if (id == Cities[i].id) {
+                    city = Cities[i];
+                    break;
+                }
+            }
             current_city = {city: city.city};
-            var html_code2 = Templates.SendForm();
-            var $node2 = $(html_code2);
             API.getComments(current_city, function (err, data) {
                 if (!err) {
                     if (!data.emptyForm) {
-                        showComments(data);
+                        for (var i = 0; i < data.length; i++) {
+                            if (data[i].type == type) {
+                                comments.push(data[i]);
+                            }
+                        }
+                        showComments(comments);
                     }
                     $comments.append($node2);
                 }
             });
+
             $node2.find('.btn-send').click(function () {
                 var today = new Date();
                 var dd = today.getDate();
@@ -105,107 +235,24 @@ function showInfo() {
                     day: dd,
                     month: mm,
                     hours: hh,
-                    minutes: mn
+                    minutes: mn,
+                    type: type
                 };
                 if (comment.length !== 0) {
                     API.writeComment(send_comment, function (err, data) {
                         if (data.success) {
-                            document.location.href = '/city.html'
+                            initializeComments(type);
+                            a = true;
+                            $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
+                            $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
                         }
                     })
-                }
-            });
-            var a = true;
-            $('.btn-add').click(function () {
-                $('#form').slideToggle(400);
-                if (a) {
-                    $('#right').removeClass('glyphicon glyphicon-chevron-right img-circle');
-                    $('#right').addClass('glyphicon glyphicon-chevron-up img-circle');
-                    a = !a;
-                } else {
-                    $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
-                    $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
-                    a = !a;
                 }
             });
         }
     });
 }
-
-function showComments(list) {
-    $comments.html("");
-
-    function showOneComment(comment) {
-        var html_code = Templates.Comment_OneItem({comment: comment});
-
-        var $node = $(html_code);
-
-        $comments.append($node);
-    }
-
-    list.forEach(showOneComment);
-}
-
-exports.showInfo = showInfo;
-},{"../API":1,"../LocalStorage":3,"../Teamplates":4}],3:[function(require,module,exports){
-var basil = require('basil.js');
-basil = new basil();
-
-exports.get = function (key) {
-    return basil.get(key);
-};
-exports.set = function (key, value) {
-    return basil.set(key, value);
-};
-},{"basil.js":6}],4:[function(require,module,exports){
-
-var ejs = require('ejs');
-
-
-exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
-exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\n    <div class=\"col-xs-2\">\n        <div class=\"thumbnail thumb_city\">\n            <img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\">\n        </div>\n    </div>\n\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <strong><%= comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.day%>-<%= comment.month%>-<%= comment.year%> <%= comment.hours%>:<%= comment.minutes%></span>\n            </div>\n            <div class=\"panel-body\">\n                <%= comment.comment%>\n            </div>\n        </div>\n    </div>\n</div>");
-exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\n    <div class=\"title-box\">\n        <p>experience</p>\n        <h1 class=\"city-name\"><%= city.city%></h1>\n        <p>like a local</p>\n        <div class=\"city-info\">\n\n        </div>\n    </div>\n</div>");
-exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\n    <div class=\"col-xs-2\">\n        <div class=\"thumbnail thumb_city\">\n            <img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\">\n        </div>\n    </div>\n\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <strong>username</strong>\n            </div>\n            <div class=\"panel-body\">\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\"></textarea>\n                <button type=\"submit\" class=\"btn btn-send\">\n                    Send <span class=\"glyphicon glyphicon-send\"></span>\n                </button>\n            </div>\n        </div>\n    </div>\n</div>");
-},{"ejs":8}],5:[function(require,module,exports){
-$(function () {
-    var GetInfoCity = require('./Cities/GetInfoCity');
-    GetInfoCity.showInfo();
-
-    function allNotActive() {
-        $("#filter-food").removeClass("active");
-        $("#filter-house").removeClass("active");
-        $("#filter-hitchhiking").removeClass("active");
-        $("#filter-abandoned").removeClass("active");
-    }
-
-    $("#filter-food").click(function () {
-        allNotActive();
-        // filterComments("food"); TODO
-        $("#filter-food").addClass("active");
-    });
-
-    $("#filter-house").click(function () {
-        allNotActive();
-        // filterComments("food"); TODO
-        $("#filter-house").addClass("active");
-    });
-
-    $("#filter-hitchhiking").click(function () {
-        allNotActive();
-        // filterComments("food"); TODO
-        $("#filter-hitchhiking").addClass("active");
-    });
-
-    $("#filter-abandoned").click(function () {
-        allNotActive();
-        // filterComments("food"); TODO
-        $("#filter-abandoned").addClass("active");
-    });
-
-});
-
-
-},{"./Cities/GetInfoCity":2}],6:[function(require,module,exports){
+},{"./API":1,"./Cities/GetInfoCity":2,"./LocalStorage":3,"./Teamplates":4}],6:[function(require,module,exports){
 (function () {
 	// Basil
 	var Basil = function (options) {

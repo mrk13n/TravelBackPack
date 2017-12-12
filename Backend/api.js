@@ -16,6 +16,7 @@ exports.writeComment = function (req, res) {
     var month = req.body.month;
     var hours = req.body.hours;
     var minutes = req.body.minutes;
+    var type = req.body.type;
     var current_comment;
 
     Comments.findOne(
@@ -31,7 +32,8 @@ exports.writeComment = function (req, res) {
                     day: day,
                     month: month,
                     hours: hours,
-                    minutes: minutes
+                    minutes: minutes,
+                    type: type
                 });
                 var a = current_city.comments;
                 a.push(current_comment);
@@ -55,7 +57,8 @@ exports.writeComment = function (req, res) {
                     day: day,
                     month: month,
                     hours: hours,
-                    minutes: minutes
+                    minutes: minutes,
+                    type: type
                 });
 
                 var newCity = new Comments({
@@ -97,5 +100,9 @@ exports.getComment = function (req, res) {
 
     // Comments.remove(function (err, comments) {
     //     console.log("removed")
+    // });
+
+    // Comments.find(function (err, a) {
+    //     console.log(a);
     // });
 };
