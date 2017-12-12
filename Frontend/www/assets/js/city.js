@@ -1678,21 +1678,7 @@ exports.cache = {
 
 },{}],10:[function(require,module,exports){
 module.exports={
-<<<<<<< HEAD
   "_from": "ejs@^2.5.7",
-=======
-  "_args": [
-    [
-      "ejs@2.5.7",
-<<<<<<< HEAD
-      "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack"
-=======
-      "C:\\Users\\Maria\\Documents\\GitHub\\TravelBackPack"
->>>>>>> b32484b113c96edca1df135c4ed88a06b72ce506
-    ]
-  ],
-  "_from": "ejs@2.5.7",
->>>>>>> 2a36343401435458ce6471b080397cc81360947a
   "_id": "ejs@2.5.7",
   "_inBundle": false,
   "_integrity": "sha1-zIcsFoiArjxxiXYv1f/ACJbJUYo=",
@@ -1713,18 +1699,9 @@ module.exports={
     "/"
   ],
   "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz",
-<<<<<<< HEAD
   "_shasum": "cc872c168880ae3c7189762fd5ffc00896c9518a",
   "_spec": "ejs@^2.5.7",
   "_where": "/home/mrk13/Documents/GitHub/TravelBackPack",
-=======
-  "_spec": "2.5.7",
-<<<<<<< HEAD
-  "_where": "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack",
-=======
-  "_where": "C:\\Users\\Maria\\Documents\\GitHub\\TravelBackPack",
->>>>>>> b32484b113c96edca1df135c4ed88a06b72ce506
->>>>>>> 2a36343401435458ce6471b080397cc81360947a
   "author": {
     "name": "Matthew Eernisse",
     "email": "mde@fleegix.org",
