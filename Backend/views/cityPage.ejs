@@ -1,10 +1,24 @@
 <% include common/head.ejs %>
 <div class="main-container">
-    <% include common/header.ejs %>
+    <% include common/cityHeader.ejs %>
 
     <div id="info"></div>
 
     <div class="container">
+        <div class="row city-info">
+                <div class="col-md-3">
+                    <p>Country : </p>
+                </div>
+                <div class="col-md-3">
+                    <p>Population : </p>
+                </div>
+                <div class="col-md-2">
+                    <p>Currency : </p>
+                </div>
+            <div class="col-md-4">
+                <p>Features : </p>
+            </div>
+        </div>
         <div class="row">
             <nav class="shift" id="city-filter">
                 <ul>
@@ -18,7 +32,7 @@
 
         <div class="container" id="comments"></div>
 
-        <span class="btn icon-btn btn-primary btn-add">Add comment <span class="glyphicon glyphicon-chevron-right img-circle" id="right"></span> </span>
+        <span class="btn icon-btn btn-primary btn-add" id="add-comment">Add comment <span class="glyphicon glyphicon-chevron-right img-circle" id="right"></span> </span>
     </div>
 
     <% include common/footer.ejs %>
