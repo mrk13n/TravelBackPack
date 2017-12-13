@@ -1,5 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var API_URL = "http://localhost:2020";
+var API_URL = "http://localhost:4040";
 
 function backendGet(url, callback) {
     $.ajax({
@@ -246,7 +246,7 @@ function initializeComments(type) {
                             $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
                             $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
                         }
-                    })
+                    });
                 }
             });
         }
@@ -1678,17 +1678,7 @@ exports.cache = {
 
 },{}],10:[function(require,module,exports){
 module.exports={
-<<<<<<< HEAD
-  "_args": [
-    [
-      "ejs@2.5.7",
-      "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack"
-    ]
-  ],
-  "_from": "ejs@2.5.7",
-=======
   "_from": "ejs@^2.5.7",
->>>>>>> 67a7f23a9f12ef9074be48602cc0f4ab29af9d7e
   "_id": "ejs@2.5.7",
   "_inBundle": false,
   "_integrity": "sha1-zIcsFoiArjxxiXYv1f/ACJbJUYo=",
@@ -1709,14 +1699,9 @@ module.exports={
     "/"
   ],
   "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz",
-<<<<<<< HEAD
-  "_spec": "2.5.7",
-  "_where": "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack",
-=======
   "_shasum": "cc872c168880ae3c7189762fd5ffc00896c9518a",
   "_spec": "ejs@^2.5.7",
   "_where": "/home/mrk13/Documents/GitHub/TravelBackPack",
->>>>>>> 67a7f23a9f12ef9074be48602cc0f4ab29af9d7e
   "author": {
     "name": "Matthew Eernisse",
     "email": "mde@fleegix.org",
