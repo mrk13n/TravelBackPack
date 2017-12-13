@@ -1826,7 +1826,7 @@ module.exports={
   "_args": [
     [
       "ejs@2.5.7",
-      "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack"
+      "C:\\Users\\Maria\\Documents\\GitHub\\TravelBackPack"
     ]
   ],
   "_from": "ejs@2.5.7",
@@ -1857,8 +1857,12 @@ module.exports={
   "_where": "/home/mrk13/Documents/GitHub/TravelBackPack",
 =======
   "_spec": "2.5.7",
+<<<<<<< HEAD
+  "_where": "C:\\Users\\Maria\\Documents\\GitHub\\TravelBackPack",
+=======
   "_where": "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack",
 >>>>>>> 41e492bec1fb6c60b4e0b60a12164cb8ca14543a
+>>>>>>> 580c519e09e035c753f24a57e356dc9eae7ebf52
   "author": {
     "name": "Matthew Eernisse",
     "email": "mde@fleegix.org",
