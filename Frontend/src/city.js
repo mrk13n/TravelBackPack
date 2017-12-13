@@ -89,20 +89,6 @@ function allNotActive() {
     $("#filter-abandoned").removeClass("active");
 }
 
-function showComments(list) {
-    $comments.html("");
-
-    function showOneComment(comment) {
-        var html_code = Templates.Comment_OneItem({comment: comment});
-
-        var $node = $(html_code);
-
-        $comments.append($node);
-    }
-
-    list.forEach(showOneComment);
-}
-
 function initializeComments(type) {
     $comments.html('');
     var html_code2 = Templates.SendForm();
@@ -126,10 +112,79 @@ function initializeComments(type) {
                 if (!err) {
                     if (!data.emptyForm) {
                         for (var i = 0; i < data.length; i++) {
+                            var one;
+                            var fav = false;
+                            var Backpack;
                             if (data[i].type == type) {
-                                comments.push(data[i]);
+                                Backpack = getBackpack();
+                                ab(Backpack);
+                                if (Backpack !== null) {
+                                    for (var j = 0; j < Backpack.length; j++) {
+                                        if (data[i]._id == Backpack[j].comment._id) {
+                                            fav = true;
+                                        } else {
+                                            fav = false;
+                                        }
+                                    }
+                                }
+                                one = {
+                                    city: current_city.city,
+                                    favorite: fav,
+                                    comment: data[i]
+                                };
+                                comments.push(one);
                             }
                         }
+
+                        function showComments(list) {
+                            $comments.html("");
+
+                            function showOneComment(comment) {
+                                var Backpack = getBackpack();
+                                console.log(comment.favorite);
+                                var html_code = Templates.Comment_OneItem({comment: comment});
+
+                                var $node = $(html_code);
+
+                                $comments.append($node);
+
+                                if (!comment.favorite) {
+                                    $node.find('.favorite').mouseover(function () {
+                                        $(this).removeClass('glyphicon glyphicon-star-empty');
+                                        $(this).addClass('glyphicon glyphicon-star');
+                                    });
+
+                                    $node.find('.favorite').mouseout(function () {
+                                        $(this).removeClass('glyphicon glyphicon-star');
+                                        $(this).addClass('glyphicon glyphicon-star-empty');
+                                    });
+
+                                    $node.find('.favorite').click(function () {
+                                        $(this).removeClass('glyphicon glyphicon-star-empty');
+                                        $(this).addClass('glyphicon glyphicon-star');
+                                        Backpack = getBackpack();
+                                        console.log(comment.favorite);
+                                        Backpack.push(comment);
+                                        saveComment(Backpack);
+                                    });
+                                }
+
+                                if (comment.favorite) {
+                                    $node.find('.favorite').click(function () {
+                                        Backpack = getBackpack();
+                                        for (var i = 0; i < Backpack.length; i++) {
+                                            // if (comment.id == Backpack[i].id) {
+                                            //     console.log('removeIt');
+                                            //     removeFromStorrage(Backpack, i);
+                                            // }
+                                        }
+                                    });
+                                }
+                            }
+
+                            list.forEach(showOneComment);
+                        }
+
                         showComments(comments);
                     }
                     $comments.append($node2);
@@ -211,4 +266,27 @@ function initializeComments(type) {
 
         }
     });
+}
+
+function saveComment(back) {
+    Storage.set('backpack', back);
+}
+
+function ab(back) {
+    back = [];
+    Storage.set('backpack', back);
+}
+
+function getBackpack() {
+    var back = Storage.get('backpack');
+    if (back === null) {
+        back = [];
+    }
+    return back;
+}
+
+function removeFromStorrage(back, i) {
+    back.slice(i, 1);
+    console.log(back);
+    Storage.set('backpack', back);
 }
