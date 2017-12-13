@@ -3,9 +3,11 @@ var Cities;
 var API = require('../API');
 var Storage = require('../LocalStorage');
 var $city = $('#info');
+var $addinfo = $("#additional_info");
 
 function showInfo() {
     $city.html("");
+    $addinfo.html("");
     var id = Storage.get('id');
     var city;
     API.getCitiesList(function (err, data) {
@@ -18,8 +20,11 @@ function showInfo() {
                 }
             }
             var html_code = Templates.InfoCity({city: city});
+            var html_code2 = Templates.additionalInfo({city:city});
             var $node = $(html_code);
+            var $node2 = $(html_code2);
             $city.append($node);
+            $addinfo.append($node2);
         }
     });
 }

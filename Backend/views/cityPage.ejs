@@ -2,11 +2,21 @@
 <div class="main-container">
     <% include common/header.ejs %>
 
+<<<<<<< HEAD
+    <div id="info">
+    </div>
+
+<div class="container">
+=======
     <div id="info"></div>
 
     <div class="container">
+>>>>>>> 41e492bec1fb6c60b4e0b60a12164cb8ca14543a
         <div class="row">
-            <nav class="shift" id="city-filter">
+            <div class="col-md-2" id="additional_info">
+            </div>
+
+            <nav class="shift col-md-8" id="city-filter">
                 <ul>
                     <li role="presentation" class="active filter-1" id="filter-food"><a>Food</a></li>
                     <li role="presentation" class="filter-2" id="filter-house"><a>Cool Places</a></li>
@@ -14,12 +24,16 @@
                     <li role="presentation" class="filter-4" id="filter-abandoned"><a>Abandoned houses</a></li>
                 </ul>
             </nav>
+            <div class="col-md-2" id="weather-div">
+            </div>
         </div>
+
 
         <div class="container" id="comments"></div>
 
         <span class="btn icon-btn btn-primary btn-add" id="add-comment">Add comment <span class="glyphicon glyphicon-chevron-right img-circle" id="right"></span> </span>
-    </div>
+</div>
+
 
     <% include common/footer.ejs %>
 </div>

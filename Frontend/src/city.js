@@ -4,6 +4,7 @@ var API = require('./API');
 var Cities;
 var $comments = $("#comments");
 var a;
+var $weath = $("#weather-div");
 
 $(function () {
     var GetInfoCity = require('./Cities/GetInfoCity');
@@ -92,6 +93,7 @@ function initializeComments(type) {
     $comments.html('');
     var html_code2 = Templates.SendForm();
     var $node2 = $(html_code2);
+
     var comments = [];
     var id = Storage.get('id');
     var city;
@@ -188,6 +190,24 @@ function initializeComments(type) {
                     $comments.append($node2);
                 }
             });
+            var weather;
+            console.log(current_city.city);
+            $.ajax({
+                url: 'http://api.openweathermap.org/data/2.5/weather?q='+current_city.city+"&units=metric"+
+                "&APPID=d41f5cc0cbb6152f6a6af0037d456d08",
+                type: "GET",
+                dataType: "jsonp",
+                success: function (data) {
+                    console.log(data)
+                    weather = data;
+                    $weath.html("");
+                    var html_code3 = Templates.weatherBlock({weather: weather});
+                    var $node3 = $(html_code3);
+                    $weath.append($node3);
+                }
+            });
+
+
 
             $node2.find('.btn-send').click(function () {
                 var today = new Date();

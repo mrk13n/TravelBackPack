@@ -1,0 +1,19 @@
+<div class="container">
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="weather">
+                <div class="info">
+                    <div class="temp">
+                        <small>TEMPERATURE: </small><%= weather.main.temp %>°C
+                    </div>
+                    <div class="wind">
+                        <small>WIND SPEED: </small> <%= weather.wind.speed %>m/s
+                    </div>
+                    <div class="description">
+                        <small>DESCRIPTION: </small><%= weather.weather[0].description %>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
