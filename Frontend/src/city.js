@@ -198,6 +198,17 @@ function initializeComments(type) {
                     });
                 }
             });
+
+            function randomAvatar(){
+                var rand;
+                rand = Math.floor((Math.random() * 20) + 1);
+                var img_src = "Rick.png";
+                var image = document.createElement("img");
+                image.className = "img-responsive user-photo";
+                image.src = "assets/images/" + img_src;
+                imageParent.appendChild(image);
+            }
+
         }
     });
 }
