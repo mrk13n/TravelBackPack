@@ -21,6 +21,15 @@ $(function () {
         return false;
     }
 
+    $("#add-comment").click(function(){
+        scrollDown();
+    });
+
+    function scrollDown() {
+        $('html, body').animate({ scrollTop: $(document).height() }, 'slow');
+        return false;
+    }
+
     $("#filter-food").click(function () {
         allNotActive();
         $("#filter-food").addClass("active");
