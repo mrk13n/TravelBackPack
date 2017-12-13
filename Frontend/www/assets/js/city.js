@@ -83,10 +83,10 @@ exports.set = function (key, value) {
 var ejs = require('ejs');
 
 
-exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\r\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\r\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\r\n    </div>\r\n</div>");
-exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\r\n    <div class=\"col-xs-2\">\r\n        <div class=\"thumbnail thumb_city\">\r\n            <img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\">\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-10\">\r\n        <div class=\"panel panel-default\">\r\n            <div class=\"panel-heading\">\r\n                <strong><%= comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.day%>-<%= comment.month%>-<%= comment.year%> <%= comment.hours%>:<%= comment.minutes%></span>\r\n            </div>\r\n            <div class=\"panel-body\">\r\n                <%= comment.comment%>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>");
-exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\r\n    <div class=\"title-box\">\r\n        <p>experience</p>\r\n        <h1 class=\"city-name\"><%= city.city%></h1>\r\n        <p>like a local</p>\r\n    </div>\r\n</div>");
-exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\r\n    <div class=\"col-xs-2\">\r\n        <div class=\"thumbnail thumb_city\">\r\n            <img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\">\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-10\">\r\n        <div class=\"panel panel-default\">\r\n            <div class=\"panel-heading\">\r\n                <input type=\"text\" class=\"form-control username\" placeholder=\"Enter username\">\r\n            </div>\r\n            <div class=\"panel-body\">\r\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\"></textarea>\r\n                <button type=\"submit\" class=\"btn btn-send\">\r\n                    Send <span class=\"glyphicon glyphicon-send\"></span>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>");
+exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
+exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\n    <div class=\"col-xs-2\">\n        <div class=\"thumbnail thumb_city\">\n            <img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\">\n        </div>\n    </div>\n\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%> <%= comment.comment.hours%>:<%= comment.comment.minutes%></span><span class=\"favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>\"></span>\n            </div>\n            <div class=\"panel-body\">\n                <%= comment.comment.comment%>\n            </div>\n        </div>\n    </div>\n</div>");
+exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\n    <div class=\"title-box\">\n        <p>experience</p>\n        <h1 class=\"city-name\"><%= city.city%></h1>\n        <p>like a local</p>\n    </div>\n</div>");
+exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\n    <div class=\"col-xs-2\">\n        <div class=\"thumbnail thumb_city\">\n            <img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\">\n        </div>\n    </div>\n\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <input type=\"text\" class=\"form-control username\" placeholder=\"Enter username\">\n            </div>\n            <div class=\"panel-body\">\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\"></textarea>\n                <button type=\"submit\" class=\"btn btn-send\">\n                    Send <span class=\"glyphicon glyphicon-send\"></span>\n                </button>\n            </div>\n        </div>\n    </div>\n</div>");
 },{"ejs":8}],5:[function(require,module,exports){
 var Storage = require('./LocalStorage');
 var Templates = require('./Teamplates');
@@ -178,20 +178,6 @@ function allNotActive() {
     $("#filter-abandoned").removeClass("active");
 }
 
-function showComments(list) {
-    $comments.html("");
-
-    function showOneComment(comment) {
-        var html_code = Templates.Comment_OneItem({comment: comment});
-
-        var $node = $(html_code);
-
-        $comments.append($node);
-    }
-
-    list.forEach(showOneComment);
-}
-
 function initializeComments(type) {
     $comments.html('');
     var html_code2 = Templates.SendForm();
@@ -214,10 +200,79 @@ function initializeComments(type) {
                 if (!err) {
                     if (!data.emptyForm) {
                         for (var i = 0; i < data.length; i++) {
+                            var one;
+                            var fav = false;
+                            var Backpack;
                             if (data[i].type == type) {
-                                comments.push(data[i]);
+                                Backpack = getBackpack();
+                                ab(Backpack);
+                                if (Backpack !== null) {
+                                    for (var j = 0; j < Backpack.length; j++) {
+                                        if (data[i]._id == Backpack[j].comment._id) {
+                                            fav = true;
+                                        } else {
+                                            fav = false;
+                                        }
+                                    }
+                                }
+                                one = {
+                                    city: current_city.city,
+                                    favorite: fav,
+                                    comment: data[i]
+                                };
+                                comments.push(one);
                             }
                         }
+
+                        function showComments(list) {
+                            $comments.html("");
+
+                            function showOneComment(comment) {
+                                var Backpack = getBackpack();
+                                console.log(comment.favorite);
+                                var html_code = Templates.Comment_OneItem({comment: comment});
+
+                                var $node = $(html_code);
+
+                                $comments.append($node);
+
+                                if (!comment.favorite) {
+                                    $node.find('.favorite').mouseover(function () {
+                                        $(this).removeClass('glyphicon glyphicon-star-empty');
+                                        $(this).addClass('glyphicon glyphicon-star');
+                                    });
+
+                                    $node.find('.favorite').mouseout(function () {
+                                        $(this).removeClass('glyphicon glyphicon-star');
+                                        $(this).addClass('glyphicon glyphicon-star-empty');
+                                    });
+
+                                    $node.find('.favorite').click(function () {
+                                        $(this).removeClass('glyphicon glyphicon-star-empty');
+                                        $(this).addClass('glyphicon glyphicon-star');
+                                        Backpack = getBackpack();
+                                        console.log(comment.favorite);
+                                        Backpack.push(comment);
+                                        saveComment(Backpack);
+                                    });
+                                }
+
+                                if (comment.favorite) {
+                                    $node.find('.favorite').click(function () {
+                                        Backpack = getBackpack();
+                                        for (var i = 0; i < Backpack.length; i++) {
+                                            // if (comment.id == Backpack[i].id) {
+                                            //     console.log('removeIt');
+                                            //     removeFromStorrage(Backpack, i);
+                                            // }
+                                        }
+                                    });
+                                }
+                            }
+
+                            list.forEach(showOneComment);
+                        }
+
                         showComments(comments);
                     }
                     $comments.append($node2);
@@ -270,6 +325,29 @@ function initializeComments(type) {
             });
         }
     });
+}
+
+function saveComment(back) {
+    Storage.set('backpack', back);
+}
+
+function ab(back) {
+    back = [];
+    Storage.set('backpack', back);
+}
+
+function getBackpack() {
+    var back = Storage.get('backpack');
+    if (back === null) {
+        back = [];
+    }
+    return back;
+}
+
+function removeFromStorrage(back, i) {
+    back.slice(i, 1);
+    console.log(back);
+    Storage.set('backpack', back);
 }
 },{"./API":1,"./Cities/GetInfoCity":2,"./LocalStorage":3,"./Teamplates":4}],6:[function(require,module,exports){
 (function () {
@@ -1697,34 +1775,30 @@ exports.cache = {
 
 },{}],10:[function(require,module,exports){
 module.exports={
-  "_args": [
-    [
-      "ejs@2.5.7",
-      "C:\\Users\\Maria\\Documents\\GitHub\\TravelBackPack"
-    ]
-  ],
-  "_from": "ejs@2.5.7",
+  "_from": "ejs@^2.5.7",
   "_id": "ejs@2.5.7",
   "_inBundle": false,
   "_integrity": "sha1-zIcsFoiArjxxiXYv1f/ACJbJUYo=",
   "_location": "/ejs",
   "_phantomChildren": {},
   "_requested": {
-    "type": "version",
+    "type": "range",
     "registry": true,
-    "raw": "ejs@2.5.7",
+    "raw": "ejs@^2.5.7",
     "name": "ejs",
     "escapedName": "ejs",
-    "rawSpec": "2.5.7",
+    "rawSpec": "^2.5.7",
     "saveSpec": null,
-    "fetchSpec": "2.5.7"
+    "fetchSpec": "^2.5.7"
   },
   "_requiredBy": [
+    "#USER",
     "/"
   ],
   "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz",
-  "_spec": "2.5.7",
-  "_where": "C:\\Users\\Maria\\Documents\\GitHub\\TravelBackPack",
+  "_shasum": "cc872c168880ae3c7189762fd5ffc00896c9518a",
+  "_spec": "ejs@^2.5.7",
+  "_where": "/home/mrk13/Documents/GitHub/TravelBackPack",
   "author": {
     "name": "Matthew Eernisse",
     "email": "mde@fleegix.org",
@@ -1733,6 +1807,7 @@ module.exports={
   "bugs": {
     "url": "https://github.com/mde/ejs/issues"
   },
+  "bundleDependencies": false,
   "contributors": [
     {
       "name": "Timothy Gu",
@@ -1741,6 +1816,7 @@ module.exports={
     }
   ],
   "dependencies": {},
+  "deprecated": false,
   "description": "Embedded JavaScript templates",
   "devDependencies": {
     "browserify": "^13.0.1",
