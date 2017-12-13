@@ -85,11 +85,7 @@ var ejs = require('ejs');
 
 exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\r\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\r\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\r\n    </div>\r\n</div>");
 exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\r\n    <div class=\"col-xs-2\">\r\n        <div class=\"thumbnail thumb_city\">\r\n            <img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\">\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-10\">\r\n        <div class=\"panel panel-default\">\r\n            <div class=\"panel-heading\">\r\n                <strong><%= comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.day%>-<%= comment.month%>-<%= comment.year%> <%= comment.hours%>:<%= comment.minutes%></span>\r\n            </div>\r\n            <div class=\"panel-body\">\r\n                <%= comment.comment%>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>");
-<<<<<<< HEAD
-exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\r\n    <div class=\"title-box\">\r\n        <p>experience</p>\r\n        <h1 class=\"city-name\"><%= city.city%></h1>\r\n        <p>like a local</p>\r\n        <div class=\"city-info\">\r\n\r\n        </div>\r\n    </div>\r\n</div>");
-=======
 exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\r\n    <div class=\"title-box\">\r\n        <p>experience</p>\r\n        <h1 class=\"city-name\"><%= city.city%></h1>\r\n        <p>like a local</p>\r\n    </div>\r\n</div>");
->>>>>>> 10317e7287560f668bd9f6e8ad8768d16dfc112e
 exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\r\n    <div class=\"col-xs-2\">\r\n        <div class=\"thumbnail thumb_city\">\r\n            <img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\">\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-10\">\r\n        <div class=\"panel panel-default\">\r\n            <div class=\"panel-heading\">\r\n                <strong>username</strong>\r\n            </div>\r\n            <div class=\"panel-body\">\r\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\"></textarea>\r\n                <button type=\"submit\" class=\"btn btn-send\">\r\n                    Send <span class=\"glyphicon glyphicon-send\"></span>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>");
 },{"ejs":8}],5:[function(require,module,exports){
 var Storage = require('./LocalStorage');
@@ -105,24 +101,6 @@ $(function () {
     var type;
     a = true;
     initializeComments('food');
-
-    $("#city-scroll").click(function(){
-        scrollTo();
-    })
-
-    function scrollTo() {
-        $('html, body').animate({scrollTop: $('#city-filter').offset().top}, 'slow');
-        return false;
-    }
-
-    $("#add-comment").click(function(){
-        scrollDown();
-    })
-
-    function scrollDown(){
-        $("html, body").animate({ scrollTop: $(document).height() }, 'slow');
-        return false;
-    }
 
     $("#filter-food").click(function () {
         allNotActive();
@@ -1700,23 +1678,13 @@ exports.cache = {
 
 },{}],10:[function(require,module,exports){
 module.exports={
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-  "_from": "ejs@^2.5.7",
-=======
->>>>>>> 10317e7287560f668bd9f6e8ad8768d16dfc112e
   "_args": [
     [
       "ejs@2.5.7",
-      "C:\\Users\\Maria\\Documents\\GitHub\\TravelBackPack"
+      "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack"
     ]
   ],
   "_from": "ejs@2.5.7",
-<<<<<<< HEAD
-=======
->>>>>>> 21bf2c8cfc6c02f4312a2cef1ef455699d74195a
->>>>>>> 10317e7287560f668bd9f6e8ad8768d16dfc112e
   "_id": "ejs@2.5.7",
   "_inBundle": false,
   "_integrity": "sha1-zIcsFoiArjxxiXYv1f/ACJbJUYo=",
@@ -1736,19 +1704,8 @@ module.exports={
     "/"
   ],
   "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz",
-<<<<<<< HEAD
-  "_spec": "2.5.7",
-  "_where": "C:\\Users\\Maria\\Documents\\GitHub\\TravelBackPack",
-=======
-<<<<<<< HEAD
-  "_shasum": "cc872c168880ae3c7189762fd5ffc00896c9518a",
-  "_spec": "ejs@^2.5.7",
-  "_where": "/home/mrk13/Documents/GitHub/TravelBackPack",
-=======
   "_spec": "2.5.7",
   "_where": "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack",
->>>>>>> 21bf2c8cfc6c02f4312a2cef1ef455699d74195a
->>>>>>> 10317e7287560f668bd9f6e8ad8768d16dfc112e
   "author": {
     "name": "Matthew Eernisse",
     "email": "mde@fleegix.org",
