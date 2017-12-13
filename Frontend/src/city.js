@@ -156,7 +156,7 @@ function initializeComments(type) {
                             $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
                             $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
                         }
-                    })
+                    });
                 }
             });
         }
