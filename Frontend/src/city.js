@@ -12,6 +12,15 @@ $(function () {
     a = true;
     initializeComments('food');
 
+    $("#city-scroll").click(function(){
+        scrollTo();
+    });
+
+    function scrollTo() {
+        $('html, body').animate({ scrollTop: $('#city-filter').offset().top }, 'slow');
+        return false;
+    }
+
     $("#filter-food").click(function () {
         allNotActive();
         $("#filter-food").addClass("active");
@@ -136,9 +145,10 @@ function initializeComments(type) {
                 if (mn<10) {
                     mn = '0'+mn;
                 }
-                var comment = $('.form-control').val();
+                var comment = $('#comment').val();
+                var nickname = $('.username').val();
                 var send_comment = {
-                    nickname: 'username',
+                    nickname: nickname,
                     comment: comment,
                     city: current_city.city,
                     year: yyyy,
@@ -148,7 +158,7 @@ function initializeComments(type) {
                     minutes: mn,
                     type: type
                 };
-                if (comment.length !== 0) {
+                if (comment.length !== 0 && nickname.length !== 0) {
                     API.writeComment(send_comment, function (err, data) {
                         if (data.success) {
                             initializeComments(type);
