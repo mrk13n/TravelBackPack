@@ -27,6 +27,10 @@ module.exports = function(grunt) {
             city: {
                 src:        'Frontend/src/city.js',
                 dest:       'Frontend/www/assets/js/city.js'
+            },
+            backpack: {
+                src:        'Frontend/src/backpack.js',
+                dest:       'Frontend/www/assets/js/backpack.js'
             }
         }
     };
@@ -43,7 +47,8 @@ module.exports = function(grunt) {
             //Які завдання виконувати під час зміни в файлах
             tasks: [
                 'browserify:cities',
-                'browserify:city'
+                'browserify:city',
+                'browserify:backpack'
             ]
         }
     };
@@ -62,7 +67,8 @@ module.exports = function(grunt) {
     grunt.registerTask('default',
         [
             'browserify:cities',
-            'browserify:city'
+            'browserify:city',
+            'browserify:backpack'
         ]
     );
 

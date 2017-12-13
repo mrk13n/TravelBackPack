@@ -9,12 +9,14 @@
             <nav class="shift">
                 <ul>
                     <li><a href="/">Home</a></li>
-                    <% if (!cityActive) { %>
+                    <% if (mainActive) { %>
                     <li id="city-scroll"><a>Cities</a></li>
-                    <% } else { %>
+                    <% } else if (cityActive){ %>
                     <li id="city-scroll"><a>Comments</a></li>
+                    <% } else { %>
+                    <li id="city-scroll"><a>Favourites</a></li>
                     <% } %>
-                    <li><a href="#">BackPack</a></li>
+                    <li><a href="/backpack.html">BackPack</a></li>
                     <li><a href="#">More</a></li>
                     <li><a href="#">Nice staff</a></li>
                 </ul>
