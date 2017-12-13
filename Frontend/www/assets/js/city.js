@@ -46,9 +46,11 @@ var Cities;
 var API = require('../API');
 var Storage = require('../LocalStorage');
 var $city = $('#info');
+var $addinfo = $("#additional_info");
 
 function showInfo() {
     $city.html("");
+    $addinfo.html("");
     var id = Storage.get('id');
     var city;
     API.getCitiesList(function (err, data) {
@@ -61,8 +63,11 @@ function showInfo() {
                 }
             }
             var html_code = Templates.InfoCity({city: city});
+            var html_code2 = Templates.additionalInfo({city:city});
             var $node = $(html_code);
+            var $node2 = $(html_code2);
             $city.append($node);
+            $addinfo.append($node2);
         }
     });
 }
@@ -87,6 +92,8 @@ exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\r\n  
 exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\r\n    <div class=\"col-xs-2\">\r\n        <div class=\"thumbnail thumb_city\">\r\n            <img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\">\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-10\">\r\n        <div class=\"panel panel-default\">\r\n            <div class=\"panel-heading\">\r\n                <strong><%= comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.day%>-<%= comment.month%>-<%= comment.year%> <%= comment.hours%>:<%= comment.minutes%></span>\r\n            </div>\r\n            <div class=\"panel-body\">\r\n                <%= comment.comment%>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>");
 exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\r\n    <div class=\"title-box\">\r\n        <p>experience</p>\r\n        <h1 class=\"city-name\"><%= city.city%></h1>\r\n        <p>like a local</p>\r\n    </div>\r\n</div>");
 exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\r\n    <div class=\"col-xs-2\">\r\n        <div class=\"thumbnail thumb_city\">\r\n            <img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\">\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-10\">\r\n        <div class=\"panel panel-default\">\r\n            <div class=\"panel-heading\">\r\n                <input type=\"text\" class=\"form-control username\" placeholder=\"Enter username\">\r\n            </div>\r\n            <div class=\"panel-body\">\r\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\"></textarea>\r\n                <button type=\"submit\" class=\"btn btn-send\">\r\n                    Send <span class=\"glyphicon glyphicon-send\"></span>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>");
+exports.weatherBlock = ejs.compile("<div class=\"container\">\r\n    <div class=\"row\">\r\n        <div class=\"col-sm-4\">\r\n            <div class=\"weather\">\r\n                <div class=\"info\">\r\n                    <div class=\"temp\">\r\n                        <small>TEMPERATURE: </small><%= weather.main.temp %>°C\r\n                    </div>\r\n                    <div class=\"wind\">\r\n                        <small>WIND SPEED: </small> <%= weather.wind.speed %>m/s\r\n                    </div>\r\n                    <div class=\"description\">\r\n                        <small>DESCRIPTION: </small><%= weather.weather[0].description %>\r\n                    </div>\r\n                </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n");
+exports.additionalInfo = ejs.compile("\r\n    <div class=\"weather\">\r\n        <div class=\"info\">\r\n            <div class=\"temp\">\r\n                <small>COUNTRY: </small><%= city.country %>\r\n            </div>\r\n            <div class=\"wind\">\r\n                <small>CURRENCY: </small> <%= city.currency %>\r\n            </div>\r\n            <div class=\"description\">\r\n                <small>POPULATION: </small><%= city.population %>\r\n            </div>\r\n        </div>\r\n    </div>");
 },{"ejs":8}],5:[function(require,module,exports){
 var Storage = require('./LocalStorage');
 var Templates = require('./Teamplates');
@@ -94,6 +101,7 @@ var API = require('./API');
 var Cities;
 var $comments = $("#comments");
 var a;
+var $weath = $("#weather-div");
 
 $(function () {
     var GetInfoCity = require('./Cities/GetInfoCity');
@@ -196,6 +204,7 @@ function initializeComments(type) {
     $comments.html('');
     var html_code2 = Templates.SendForm();
     var $node2 = $(html_code2);
+
     var comments = [];
     var id = Storage.get('id');
     var city;
@@ -223,6 +232,24 @@ function initializeComments(type) {
                     $comments.append($node2);
                 }
             });
+            var weather;
+            console.log(current_city.city);
+            $.ajax({
+                url: 'http://api.openweathermap.org/data/2.5/weather?q='+current_city.city+"&units=metric"+
+                "&APPID=d41f5cc0cbb6152f6a6af0037d456d08",
+                type: "GET",
+                dataType: "jsonp",
+                success: function (data) {
+                    console.log(data)
+                    weather = data;
+                    $weath.html("");
+                    var html_code3 = Templates.weatherBlock({weather: weather});
+                    var $node3 = $(html_code3);
+                    $weath.append($node3);
+                }
+            });
+
+
 
             $node2.find('.btn-send').click(function () {
                 var today = new Date();
