@@ -1775,7 +1775,17 @@ exports.cache = {
 
 },{}],10:[function(require,module,exports){
 module.exports={
+<<<<<<< HEAD
   "_from": "ejs@^2.5.7",
+=======
+  "_args": [
+    [
+      "ejs@2.5.7",
+      "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack"
+    ]
+  ],
+  "_from": "ejs@2.5.7",
+>>>>>>> 41e492bec1fb6c60b4e0b60a12164cb8ca14543a
   "_id": "ejs@2.5.7",
   "_inBundle": false,
   "_integrity": "sha1-zIcsFoiArjxxiXYv1f/ACJbJUYo=",
@@ -1796,9 +1806,14 @@ module.exports={
     "/"
   ],
   "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz",
+<<<<<<< HEAD
   "_shasum": "cc872c168880ae3c7189762fd5ffc00896c9518a",
   "_spec": "ejs@^2.5.7",
   "_where": "/home/mrk13/Documents/GitHub/TravelBackPack",
+=======
+  "_spec": "2.5.7",
+  "_where": "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack",
+>>>>>>> 41e492bec1fb6c60b4e0b60a12164cb8ca14543a
   "author": {
     "name": "Matthew Eernisse",
     "email": "mde@fleegix.org",
