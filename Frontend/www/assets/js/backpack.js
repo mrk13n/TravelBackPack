@@ -5,7 +5,7 @@ $(".city-favourite-comments-panel").click(function(){
 
 $("#city-scroll").click(function(){
     scrollTo();
-    randomAvatar();
+   // randomAvatar();
 });
 
 function scrollTo() {
