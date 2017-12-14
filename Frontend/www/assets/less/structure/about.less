@@ -1,83 +1,64 @@
-/*
-HTML 5 Template Name:
-File: About Us - 20 CSS
-Author: OS Templates
-Author URI: http://www.os-templates.com/
-Licence: <a href="http://www.os-templates.com/template-terms">Website Template Licence</a>
-*/
 
-#about-us{display:block; width:100%; line-height:1.6em;}
+.text-about {
+  //height: 400px;
+  width: 1500px;
+  padding: 60px;
+  font-size: 28px;
+  //width: 624px;
+  margin-left: auto;
+  margin-right: auto;
+  //height: 395px;
+  border: 1px solid #000000;
+  margin-top: 60px;
+}
+h2{
+padding-top: 50px;
+  margin-bottom:50px;
+  padding-bottom:40px;
+  font-size:80px;
+  text-align:center;
+  text-transform:uppercase;
+  border-bottom:1px solid #CCCCCC;
+}
+.my-container {
+  position: relative;
+  //width: 50%;
+  padding-top: 20px;
+}
 
-#about-us #about-intro{margin-bottom:0;}
-#about-us #about-intro .panorama{margin-bottom:20px;}
-#about-us #about-intro .panorama .imgholder{}
-#about-us #about-intro blockquote{position:relative; margin:0; padding:0;}
-#about-us #about-intro blockquote p{margin:0; padding:0 0 0 60px; font-size:16px; font-style:italic; line-height:1.6em;}
-#about-us #about-intro blockquote p span{position:absolute; top:0; left:0; font-size:120px; line-height:.8em;}
-#about-us #about-intro h2{}
-#about-us #about-intro p{}
-#about-us #about-intro p:first-child{}
+.image {
+  opacity: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: .5s ease;
+  backface-visibility: hidden;
+}
 
-#about-us #skillset{margin-bottom:0;}
-#about-us #skillset li{margin-top:8px;}
-#about-us #skillset li:first-child{margin-top:0;}
+.middle {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%)
+}
 
-#about-us #team{margin-bottom:0;}
-#about-us #team ul{margin:0; padding:0; list-style:none;}
-#about-us #team ul li{display:inline-block; float:left; width:140px; margin:30px 0 0 20px; padding:0; text-align:center;}
-#about-us #team ul li:first-child,
-#about-us #team ul > li:first-child + li + li,
-#about-us #team ul > li:first-child + li + li + li + li{margin-left:0;}
-#about-us #team ul > li:first-child, #about-us #team ul > li:first-child + li{margin-top:0;}
-#about-us #team ul li figure{}
-#about-us #team ul li figure img{padding:4px; border:1px solid #CCCCCC;}
-#about-us #team ul li figcaption{}
-#about-us #team ul li figcaption p{margin:5px 0 0 0; padding:0;}
-#about-us #team ul li figcaption p:first-child{}
-#about-us #team ul li figure figcaption .team_name{}
-#about-us #team ul li figure figcaption .team_title{margin:0; font-size:11px; line-height:normal;}
+.my-container:hover .image {
+  opacity: 0.3;
+}
 
-/*
-HTML 5 Template Name:
-File: 960px Framework CSS
-Author: OS Templates
-Author URI: http://www.os-templates.com/
-Licence: <a href="http://www.os-templates.com/template-terms">Website Template Licence</a>
-*/
+.my-container:hover .middle {
+  opacity: 1;
+}
 
-.one_half,
-.one_third, .two_third,
-.one_quarter, .two_quarter, .three_quarter,
-.one_fifth, .two_fifth, .three_fifth, .four_fifth{display:inline-block; float:left; margin:0 0 0 20px; list-style:none;}
-
-.one_third, .two_third{margin:0 0 0 30px;}
-
-.first,
-.one_half:first-child,
-.one_third:first-child, .two_third:first-child,
-.one_quarter:first-child, .two_quarter:first-child, .three_quarter:first-child,
-.one_fifth:first-child, .two_fifth:first-child, .three_fifth:first-child, .four_fifth:first-child{margin-left:0;}
-
-.two_half, .three_third, .four_quarter, .five_fifth{display:block; width:100%; clear:both;}
-
-/*----------------------------------------------Half Grid-------------------------------------*/
-
-.one_half{width:470px;}
-
-/*----------------------------------------------Third Grid-------------------------------------*/
-
-.one_third{width:300px;}
-.two_third{width:630px;}
-
-/*----------------------------------------------Quarter Grid-------------------------------------*/
-
-.one_quarter{width:225px;}
-.two_quarter{width:470px;}
-.three_quarter{width:715px;}
-
-/*----------------------------------------------Fifth Grid-------------------------------------*/
-
-.one_fifth{width:176px;}
-.two_fifth{width:372px;}
-.three_fifth{width:568px;}
-.four_fifth{width:764px;}
+.text {
+  background-color: @mainColor;
+  color: white;
+  font-size: 16px;
+  padding: 16px 32px;
+}
+.our-team {
+  display: inline;
+}
