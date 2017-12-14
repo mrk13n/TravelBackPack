@@ -25,9 +25,6 @@ var Templates = require('./Teamplates');
 var $com = $('#com');
 
 $(function () {
-    $(".city-favourite-comments-panel").click(function(){
-        $(this).addClass("open-window");
-    });
 
     $("#city-scroll").click(function(){
         scrollTo();
