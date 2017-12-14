@@ -80,6 +80,8 @@ function showComments(list) {
 
 function initializeFavorites() {
     var Backpack = getBackpack();
+    var a = getCities(Backpack);
+    console.log(a);
     showComments(Backpack);
 }
 
@@ -90,6 +92,29 @@ function getBackpack() {
 function removeFromStorrage(back, i) {
     back.splice(i, 1);
     Storage.set('backpack', back);
+}
+
+function getCities(back) {
+    var cities = [];
+    if (back !== null) {
+        for (var i = 0; i < back.length; i++) {
+            if (cities.length === 0) {
+                cities.push(back[i].city);
+            } else {
+                for (var j = 0; j < cities.length; j++) {
+                    var similar = false;
+                    if (cities[j] === back[i].city ) {
+                        similar = true;
+                        break;
+                    }
+                }
+                if (!similar) {
+                    cities.push(back[i].city);
+                }
+            }
+        }
+    }
+    return cities;
 }
 },{"./LocalStorage":1,"./Teamplates":2}],4:[function(require,module,exports){
 (function () {
@@ -1520,7 +1545,11 @@ module.exports={
   "_args": [
     [
       "ejs@2.5.7",
+<<<<<<< HEAD
       "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack"
+=======
+      "C:\\Users\\Maria\\Documents\\GitHub\\TravelBackPack"
+>>>>>>> f60fd28a86b50e1c186c09106a79059430854399
     ]
   ],
   "_from": "ejs@2.5.7",
@@ -1544,7 +1573,11 @@ module.exports={
   ],
   "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz",
   "_spec": "2.5.7",
+<<<<<<< HEAD
   "_where": "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack",
+=======
+  "_where": "C:\\Users\\Maria\\Documents\\GitHub\\TravelBackPack",
+>>>>>>> f60fd28a86b50e1c186c09106a79059430854399
   "author": {
     "name": "Matthew Eernisse",
     "email": "mde@fleegix.org",
