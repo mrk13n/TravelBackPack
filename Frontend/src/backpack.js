@@ -36,40 +36,21 @@ function showComments(list) {
     $com.html("");
 
     function showOneComment(comment) {
+        var Backpack = getBackpack();
         var html_code = Templates.Comment_OneItem({comment: comment});
 
         var $node = $(html_code);
 
         $com.append($node);
 
-        // if (!comment.favorite) {
-        //     $node.find('.favorite').mouseover(function () {
-        //         $(this).removeClass('glyphicon glyphicon-star-empty');
-        //         $(this).addClass('glyphicon glyphicon-star');
-        //     });
-        //
-        //     $node.find('.favorite').mouseout(function () {
-        //         $(this).removeClass('glyphicon glyphicon-star');
-        //         $(this).addClass('glyphicon glyphicon-star-empty');
-        //     });
-        //
-        //     $node.find('.favorite').click(function () {
-        //         Backpack.push(comment);
-        //         saveComment(Backpack);
-        //         initializeComments(type);
-        //     });
-        // }
-        //
-        // if (comment.favorite) {
-        //     $node.find('.favorite').click(function () {
-        //         for (var i = 0; i < Backpack.length; i++) {
-        //             if (comment.comment._id == Backpack[i].comment._id) {
-        //                 removeFromStorrage(Backpack, i);
-        //                 initializeComments(type);
-        //             }
-        //         }
-        //     });
-        // }
+        $node.find('.favorite').click(function () {
+            for (var i = 0; i < Backpack.length; i++) {
+                if (comment.comment._id == Backpack[i].comment._id) {
+                    removeFromStorrage(Backpack, i);
+                    initializeFavorites();
+                }
+            }
+        });
     }
 
     list.forEach(showOneComment);
@@ -77,10 +58,14 @@ function showComments(list) {
 
 function initializeFavorites() {
     var Backpack = getBackpack();
-    console.log(Backpack);
     showComments(Backpack);
 }
 
 function getBackpack() {
     return Storage.get('backpack');
+}
+
+function removeFromStorrage(back, i) {
+    back.splice(i, 1);
+    Storage.set('backpack', back);
 }
