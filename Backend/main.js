@@ -14,6 +14,7 @@ function configureEndpoints(app) {
     app.get('/', pages.mainPage);
     app.get('/city.html', pages.cityPage);
     app.get('/backpack.html',pages.backpackPage);
+    app.get('/about.html', pages.aboutUs);
 
     app.use(express.static(path.join(__dirname, '../Frontend/www')));
 }

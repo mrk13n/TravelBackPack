@@ -161,6 +161,7 @@ function initializeComments(type) {
                                     });
 
                                     $node.find('.favorite').click(function () {
+                                        comment.favorite = true;
                                         Backpack.push(comment);
                                         saveComment(Backpack);
                                         initializeComments(type);

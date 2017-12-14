@@ -4,7 +4,8 @@ exports.mainPage = function(req, res) {
         mainActive: true,
         mapActive: false,
         cityActive: false,
-        backpackActive:false
+        backpackActive: false,
+        aboutActive: false
     });
 };
 
@@ -14,7 +15,8 @@ exports.cityPage = function (req, res) {
         mainActive: false,
         mapActive: false,
         cityActive: true,
-        backpackActive:false
+        backpackActive: false,
+        aboutActive: false
     })
 };
 
@@ -24,6 +26,18 @@ exports.backpackPage = function (req, res) {
         mainActive: false,
         mapActive: false,
         cityActive: false,
-        backpackActive:true
+        backpackActive: true,
+        aboutActive: false
+    })
+};
+
+exports.aboutUs = function (req, res) {
+    res.render('aboutPage', {
+        pageTitle: 'About us',
+        mainActive: false,
+        mapActive: false,
+        cityActive: false,
+        backpackActive: false,
+        aboutActive: true
     })
 };
