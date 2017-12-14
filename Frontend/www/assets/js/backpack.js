@@ -19,12 +19,17 @@ exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"b
 exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\n    <div class=\"col-xs-2\">\n        <div class=\"thumbnail thumb_city\">\n            <img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\">\n        </div>\n    </div>\n\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <input type=\"text\" class=\"form-control username\" placeholder=\"Enter username\">\n            </div>\n            <div class=\"panel-body\">\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\"></textarea>\n                <button type=\"submit\" class=\"btn btn-send\">\n                    Send <span class=\"glyphicon glyphicon-send\"></span>\n                </button>\n            </div>\n        </div>\n    </div>\n</div>");
 exports.weatherBlock = ejs.compile("<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"col-sm-4\">\n            <div class=\"weather\">\n                <div class=\"info\">\n                    <div class=\"temp\">\n                        <small>TEMPERATURE: </small><%= weather.main.temp %>°C\n                    </div>\n                    <div class=\"wind\">\n                        <small>WIND SPEED: </small> <%= weather.wind.speed %>m/s\n                    </div>\n                    <div class=\"description\">\n                        <small>DESCRIPTION: </small><%= weather.weather[0].description %>\n                    </div>\n                </div>\n                </div>\n            </div>\n        </div>\n    </div>\n");
 exports.additionalInfo = ejs.compile("\n    <div class=\"weather\">\n        <div class=\"info\">\n            <div class=\"temp\">\n                <small>COUNTRY: </small><%= city.country %>\n            </div>\n            <div class=\"wind\">\n                <small>CURRENCY: </small> <%= city.currency %>\n            </div>\n            <div class=\"description\">\n                <small>POPULATION: </small><%= city.population %>\n            </div>\n        </div>\n    </div>");
+exports.FavouriteCityComments = ejs.compile("<div class=\"col-md-6\">\n    <div class=\"city-favourite-comments-panel\">\n        <div class=\"backpack-city-name\">\n            <h2><%= city.city%></h2>\n        </div>\n        <div class=\"backpack-comments\">\n        </div>\n    </div>\n</div>");
+exports.OneFavouriteComment = ejs.compile("<div class=\"panel panel-default\">\n    <div class=\"panel-heading\">\n        <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%> <%= comment.comment.hours%>:<%= comment.comment.minutes%></span><span class=\"favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>\"></span>\n    </div>\n    <div class=\"panel-body\">\n        <%= comment.comment.comment%>\n    </div>\n</div>");
 },{"ejs":6}],3:[function(require,module,exports){
 var Storage = require('./LocalStorage');
 var Templates = require('./Teamplates');
-var $com = $('#com');
+var $cities = $('#city-favourite-comments-container');
 
 $(function () {
+    $(".city-favourite-comments-panel").click(function(){
+        $(this).addClass("open-window");
+    });
 
     $("#city-scroll").click(function(){
         scrollTo();
@@ -51,35 +56,68 @@ function randomAvatar(){
 }
 
 
-function showComments(list) {
-    $com.html("");
+// function showComments(list) {
+//     $com.html("");
+//
+//     function showOneComment(comment) {
+//         var Backpack = getBackpack();
+//         var html_code = Templates.Comment_OneItem({comment: comment});
+//
+//         var $node = $(html_code);
+//
+//         $com.append($node);
+//
+//         $node.find('.favorite').click(function () {
+//             for (var i = 0; i < Backpack.length; i++) {
+//                 if (comment.comment._id == Backpack[i].comment._id) {
+//                     removeFromStorrage(Backpack, i);
+//                     initializeFavorites();
+//                 }
+//             }
+//         });
+//     }
+//
+//     list.forEach(showOneComment);
+// }
 
-    function showOneComment(comment) {
+function showCities(list) {
+    $cities.html("");
+
+    function showOne(city) {
         var Backpack = getBackpack();
-        var html_code = Templates.Comment_OneItem({comment: comment});
+        var html_code = Templates.FavouriteCityComments({city: city});
 
         var $node = $(html_code);
 
-        $com.append($node);
+        $cities.append($node);
 
-        $node.find('.favorite').click(function () {
+        if (Backpack !== null) {
             for (var i = 0; i < Backpack.length; i++) {
-                if (comment.comment._id == Backpack[i].comment._id) {
-                    removeFromStorrage(Backpack, i);
-                    initializeFavorites();
+                if (city.city == Backpack[i].city) {
+                    var html_code2 = Templates.OneFavouriteComment({comment: Backpack[i]});
+
+                    var $node2 = $(html_code2);
+
+                    $node.find('.backpack-comments').append($node2);
+
+                    var k = i;
+                    $node2.find('.favorite').click(function () {
+                            removeFromStorrage(Backpack, k);
+                            initializeFavorites();
+                    });
                 }
             }
-        });
+        }
     }
 
-    list.forEach(showOneComment);
+    list.forEach(showOne);
 }
 
 function initializeFavorites() {
     var Backpack = getBackpack();
-    var a = getCities(Backpack);
-    console.log(a);
-    showComments(Backpack);
+    var cities = getCities(Backpack);
+    showCities(cities);
+    // showComments(Backpack);
 }
 
 function getBackpack() {
@@ -96,17 +134,17 @@ function getCities(back) {
     if (back !== null) {
         for (var i = 0; i < back.length; i++) {
             if (cities.length === 0) {
-                cities.push(back[i].city);
+                cities.push({city: back[i].city});
             } else {
                 for (var j = 0; j < cities.length; j++) {
                     var similar = false;
-                    if (cities[j] === back[i].city ) {
+                    if (cities[j].city == back[i].city ) {
                         similar = true;
                         break;
                     }
                 }
                 if (!similar) {
-                    cities.push(back[i].city);
+                    cities.push({city: back[i].city});
                 }
             }
         }
