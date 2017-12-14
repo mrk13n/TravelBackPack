@@ -91,19 +91,12 @@ exports.set = function (key, value) {
 var ejs = require('ejs');
 
 
-<<<<<<< HEAD
-exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
-exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\n    <div class=\"col-xs-2\">\n        <div class=\"thumbnail thumb_city\">\n            <img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\">\n        </div>\n    </div>\n\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%> <%= comment.comment.hours%>:<%= comment.comment.minutes%></span><span class=\"favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>\"></span>\n            </div>\n            <div class=\"panel-body\">\n                <%= comment.comment.comment%>\n            </div>\n        </div>\n    </div>\n</div>");
-exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\n    <div class=\"title-box\">\n        <p>experience</p>\n        <h1 class=\"city-name\"><%= city.city%></h1>\n        <p>like a local</p>\n    </div>\n</div>");
-exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\n    <div class=\"col-xs-2\">\n        <div class=\"thumbnail thumb_city\">\n            <img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\">\n        </div>\n    </div>\n\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <input type=\"text\" class=\"form-control username\" placeholder=\"Enter username\">\n            </div>\n            <div class=\"panel-body\">\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\"></textarea>\n                <button type=\"submit\" class=\"btn btn-send\">\n                    Send <span class=\"glyphicon glyphicon-send\"></span>\n                </button>\n            </div>\n        </div>\n    </div>\n</div>");
-=======
 exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\r\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\r\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\r\n    </div>\r\n</div>");
-exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\r\n    <div class=\"col-xs-2\">\r\n        <div class=\"thumbnail thumb_city\">\r\n            <img class=\"img-responsive user-photo\" src=\"assets/images/logo.png\">\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-10\">\r\n        <div class=\"panel panel-default\">\r\n            <div class=\"panel-heading\">\r\n                <strong><%= comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.day%>-<%= comment.month%>-<%= comment.year%> <%= comment.hours%>:<%= comment.minutes%></span>\r\n            </div>\r\n            <div class=\"panel-body\">\r\n                <%= comment.comment%>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>");
+exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\r\n    <div class=\"col-xs-2\">\r\n        <div class=\"thumbnail thumb_city\">\r\n            <img class=\"img-responsive user-photo\" src=\"assets/images/logo.png\">\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-10\">\r\n        <div class=\"panel panel-default\">\r\n            <div class=\"panel-heading\">\r\n                <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%> <%= comment.comment.hours%>:<%= comment.comment.minutes%></span><span class=\"favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>\"></span>\r\n            </div>\r\n            <div class=\"panel-body\">\r\n                <%= comment.comment.comment%>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>");
 exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\r\n    <div class=\"title-box\">\r\n        <p>experience</p>\r\n        <h1 class=\"city-name\"><%= city.city%></h1>\r\n        <p>like a local</p>\r\n    </div>\r\n</div>");
 exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\r\n    <div class=\"col-xs-2\">\r\n        <div class=\"thumbnail thumb_city\">\r\n            <img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\">\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-10\">\r\n        <div class=\"panel panel-default\">\r\n            <div class=\"panel-heading\">\r\n                <input type=\"text\" class=\"form-control username\" placeholder=\"Enter username\">\r\n            </div>\r\n            <div class=\"panel-body\">\r\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\"></textarea>\r\n                <button type=\"submit\" class=\"btn btn-send\">\r\n                    Send <span class=\"glyphicon glyphicon-send\"></span>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>");
 exports.weatherBlock = ejs.compile("<div class=\"container\">\r\n    <div class=\"row\">\r\n        <div class=\"col-sm-4\">\r\n            <div class=\"weather\">\r\n                <div class=\"info\">\r\n                    <div class=\"temp\">\r\n                        <small>TEMPERATURE: </small><%= weather.main.temp %>°C\r\n                    </div>\r\n                    <div class=\"wind\">\r\n                        <small>WIND SPEED: </small> <%= weather.wind.speed %>m/s\r\n                    </div>\r\n                    <div class=\"description\">\r\n                        <small>DESCRIPTION: </small><%= weather.weather[0].description %>\r\n                    </div>\r\n                </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n");
 exports.additionalInfo = ejs.compile("\r\n    <div class=\"weather\">\r\n        <div class=\"info\">\r\n            <div class=\"temp\">\r\n                <small>COUNTRY: </small><%= city.country %>\r\n            </div>\r\n            <div class=\"wind\">\r\n                <small>CURRENCY: </small> <%= city.currency %>\r\n            </div>\r\n            <div class=\"description\">\r\n                <small>POPULATION: </small><%= city.population %>\r\n            </div>\r\n        </div>\r\n    </div>");
->>>>>>> 33776f28e5a7726b0691dfe30c2e0aebdddce69a
 },{"ejs":8}],5:[function(require,module,exports){
 $(function () {
     var GetCities = require('./Cities/GetCities');
@@ -1547,49 +1540,34 @@ exports.cache = {
 
 },{}],10:[function(require,module,exports){
 module.exports={
-<<<<<<< HEAD
-  "_from": "ejs@^2.5.7",
-=======
   "_args": [
     [
       "ejs@2.5.7",
-      "C:\\Users\\Maria\\Documents\\GitHub\\TravelBackPack"
+      "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack"
     ]
   ],
   "_from": "ejs@2.5.7",
->>>>>>> 41e492bec1fb6c60b4e0b60a12164cb8ca14543a
   "_id": "ejs@2.5.7",
   "_inBundle": false,
   "_integrity": "sha1-zIcsFoiArjxxiXYv1f/ACJbJUYo=",
   "_location": "/ejs",
   "_phantomChildren": {},
   "_requested": {
-    "type": "range",
+    "type": "version",
     "registry": true,
-    "raw": "ejs@^2.5.7",
+    "raw": "ejs@2.5.7",
     "name": "ejs",
     "escapedName": "ejs",
-    "rawSpec": "^2.5.7",
+    "rawSpec": "2.5.7",
     "saveSpec": null,
-    "fetchSpec": "^2.5.7"
+    "fetchSpec": "2.5.7"
   },
   "_requiredBy": [
-    "#USER",
     "/"
   ],
   "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz",
-<<<<<<< HEAD
-  "_shasum": "cc872c168880ae3c7189762fd5ffc00896c9518a",
-  "_spec": "ejs@^2.5.7",
-  "_where": "/home/mrk13/Documents/GitHub/TravelBackPack",
-=======
   "_spec": "2.5.7",
-<<<<<<< HEAD
-  "_where": "C:\\Users\\Maria\\Documents\\GitHub\\TravelBackPack",
-=======
   "_where": "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack",
->>>>>>> 41e492bec1fb6c60b4e0b60a12164cb8ca14543a
->>>>>>> 580c519e09e035c753f24a57e356dc9eae7ebf52
   "author": {
     "name": "Matthew Eernisse",
     "email": "mde@fleegix.org",
@@ -1598,7 +1576,6 @@ module.exports={
   "bugs": {
     "url": "https://github.com/mde/ejs/issues"
   },
-  "bundleDependencies": false,
   "contributors": [
     {
       "name": "Timothy Gu",
@@ -1607,7 +1584,6 @@ module.exports={
     }
   ],
   "dependencies": {},
-  "deprecated": false,
   "description": "Embedded JavaScript templates",
   "devDependencies": {
     "browserify": "^13.0.1",
