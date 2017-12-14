@@ -1,0 +1,64 @@
+
+.text-about {
+  //height: 400px;
+  width: 1500px;
+  padding: 60px;
+  font-size: 28px;
+  //width: 624px;
+  margin-left: auto;
+  margin-right: auto;
+  //height: 395px;
+  border: 1px solid #000000;
+  margin-top: 60px;
+}
+h2{
+padding-top: 50px;
+  margin-bottom:50px;
+  padding-bottom:40px;
+  font-size:80px;
+  text-align:center;
+  text-transform:uppercase;
+  border-bottom:1px solid #CCCCCC;
+}
+.my-container {
+  position: relative;
+  //width: 50%;
+  padding-top: 20px;
+}
+
+.image {
+  opacity: 1;
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: .5s ease;
+  backface-visibility: hidden;
+}
+
+.middle {
+  transition: .5s ease;
+  opacity: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%)
+}
+
+.my-container:hover .image {
+  opacity: 0.3;
+}
+
+.my-container:hover .middle {
+  opacity: 1;
+}
+
+.text {
+  background-color: @mainColor;
+  color: white;
+  font-size: 16px;
+  padding: 16px 32px;
+}
+.our-team {
+  display: inline;
+}
