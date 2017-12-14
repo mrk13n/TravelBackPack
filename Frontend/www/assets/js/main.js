@@ -1,9 +1,10 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var API_URL = "http://localhost:4040";
+// var API_URL = "http://localhost:4040";
+// var API_URL = "http://localhost:4040";
 
 function backendGet(url, callback) {
     $.ajax({
-        url: API_URL + url,
+        url: url,
         type: 'GET',
         success: function(data){
             callback(null, data);
@@ -16,7 +17,7 @@ function backendGet(url, callback) {
 
 function backendPost(url, data, callback) {
     $.ajax({
-        url: API_URL + url,
+        url: url,
         type: 'POST',
         contentType : 'application/json',
         data: JSON.stringify(data),
@@ -91,12 +92,27 @@ exports.set = function (key, value) {
 var ejs = require('ejs');
 
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
+exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\n    <div class=\"col-xs-2\">\n        <div class=\"thumbnail thumb_city\">\n            <img class=\"img-responsive user-photo\" src=\"assets/images/logo.png\">\n        </div>\n    </div>\n\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%> <%= comment.comment.hours%>:<%= comment.comment.minutes%></span><span class=\"favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>\"></span>\n            </div>\n            <div class=\"panel-body\">\n                <%= comment.comment.comment%>\n            </div>\n        </div>\n    </div>\n</div>");
+exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\n    <div class=\"title-box\">\n        <p>experience</p>\n        <h1 class=\"city-name\"><%= city.city%></h1>\n        <p>like a local</p>\n    </div>\n</div>");
+exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\n    <div class=\"col-xs-2\">\n        <div class=\"thumbnail thumb_city\">\n            <img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\">\n        </div>\n    </div>\n\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <input type=\"text\" class=\"form-control username\" placeholder=\"Enter username\">\n            </div>\n            <div class=\"panel-body\">\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\"></textarea>\n                <button type=\"submit\" class=\"btn btn-send\">\n                    Send <span class=\"glyphicon glyphicon-send\"></span>\n                </button>\n            </div>\n        </div>\n    </div>\n</div>");
+exports.weatherBlock = ejs.compile("<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"col-sm-4\">\n            <div class=\"weather\">\n                <div class=\"info\">\n                    <div class=\"temp\">\n                        <small>TEMPERATURE: </small><%= weather.main.temp %>°C\n                    </div>\n                    <div class=\"wind\">\n                        <small>WIND SPEED: </small> <%= weather.wind.speed %>m/s\n                    </div>\n                    <div class=\"description\">\n                        <small>DESCRIPTION: </small><%= weather.weather[0].description %>\n                    </div>\n                </div>\n                </div>\n            </div>\n        </div>\n    </div>\n");
+exports.additionalInfo = ejs.compile("\n    <div class=\"weather\">\n        <div class=\"info\">\n            <div class=\"temp\">\n                <small>COUNTRY: </small><%= city.country %>\n            </div>\n            <div class=\"wind\">\n                <small>CURRENCY: </small> <%= city.currency %>\n            </div>\n            <div class=\"description\">\n                <small>POPULATION: </small><%= city.population %>\n            </div>\n        </div>\n    </div>");
+=======
+>>>>>>> 73c05cd6577768fe8c6d130165e68641079ee530
 exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\r\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\r\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\r\n    </div>\r\n</div>");
 exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\r\n    <div class=\"col-xs-2\">\r\n        <div class=\"thumbnail thumb_city\">\r\n            <img class=\"img-responsive user-photo\" src=\"assets/images/logo.png\">\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-10\">\r\n        <div class=\"panel panel-default\">\r\n            <div class=\"panel-heading\">\r\n                <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%> <%= comment.comment.hours%>:<%= comment.comment.minutes%></span><span class=\"favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>\"></span>\r\n            </div>\r\n            <div class=\"panel-body\">\r\n                <%= comment.comment.comment%>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>");
 exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\r\n    <div class=\"title-box\">\r\n        <p>experience</p>\r\n        <h1 class=\"city-name\"><%= city.city%></h1>\r\n        <p>like a local</p>\r\n    </div>\r\n</div>");
 exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\r\n    <div class=\"col-xs-2\">\r\n        <div class=\"thumbnail thumb_city\">\r\n            <img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\">\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-10\">\r\n        <div class=\"panel panel-default\">\r\n            <div class=\"panel-heading\">\r\n                <input type=\"text\" class=\"form-control username\" placeholder=\"Enter username\">\r\n            </div>\r\n            <div class=\"panel-body\">\r\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\"></textarea>\r\n                <button type=\"submit\" class=\"btn btn-send\">\r\n                    Send <span class=\"glyphicon glyphicon-send\"></span>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>");
 exports.weatherBlock = ejs.compile("<div class=\"container\">\r\n    <div class=\"row\">\r\n        <div class=\"col-sm-4\">\r\n            <div class=\"weather\">\r\n                <div class=\"info\">\r\n                    <div class=\"temp\">\r\n                        <small>TEMPERATURE: </small><%= weather.main.temp %>°C\r\n                    </div>\r\n                    <div class=\"wind\">\r\n                        <small>WIND SPEED: </small> <%= weather.wind.speed %>m/s\r\n                    </div>\r\n                    <div class=\"description\">\r\n                        <small>DESCRIPTION: </small><%= weather.weather[0].description %>\r\n                    </div>\r\n                </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n");
 exports.additionalInfo = ejs.compile("\r\n    <div class=\"weather\">\r\n        <div class=\"info\">\r\n            <div class=\"temp\">\r\n                <small>COUNTRY: </small><%= city.country %>\r\n            </div>\r\n            <div class=\"wind\">\r\n                <small>CURRENCY: </small> <%= city.currency %>\r\n            </div>\r\n            <div class=\"description\">\r\n                <small>POPULATION: </small><%= city.population %>\r\n            </div>\r\n        </div>\r\n    </div>");
+<<<<<<< HEAD
+=======
+>>>>>>> 460c27a85afc7bddf7d0041f46bdee710d8c97e5
+>>>>>>> 73c05cd6577768fe8c6d130165e68641079ee530
 },{"ejs":8}],5:[function(require,module,exports){
 $(function () {
     var GetCities = require('./Cities/GetCities');
@@ -110,6 +126,12 @@ $(function () {
         $('html, body').animate({ scrollTop: $('.greetings').offset().top }, 'slow');
         return false;
     }
+    $(function() {
+        $('a[href*=#]').on('click', function(e) {
+            e.preventDefault();
+            $('html, body').animate({ scrollTop: $($(this).attr('href')).offset().top}, 500, 'linear');
+        });
+    });
 
 });
 
@@ -1547,6 +1569,10 @@ module.exports={
     ]
   ],
   "_from": "ejs@2.5.7",
+<<<<<<< HEAD
+=======
+>>>>>>> 460c27a85afc7bddf7d0041f46bdee710d8c97e5
+>>>>>>> 73c05cd6577768fe8c6d130165e68641079ee530
   "_id": "ejs@2.5.7",
   "_inBundle": false,
   "_integrity": "sha1-zIcsFoiArjxxiXYv1f/ACJbJUYo=",
@@ -1567,7 +1593,12 @@ module.exports={
   ],
   "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz",
   "_spec": "2.5.7",
+<<<<<<< HEAD
   "_where": "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack",
+=======
+  "_where": "C:\\Users\\Maria\\Documents\\GitHub\\TravelBackPack",
+>>>>>>> 460c27a85afc7bddf7d0041f46bdee710d8c97e5
+>>>>>>> 73c05cd6577768fe8c6d130165e68641079ee530
   "author": {
     "name": "Matthew Eernisse",
     "email": "mde@fleegix.org",

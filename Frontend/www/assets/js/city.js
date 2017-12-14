@@ -1,9 +1,10 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-var API_URL = "http://localhost:4040";
+// var API_URL = "http://localhost:4040";
+// var API_URL = "http://localhost:4040";
 
 function backendGet(url, callback) {
     $.ajax({
-        url: API_URL + url,
+        url: url,
         type: 'GET',
         success: function(data){
             callback(null, data);
@@ -16,7 +17,7 @@ function backendGet(url, callback) {
 
 function backendPost(url, data, callback) {
     $.ajax({
-        url: API_URL + url,
+        url: url,
         type: 'POST',
         contentType : 'application/json',
         data: JSON.stringify(data),
@@ -88,12 +89,27 @@ exports.set = function (key, value) {
 var ejs = require('ejs');
 
 
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
+exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\n    <div class=\"col-xs-2\">\n        <div class=\"thumbnail thumb_city\">\n            <img class=\"img-responsive user-photo\" src=\"assets/images/logo.png\">\n        </div>\n    </div>\n\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%> <%= comment.comment.hours%>:<%= comment.comment.minutes%></span><span class=\"favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>\"></span>\n            </div>\n            <div class=\"panel-body\">\n                <%= comment.comment.comment%>\n            </div>\n        </div>\n    </div>\n</div>");
+exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\n    <div class=\"title-box\">\n        <p>experience</p>\n        <h1 class=\"city-name\"><%= city.city%></h1>\n        <p>like a local</p>\n    </div>\n</div>");
+exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\n    <div class=\"col-xs-2\">\n        <div class=\"thumbnail thumb_city\">\n            <img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\">\n        </div>\n    </div>\n\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <input type=\"text\" class=\"form-control username\" placeholder=\"Enter username\">\n            </div>\n            <div class=\"panel-body\">\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\"></textarea>\n                <button type=\"submit\" class=\"btn btn-send\">\n                    Send <span class=\"glyphicon glyphicon-send\"></span>\n                </button>\n            </div>\n        </div>\n    </div>\n</div>");
+exports.weatherBlock = ejs.compile("<div class=\"container\">\n    <div class=\"row\">\n        <div class=\"col-sm-4\">\n            <div class=\"weather\">\n                <div class=\"info\">\n                    <div class=\"temp\">\n                        <small>TEMPERATURE: </small><%= weather.main.temp %>°C\n                    </div>\n                    <div class=\"wind\">\n                        <small>WIND SPEED: </small> <%= weather.wind.speed %>m/s\n                    </div>\n                    <div class=\"description\">\n                        <small>DESCRIPTION: </small><%= weather.weather[0].description %>\n                    </div>\n                </div>\n                </div>\n            </div>\n        </div>\n    </div>\n");
+exports.additionalInfo = ejs.compile("\n    <div class=\"weather\">\n        <div class=\"info\">\n            <div class=\"temp\">\n                <small>COUNTRY: </small><%= city.country %>\n            </div>\n            <div class=\"wind\">\n                <small>CURRENCY: </small> <%= city.currency %>\n            </div>\n            <div class=\"description\">\n                <small>POPULATION: </small><%= city.population %>\n            </div>\n        </div>\n    </div>");
+=======
+>>>>>>> 73c05cd6577768fe8c6d130165e68641079ee530
 exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\r\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\r\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\r\n    </div>\r\n</div>");
 exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\r\n    <div class=\"col-xs-2\">\r\n        <div class=\"thumbnail thumb_city\">\r\n            <img class=\"img-responsive user-photo\" src=\"assets/images/logo.png\">\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-10\">\r\n        <div class=\"panel panel-default\">\r\n            <div class=\"panel-heading\">\r\n                <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%> <%= comment.comment.hours%>:<%= comment.comment.minutes%></span><span class=\"favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>\"></span>\r\n            </div>\r\n            <div class=\"panel-body\">\r\n                <%= comment.comment.comment%>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>");
 exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\r\n    <div class=\"title-box\">\r\n        <p>experience</p>\r\n        <h1 class=\"city-name\"><%= city.city%></h1>\r\n        <p>like a local</p>\r\n    </div>\r\n</div>");
 exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\r\n    <div class=\"col-xs-2\">\r\n        <div class=\"thumbnail thumb_city\">\r\n            <img class=\"img-responsive user-photo\" src=\"https://ssl.gstatic.com/accounts/ui/avatar_2x.png\">\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-10\">\r\n        <div class=\"panel panel-default\">\r\n            <div class=\"panel-heading\">\r\n                <input type=\"text\" class=\"form-control username\" placeholder=\"Enter username\">\r\n            </div>\r\n            <div class=\"panel-body\">\r\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\"></textarea>\r\n                <button type=\"submit\" class=\"btn btn-send\">\r\n                    Send <span class=\"glyphicon glyphicon-send\"></span>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>");
 exports.weatherBlock = ejs.compile("<div class=\"container\">\r\n    <div class=\"row\">\r\n        <div class=\"col-sm-4\">\r\n            <div class=\"weather\">\r\n                <div class=\"info\">\r\n                    <div class=\"temp\">\r\n                        <small>TEMPERATURE: </small><%= weather.main.temp %>°C\r\n                    </div>\r\n                    <div class=\"wind\">\r\n                        <small>WIND SPEED: </small> <%= weather.wind.speed %>m/s\r\n                    </div>\r\n                    <div class=\"description\">\r\n                        <small>DESCRIPTION: </small><%= weather.weather[0].description %>\r\n                    </div>\r\n                </div>\r\n                </div>\r\n            </div>\r\n        </div>\r\n    </div>\r\n");
 exports.additionalInfo = ejs.compile("\r\n    <div class=\"weather\">\r\n        <div class=\"info\">\r\n            <div class=\"temp\">\r\n                <small>COUNTRY: </small><%= city.country %>\r\n            </div>\r\n            <div class=\"wind\">\r\n                <small>CURRENCY: </small> <%= city.currency %>\r\n            </div>\r\n            <div class=\"description\">\r\n                <small>POPULATION: </small><%= city.population %>\r\n            </div>\r\n        </div>\r\n    </div>");
+<<<<<<< HEAD
+=======
+>>>>>>> 460c27a85afc7bddf7d0041f46bdee710d8c97e5
+>>>>>>> 73c05cd6577768fe8c6d130165e68641079ee530
 },{"ejs":8}],5:[function(require,module,exports){
 var Storage = require('./LocalStorage');
 var Templates = require('./Teamplates');
@@ -109,7 +125,6 @@ $(function () {
     var type;
     a = true;
     initializeComments('food');
-
     $("#city-scroll").click(function(){
         scrollTo();
     });
@@ -208,37 +223,39 @@ function initializeComments(type) {
             API.getComments(current_city, function (err, data) {
                 if (!err) {
                     if (!data.emptyForm) {
-                        for (var i = 0; i < data.length; i++) {
-                            var one;
-                            var fav = false;
-                            var Backpack;
+                        var i;
+                        for (i = 0; i < data.length; i++) {
                             if (data[i].type == type) {
-                                Backpack = getBackpack();
-                                ab(Backpack);
-                                if (Backpack !== null) {
-                                    for (var j = 0; j < Backpack.length; j++) {
-                                        if (data[i]._id == Backpack[j].comment._id) {
-                                            fav = true;
-                                        } else {
-                                            fav = false;
-                                        }
-                                    }
-                                }
-                                one = {
-                                    city: current_city.city,
-                                    favorite: fav,
-                                    comment: data[i]
-                                };
-                                comments.push(one);
+                                comments.push(data[i]);
                             }
                         }
+                        var z = [];
+                        for (i = 0; i < comments.length; i++) {
+                            var one;
+                            var fav = false;
+                            var Backpack = getBackpack();
+                            if (Backpack !== null) {
+                                for (var j = 0; j < Backpack.length; j++) {
+                                    if (comments[i]._id == Backpack[j].comment._id) {
+                                        fav = true;
+                                    }
+                                }
+                            }
+                            one = {
+                                city: current_city.city,
+                                favorite: fav,
+                                comment: comments[i]
+                            };
+                            z.push(one);
+                        }
+
+                        comments = z;
 
                         function showComments(list) {
                             $comments.html("");
 
                             function showOneComment(comment) {
                                 var Backpack = getBackpack();
-                                console.log(comment.favorite);
                                 var html_code = Templates.Comment_OneItem({comment: comment});
 
                                 var $node = $(html_code);
@@ -257,23 +274,19 @@ function initializeComments(type) {
                                     });
 
                                     $node.find('.favorite').click(function () {
-                                        $(this).removeClass('glyphicon glyphicon-star-empty');
-                                        $(this).addClass('glyphicon glyphicon-star');
-                                        Backpack = getBackpack();
-                                        console.log(comment.favorite);
                                         Backpack.push(comment);
                                         saveComment(Backpack);
+                                        initializeComments(type);
                                     });
                                 }
 
                                 if (comment.favorite) {
                                     $node.find('.favorite').click(function () {
-                                        Backpack = getBackpack();
                                         for (var i = 0; i < Backpack.length; i++) {
-                                            // if (comment.id == Backpack[i].id) {
-                                            //     console.log('removeIt');
-                                            //     removeFromStorrage(Backpack, i);
-                                            // }
+                                            if (comment.comment._id == Backpack[i].comment._id) {
+                                                removeFromStorrage(Backpack, i);
+                                                initializeComments(type);
+                                            }
                                         }
                                     });
                                 }
@@ -288,14 +301,12 @@ function initializeComments(type) {
                 }
             });
             var weather;
-            console.log(current_city.city);
             $.ajax({
                 url: 'http://api.openweathermap.org/data/2.5/weather?q='+current_city.city+"&units=metric"+
                 "&APPID=d41f5cc0cbb6152f6a6af0037d456d08",
                 type: "GET",
                 dataType: "jsonp",
                 success: function (data) {
-                    console.log(data)
                     weather = data;
                     $weath.html("");
                     var html_code3 = Templates.weatherBlock({weather: weather});
@@ -383,8 +394,7 @@ function getBackpack() {
 }
 
 function removeFromStorrage(back, i) {
-    back.slice(i, 1);
-    console.log(back);
+    back.splice(i, 1);
     Storage.set('backpack', back);
 }
 },{"./API":1,"./Cities/GetInfoCity":2,"./LocalStorage":3,"./Teamplates":4}],6:[function(require,module,exports){
@@ -1820,6 +1830,10 @@ module.exports={
     ]
   ],
   "_from": "ejs@2.5.7",
+<<<<<<< HEAD
+=======
+>>>>>>> 460c27a85afc7bddf7d0041f46bdee710d8c97e5
+>>>>>>> 73c05cd6577768fe8c6d130165e68641079ee530
   "_id": "ejs@2.5.7",
   "_inBundle": false,
   "_integrity": "sha1-zIcsFoiArjxxiXYv1f/ACJbJUYo=",
@@ -1840,7 +1854,12 @@ module.exports={
   ],
   "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz",
   "_spec": "2.5.7",
+<<<<<<< HEAD
   "_where": "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack",
+=======
+  "_where": "C:\\Users\\Maria\\Documents\\GitHub\\TravelBackPack",
+>>>>>>> 460c27a85afc7bddf7d0041f46bdee710d8c97e5
+>>>>>>> 73c05cd6577768fe8c6d130165e68641079ee530
   "author": {
     "name": "Matthew Eernisse",
     "email": "mde@fleegix.org",
