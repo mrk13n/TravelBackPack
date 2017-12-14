@@ -17,44 +17,25 @@ $(function () {
         return false;
     }
 
+    $('#staff').click(function () {
+        $('.niceStaff').css('display', 'block');
+        $('.niceStaff').animate({'bottom':'0'}, 500);
+        setTimeout(function () {
+            $('.niceStaff').animate({'bottom':'-150px'}, 500);
+        }, 1600);
+        setTimeout(function () {
+            $('.niceStaff').css('display', 'none');
+        }, 2100);
+    });
+
     initializeFavorites();
 });
 
 function randomAvatar(){
     var rand;
     rand = Math.floor((Math.random() * 20) + 1);
-    var img_src = "logo.png";
-    var image = document.createElement("img");
-    var imageParent = document.getElementById("lol");
-    image.className = "img-responsive user-photo";
-    image.src = "assets/images/" + img_src;
-    imageParent.appendChild(image);
+    return rand;
 }
-
-
-// function showComments(list) {
-//     $com.html("");
-//
-//     function showOneComment(comment) {
-//         var Backpack = getBackpack();
-//         var html_code = Templates.Comment_OneItem({comment: comment});
-//
-//         var $node = $(html_code);
-//
-//         $com.append($node);
-//
-//         $node.find('.favorite').click(function () {
-//             for (var i = 0; i < Backpack.length; i++) {
-//                 if (comment.comment._id == Backpack[i].comment._id) {
-//                     removeFromStorrage(Backpack, i);
-//                     initializeFavorites();
-//                 }
-//             }
-//         });
-//     }
-//
-//     list.forEach(showOneComment);
-// }
 
 function showCities(list) {
     $cities.html("");

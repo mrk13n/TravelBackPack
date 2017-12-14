@@ -83,6 +83,17 @@ $(function () {
         }
     });
 
+    $('#staff').click(function () {
+        $('.niceStaff').css('display', 'block');
+        $('.niceStaff').animate({'bottom':'0'}, 500);
+        setTimeout(function () {
+            $('.niceStaff').animate({'bottom':'-150px'}, 500);
+        }, 1600);
+        setTimeout(function () {
+            $('.niceStaff').css('display', 'none');
+        }, 2100);
+    });
+
 });
 
 function allNotActive() {
@@ -123,6 +134,7 @@ function initializeComments(type) {
                         var z = [];
                         for (i = 0; i < comments.length; i++) {
                             var one;
+                            var rand;
                             var fav = false;
                             var Backpack = getBackpack();
                             if (Backpack !== null) {
@@ -132,9 +144,11 @@ function initializeComments(type) {
                                     }
                                 }
                             }
+                            rand = randomAvatar();
                             one = {
                                 city: current_city.city,
                                 favorite: fav,
+                                rand: rand,
                                 comment: comments[i]
                             };
                             z.push(one);
@@ -253,17 +267,6 @@ function initializeComments(type) {
                     });
                 }
             });
-
-            function randomAvatar(){
-                var rand;
-                rand = Math.floor((Math.random() * 20) + 1);
-                var img_src = "Rick.png";
-                var image = document.createElement("img");
-                image.className = "img-responsive user-photo";
-                image.src = "assets/images/" + img_src;
-                imageParent.appendChild(image);
-            }
-
         }
     });
 }
@@ -288,4 +291,10 @@ function getBackpack() {
 function removeFromStorrage(back, i) {
     back.splice(i, 1);
     Storage.set('backpack', back);
+}
+
+function randomAvatar(){
+    var rand;
+    rand = Math.floor((Math.random() * 20) + 1);
+    return rand;
 }
