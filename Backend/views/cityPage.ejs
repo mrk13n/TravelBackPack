@@ -2,44 +2,36 @@
 <div class="main-container">
     <% include common/header.ejs %>
 
-    <div id="info">
-    </div>
+    <div class="container" id="info"></div>
 
-<div class="container">
-    <div id="info"></div>
 
     <div class="container">
         <div class="row">
             <div class="col-md-2" id="additional_info">
+
             </div>
 
-            <nav class="shift col-md-8" id="city-filter">
-                <ul>
-                    <li role="presentation" class="active filter-1" id="filter-food"><a>Food</a></li>
-                    <li role="presentation" class="filter-2" id="filter-house"><a>Cool Places</a></li>
-                    <li role="presentation" class="filter-3" id="filter-hitchhiking"><a>Economy Lifehacks</a></li>
-                    <li role="presentation" class="filter-4" id="filter-abandoned"><a>Abandoned houses</a></li>
-                </ul>
-            </nav>
-            <div class="col-md-2" id="weather-div">
+            <div class="col-md-8">
+                <nav class="shift" id="city-filter">
+                    <ul>
+                        <li role="presentation" class="active filter-1" id="filter-food"><a>Food</a></li>
+                        <li role="presentation" class="filter-2" id="filter-house"><a>Cool Places</a></li>
+                        <li role="presentation" class="filter-3" id="filter-hitchhiking"><a>Economy Lifehacks</a></li>
+                        <li role="presentation" class="filter-4" id="filter-abandoned"><a>Abandoned houses</a></li>
+                    </ul>
+                </nav>
             </div>
+
+            <!--<div class="col-md-2" id="weather-div">-->
+                <!---->
+            <!--</div>-->
         </div>
+    </div>
 
+    <div class="container" id="comments"></div>
 
-        <div class="container" id="comments"></div>
+    <span class="btn icon-btn btn-primary btn-add" id="add-comment">Add comment <span class="glyphicon glyphicon-chevron-right img-circle" id="right"></span> </span>
 
-        <span class="btn icon-btn btn-primary btn-add" id="add-comment">Add comment <span class="glyphicon glyphicon-chevron-right img-circle" id="right"></span> </span>
-</div>
-
-<<<<<<< HEAD
-</div>
-    <% include common/footer.ejs %>
-<% include common/foot.ejs %>
-</div>
-=======
-
-</div>
-<% include common/foot.ejs %>
     <% include common/footer.ejs %>
 </div>
->>>>>>> e934f6b92b0a17755f5f27dbaaceab6bc84d9615
+<% include common/foot.ejs %>
