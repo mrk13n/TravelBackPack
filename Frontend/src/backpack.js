@@ -1,6 +1,6 @@
 var Storage = require('./LocalStorage');
 var Templates = require('./Teamplates');
-var $com = $('#com');
+var $cities = $('#city-favourite-comments-container');
 
 $(function () {
     $(".city-favourite-comments-panel").click(function(){
@@ -32,35 +32,68 @@ function randomAvatar(){
 }
 
 
-function showComments(list) {
-    $com.html("");
+// function showComments(list) {
+//     $com.html("");
+//
+//     function showOneComment(comment) {
+//         var Backpack = getBackpack();
+//         var html_code = Templates.Comment_OneItem({comment: comment});
+//
+//         var $node = $(html_code);
+//
+//         $com.append($node);
+//
+//         $node.find('.favorite').click(function () {
+//             for (var i = 0; i < Backpack.length; i++) {
+//                 if (comment.comment._id == Backpack[i].comment._id) {
+//                     removeFromStorrage(Backpack, i);
+//                     initializeFavorites();
+//                 }
+//             }
+//         });
+//     }
+//
+//     list.forEach(showOneComment);
+// }
 
-    function showOneComment(comment) {
+function showCities(list) {
+    $cities.html("");
+
+    function showOne(city) {
         var Backpack = getBackpack();
-        var html_code = Templates.Comment_OneItem({comment: comment});
+        var html_code = Templates.FavouriteCityComments({city: city});
 
         var $node = $(html_code);
 
-        $com.append($node);
+        $cities.append($node);
 
-        $node.find('.favorite').click(function () {
+        if (Backpack !== null) {
             for (var i = 0; i < Backpack.length; i++) {
-                if (comment.comment._id == Backpack[i].comment._id) {
-                    removeFromStorrage(Backpack, i);
-                    initializeFavorites();
+                if (city.city == Backpack[i].city) {
+                    var html_code2 = Templates.OneFavouriteComment({comment: Backpack[i]});
+
+                    var $node2 = $(html_code2);
+
+                    $node.find('.backpack-comments').append($node2);
+
+                    var k = i;
+                    $node2.find('.favorite').click(function () {
+                            removeFromStorrage(Backpack, k);
+                            initializeFavorites();
+                    });
                 }
             }
-        });
+        }
     }
 
-    list.forEach(showOneComment);
+    list.forEach(showOne);
 }
 
 function initializeFavorites() {
     var Backpack = getBackpack();
-    var a = getCities(Backpack);
-    console.log(a);
-    showComments(Backpack);
+    var cities = getCities(Backpack);
+    showCities(cities);
+    // showComments(Backpack);
 }
 
 function getBackpack() {
@@ -77,17 +110,17 @@ function getCities(back) {
     if (back !== null) {
         for (var i = 0; i < back.length; i++) {
             if (cities.length === 0) {
-                cities.push(back[i].city);
+                cities.push({city: back[i].city});
             } else {
                 for (var j = 0; j < cities.length; j++) {
                     var similar = false;
-                    if (cities[j] === back[i].city ) {
+                    if (cities[j].city == back[i].city ) {
                         similar = true;
                         break;
                     }
                 }
                 if (!similar) {
-                    cities.push(back[i].city);
+                    cities.push({city: back[i].city});
                 }
             }
         }
