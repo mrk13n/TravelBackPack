@@ -3,6 +3,17 @@ var Templates = require('./Teamplates');
 var $cities = $('#city-favourite-comments-container');
 
 $(function () {
+
+    var els = document.getElementsByClassName("myclass");
+
+    Array.prototype.forEach.call(els, function(el) {
+        if(el.clientHeight < 300){
+            el.style.overflow = 'hidden';
+        }else{
+            el.style.overflow = "scroll"
+        }
+    });
+
     $(".city-favourite-comments-panel").click(function(){
         $(this).addClass("open-window");
     });
