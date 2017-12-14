@@ -12,7 +12,6 @@ $(function () {
     var type;
     a = true;
     initializeComments('food');
-
     $("#city-scroll").click(function(){
         scrollTo();
     });
@@ -111,37 +110,39 @@ function initializeComments(type) {
             API.getComments(current_city, function (err, data) {
                 if (!err) {
                     if (!data.emptyForm) {
-                        for (var i = 0; i < data.length; i++) {
-                            var one;
-                            var fav = false;
-                            var Backpack;
+                        var i;
+                        for (i = 0; i < data.length; i++) {
                             if (data[i].type == type) {
-                                Backpack = getBackpack();
-                                ab(Backpack);
-                                if (Backpack !== null) {
-                                    for (var j = 0; j < Backpack.length; j++) {
-                                        if (data[i]._id == Backpack[j].comment._id) {
-                                            fav = true;
-                                        } else {
-                                            fav = false;
-                                        }
-                                    }
-                                }
-                                one = {
-                                    city: current_city.city,
-                                    favorite: fav,
-                                    comment: data[i]
-                                };
-                                comments.push(one);
+                                comments.push(data[i]);
                             }
                         }
+                        var z = [];
+                        for (i = 0; i < comments.length; i++) {
+                            var one;
+                            var fav = false;
+                            var Backpack = getBackpack();
+                            if (Backpack !== null) {
+                                for (var j = 0; j < Backpack.length; j++) {
+                                    if (comments[i]._id == Backpack[j].comment._id) {
+                                        fav = true;
+                                    }
+                                }
+                            }
+                            one = {
+                                city: current_city.city,
+                                favorite: fav,
+                                comment: comments[i]
+                            };
+                            z.push(one);
+                        }
+
+                        comments = z;
 
                         function showComments(list) {
                             $comments.html("");
 
                             function showOneComment(comment) {
                                 var Backpack = getBackpack();
-                                console.log(comment.favorite);
                                 var html_code = Templates.Comment_OneItem({comment: comment});
 
                                 var $node = $(html_code);
@@ -160,23 +161,19 @@ function initializeComments(type) {
                                     });
 
                                     $node.find('.favorite').click(function () {
-                                        $(this).removeClass('glyphicon glyphicon-star-empty');
-                                        $(this).addClass('glyphicon glyphicon-star');
-                                        Backpack = getBackpack();
-                                        console.log(comment.favorite);
                                         Backpack.push(comment);
                                         saveComment(Backpack);
+                                        initializeComments(type);
                                     });
                                 }
 
                                 if (comment.favorite) {
                                     $node.find('.favorite').click(function () {
-                                        Backpack = getBackpack();
                                         for (var i = 0; i < Backpack.length; i++) {
-                                            // if (comment.id == Backpack[i].id) {
-                                            //     console.log('removeIt');
-                                            //     removeFromStorrage(Backpack, i);
-                                            // }
+                                            if (comment.comment._id == Backpack[i].comment._id) {
+                                                removeFromStorrage(Backpack, i);
+                                                initializeComments(type);
+                                            }
                                         }
                                     });
                                 }
@@ -191,14 +188,12 @@ function initializeComments(type) {
                 }
             });
             var weather;
-            console.log(current_city.city);
             $.ajax({
                 url: 'http://api.openweathermap.org/data/2.5/weather?q='+current_city.city+"&units=metric"+
                 "&APPID=d41f5cc0cbb6152f6a6af0037d456d08",
                 type: "GET",
                 dataType: "jsonp",
                 success: function (data) {
-                    console.log(data)
                     weather = data;
                     $weath.html("");
                     var html_code3 = Templates.weatherBlock({weather: weather});
@@ -253,6 +248,17 @@ function initializeComments(type) {
                     });
                 }
             });
+
+            function randomAvatar(){
+                var rand;
+                rand = Math.floor((Math.random() * 20) + 1);
+                var img_src = "Rick.png";
+                var image = document.createElement("img");
+                image.className = "img-responsive user-photo";
+                image.src = "assets/images/" + img_src;
+                imageParent.appendChild(image);
+            }
+
         }
     });
 }
@@ -275,7 +281,6 @@ function getBackpack() {
 }
 
 function removeFromStorrage(back, i) {
-    back.slice(i, 1);
-    console.log(back);
+    back.splice(i, 1);
     Storage.set('backpack', back);
 }
