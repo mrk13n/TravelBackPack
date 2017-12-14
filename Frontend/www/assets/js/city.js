@@ -287,7 +287,7 @@ function initializeComments(type) {
             });
             var weather;
             $.ajax({
-                url: 'http://api.openweathermap.org/data/2.5/weather?q='+current_city.city+"&units=metric"+
+                url: 'https://api.openweathermap.org/data/2.5/weather?q='+current_city.city+"&units=metric"+
                 "&APPID=d41f5cc0cbb6152f6a6af0037d456d08",
                 type: "GET",
                 dataType: "jsonp",
