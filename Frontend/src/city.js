@@ -25,6 +25,10 @@ $(function () {
         scrollDown();
     });
 
+    $("#scroll-down-page").click(function(){
+        scrollDown();
+    });
+
     function scrollDown() {
         $('html, body').animate({ scrollTop: $(document).height() }, 'slow');
         return false;
