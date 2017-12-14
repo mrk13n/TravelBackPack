@@ -31,6 +31,10 @@ module.exports = function(grunt) {
             backpack: {
                 src:        'Frontend/src/backpack.js',
                 dest:       'Frontend/www/assets/js/backpack.js'
+            },
+            aboutus: {
+                src:        'Frontend/src/aboutus.js',
+                dest:       'Frontend/www/assets/js/aboutus.js'
             }
         }
     };
@@ -48,7 +52,8 @@ module.exports = function(grunt) {
             tasks: [
                 'browserify:cities',
                 'browserify:city',
-                'browserify:backpack'
+                'browserify:backpack',
+                'browserify:aboutus'
             ]
         }
     };
@@ -68,7 +73,8 @@ module.exports = function(grunt) {
         [
             'browserify:cities',
             'browserify:city',
-            'browserify:backpack'
+            'browserify:backpack',
+            'browserify:aboutus'
         ]
     );
 
