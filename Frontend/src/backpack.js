@@ -5,8 +5,11 @@ var $cities = $('#city-favourite-comments-container');
 $(function () {
 
     var pack = getBackpack();
-    if(pack.length == 0){
-        document.getElementById("ffooter").style.marginTop = "100px";
+
+    if (pack !== null) {
+        if(pack.length === 0){
+            document.getElementById("ffooter").style.marginTop = "100px";
+        }
     }
 
     $(".city-favourite-comments-panel").click(function(){
@@ -15,7 +18,6 @@ $(function () {
 
     $("#city-scroll").click(function(){
         scrollTo();
-        // randomAvatar();
     });
 
     function scrollTo() {
