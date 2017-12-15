@@ -90,11 +90,11 @@ $(function () {
         $('.niceStaff').css('display', 'block');
         $('.niceStaff').animate({'bottom':'0'}, 500);
         setTimeout(function () {
-            $('.niceStaff').animate({'bottom':'-150px'}, 500);
+            $('.niceStaff').animate({'bottom':'-200px'}, 500);
         }, 1600);
         setTimeout(function () {
             $('.niceStaff').css('display', 'none');
-        }, 2100);
+        }, 2200);
     });
 
 });
