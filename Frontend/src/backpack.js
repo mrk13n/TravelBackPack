@@ -5,7 +5,6 @@ var $cities = $('#city-favourite-comments-container');
 $(function () {
 
     var pack = getBackpack();
-    console.log(pack);
     if(pack.length == 0){
         document.getElementById("ffooter").style.marginTop = "100px";
     }

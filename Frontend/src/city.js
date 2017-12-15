@@ -11,6 +11,9 @@ $(function () {
     GetInfoCity.showInfo();
     var type;
     a = true;
+    $( ".show-weather" ).click(function() {
+        $( "#weather-div" ).show( "slow" );
+    });
     initializeComments('food');
     $("#city-scroll").click(function(){
         scrollTo();
