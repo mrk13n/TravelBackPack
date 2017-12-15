@@ -4,15 +4,11 @@ var $cities = $('#city-favourite-comments-container');
 
 $(function () {
 
-    var els = document.getElementsByClassName("myclass");
-
-    Array.prototype.forEach.call(els, function(el) {
-        if(el.clientHeight < 300){
-            el.style.overflow = 'hidden';
-        }else{
-            el.style.overflow = "scroll"
-        }
-    });
+    var pack = getBackpack();
+    console.log(pack);
+    if(pack.length == 0){
+        document.getElementById("ffooter").style.marginTop = "100px";
+    }
 
     $(".city-favourite-comments-panel").click(function(){
         $(this).addClass("open-window");

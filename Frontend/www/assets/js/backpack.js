@@ -28,15 +28,11 @@ var $cities = $('#city-favourite-comments-container');
 
 $(function () {
 
-    var els = document.getElementsByClassName("myclass");
-
-    Array.prototype.forEach.call(els, function(el) {
-        if(el.clientHeight < 300){
-            el.style.overflow = 'hidden';
-        }else{
-            el.style.overflow = "scroll"
-        }
-    });
+    var pack = getBackpack();
+    console.log(pack);
+    if(pack.length == 0){
+        document.getElementById("ffooter").style.marginTop = "100px";
+    }
 
     $(".city-favourite-comments-panel").click(function(){
         $(this).addClass("open-window");
@@ -1572,7 +1568,7 @@ module.exports={
   "_args": [
     [
       "ejs@2.5.7",
-      "C:\\Users\\Maria\\Documents\\GitHub\\TravelBackPack"
+      "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack"
     ]
   ],
   "_from": "ejs@2.5.7",
@@ -1596,11 +1592,7 @@ module.exports={
   ],
   "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz",
   "_spec": "2.5.7",
-<<<<<<< HEAD
   "_where": "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack",
-=======
-  "_where": "C:\\Users\\Maria\\Documents\\GitHub\\TravelBackPack",
->>>>>>> e95facc4d8cf007b1f2dafef5e422be223556169
   "author": {
     "name": "Matthew Eernisse",
     "email": "mde@fleegix.org",
