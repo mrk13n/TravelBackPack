@@ -1848,7 +1848,11 @@ module.exports={
   ],
   "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz",
   "_spec": "2.5.7",
+<<<<<<< HEAD
   "_where": "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack",
+=======
+  "_where": "C:\\Users\\Maria\\Documents\\GitHub\\TravelBackPack",
+>>>>>>> 92ebd36a359fe48ca70df11676c5dd961819e408
   "author": {
     "name": "Matthew Eernisse",
     "email": "mde@fleegix.org",
