@@ -16,7 +16,7 @@ $(function () {
         $(this).addClass("open-window");
     });
 
-    $("#city-scroll").click(function(){
+    $("#favourites-scroll").click(function(){
         scrollTo();
     });
 
