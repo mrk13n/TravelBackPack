@@ -75,7 +75,6 @@ function initialiseCities() {
 }
 exports.initialiseCities = initialiseCities;
 },{"../API":1,"../LocalStorage":4,"../Teamplates":5}],3:[function(require,module,exports){
-var Templates = require('../Teamplates');
 var Cities;
 var API = require('../API');
 var Storage = require('../LocalStorage');
@@ -90,7 +89,7 @@ function getId(text) {
                 if (text !== undefined) {
                     text = text.toLowerCase();
                     nameCity = Cities[i].city.toLowerCase();
-                    if (text == nameCity) {
+                    if (text === nameCity) {
                         var id = Cities[i].id;
                         Storage.set('id', id);
                         document.location.href = '/city.html'
@@ -106,7 +105,7 @@ function getId(text) {
 }
 
 exports.getId = getId;
-},{"../API":1,"../LocalStorage":4,"../Teamplates":5}],4:[function(require,module,exports){
+},{"../API":1,"../LocalStorage":4}],4:[function(require,module,exports){
 var basil = require('basil.js');
 basil = new basil();
 
@@ -165,6 +164,9 @@ $(function () {
     $('#searchBox').focus(function () {
         $('#searchBox').keyup(function (e) {
             text = $('input.form-control').val();
+            if (e.keyCode === 13) {
+                getId.getId(text);
+            }
         });
     });
 

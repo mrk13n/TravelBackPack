@@ -12,7 +12,7 @@ function getId(text) {
                 if (text !== undefined) {
                     text = text.toLowerCase();
                     nameCity = Cities[i].city.toLowerCase();
-                    if (text == nameCity) {
+                    if (text === nameCity) {
                         var id = Cities[i].id;
                         Storage.set('id', id);
                         document.location.href = '/city.html'
