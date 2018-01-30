@@ -169,35 +169,38 @@ function initializeComments(type) {
 
                                 $comments.append($node);
 
-                                if (!comment.favorite) {
-                                    $node.find('.favorite').mouseover(function () {
+                                $node.find('.favorite').mouseover(function () {
+                                    if (!comment.favorite) {
                                         $(this).removeClass('glyphicon glyphicon-star-empty');
                                         $(this).addClass('glyphicon glyphicon-star');
-                                    });
+                                    }
+                                });
 
-                                    $node.find('.favorite').mouseout(function () {
+                                $node.find('.favorite').mouseout(function () {
+                                    if (!comment.favorite) {
                                         $(this).removeClass('glyphicon glyphicon-star');
                                         $(this).addClass('glyphicon glyphicon-star-empty');
-                                    });
+                                    }
+                                });
 
-                                    $node.find('.favorite').click(function () {
+                                $node.find('.favorite').click(function () {
+                                    if (comment.favorite) {
+                                        for (var i = 0; i < Backpack.length; i++) {
+                                            if (comment.comment._id == Backpack[i].comment._id) {
+                                                comment.favorite = false;
+                                                removeFromStorrage(Backpack, i);
+                                                $(this).removeClass('glyphicon glyphicon-star');
+                                                $(this).addClass('glyphicon glyphicon-star-empty');
+                                            }
+                                        }
+                                    } else {
                                         comment.favorite = true;
                                         Backpack.push(comment);
                                         saveComment(Backpack);
-                                        initializeComments(type);
-                                    });
-                                }
-
-                                if (comment.favorite) {
-                                    $node.find('.favorite').click(function () {
-                                        for (var i = 0; i < Backpack.length; i++) {
-                                            if (comment.comment._id == Backpack[i].comment._id) {
-                                                removeFromStorrage(Backpack, i);
-                                                initializeComments(type);
-                                            }
-                                        }
-                                    });
-                                }
+                                        $(this).removeClass('glyphicon glyphicon-star-empty');
+                                        $(this).addClass('glyphicon glyphicon-star');
+                                    }
+                                });
                             }
 
                             list.forEach(showOneComment);
@@ -300,3 +303,54 @@ function randomAvatar(){
     rand = Math.floor((Math.random() * 20) + 1);
     return rand;
 }
+
+
+// if (!comment.favorite) {
+//     $node.find('.favorite').mouseover(function () {
+//         $(this).removeClass('glyphicon glyphicon-star-empty');
+//         $(this).addClass('glyphicon glyphicon-star');
+//     });
+//
+//     $node.find('.favorite').mouseout(function () {
+//         $(this).removeClass('glyphicon glyphicon-star');
+//         $(this).addClass('glyphicon glyphicon-star-empty');
+//     });
+//
+//     $node.find('.favorite').click(function () {
+//         comment.favorite = true;
+//         Backpack.push(comment);
+//         saveComment(Backpack);
+//         $(this).removeClass('glyphicon glyphicon-star-empty');
+//         $(this).addClass('glyphicon glyphicon-star');
+//         // showOneComment(comment);
+//         // initializeComments(type);
+//     });
+// } else {
+//     $node.find('.favorite').click(function () {
+//         for (var i = 0; i < Backpack.length; i++) {
+//             if (comment.comment._id == Backpack[i].comment._id) {
+//                 comment.favorite = false;
+//                 removeFromStorrage(Backpack, i);
+//                 $(this).removeClass('glyphicon glyphicon-star');
+//                 $(this).addClass('glyphicon glyphicon-star-empty');
+//                 // initializeComments(type);
+//                 // showOneComment(comment);
+//             }
+//         }
+//     });
+// }
+//
+// if (comment.favorite) {
+//     // $node.find('.favorite').click(function () {
+//     //     for (var i = 0; i < Backpack.length; i++) {
+//     //         if (comment.comment._id == Backpack[i].comment._id) {
+//     //             comment.favorite = false;
+//     //             removeFromStorrage(Backpack, i);
+//     //             $(this).removeClass('glyphicon glyphicon-star');
+//     //             $(this).addClass('glyphicon glyphicon-star-empty');
+//     //             // initializeComments(type);
+//     //             // showOneComment(comment);
+//     //         }
+//     //     }
+//     // });
+// }
