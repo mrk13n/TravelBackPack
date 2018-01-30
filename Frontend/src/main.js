@@ -33,6 +33,9 @@ $(function () {
     $('#searchBox').focus(function () {
         $('#searchBox').keyup(function (e) {
             text = $('input.form-control').val();
+            if (e.keyCode === 13) {
+                getId.getId(text);
+            }
         });
     });
 
