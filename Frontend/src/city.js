@@ -15,8 +15,12 @@ $(function () {
         $( "#weather-div" ).show( "slow" );
     });
     initializeComments('food');
-    $("#city-scroll").click(function(){
+    $("#comments-scroll").click(function() {
         scrollTo();
+    });
+
+    $(".scroll-page").click(function () {
+        scrollDown();
     });
 
     function scrollTo() {
@@ -24,20 +28,13 @@ $(function () {
         return false;
     }
 
-    $("#add-comment").click(function(){
-        scrollDown();
-    });
-
-    $("#scroll-down-page").click(function(){
-        scrollDown();
-    });
-
     function scrollDown() {
-        $('html, body').animate({ scrollTop: $(document).height() }, 'slow');
+        $('html, body').animate({ scrollTop: $(document).height() }, 1000);
         return false;
     }
 
     $("#filter-food").click(function () {
+        console.log($(window).scrollTop());
         allNotActive();
         $("#filter-food").addClass("active");
         type = 'food';
@@ -53,6 +50,7 @@ $(function () {
         initializeComments(type);
         $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
         $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
+        console.log($(window).scrollTop());
     });
 
     $("#filter-hitchhiking").click(function () {
@@ -74,6 +72,7 @@ $(function () {
     });
 
     $('.btn-add').click(function () {
+        scrollDown();
         $('#form').slideToggle(400);
         if (a) {
             $('#right').removeClass('glyphicon glyphicon-chevron-right img-circle');

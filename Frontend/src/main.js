@@ -1,5 +1,7 @@
 $(function () {
     var GetCities = require('./Cities/GetCities');
+    var getId = require('./Cities/GetSearch');
+    var text;
     GetCities.initialiseCities();
 
     $("#city-scroll").click(function(){
@@ -28,5 +30,14 @@ $(function () {
         }, 2200);
     });
 
+    $('#searchBox').focus(function () {
+        $('#searchBox').keyup(function (e) {
+            text = $('input.form-control').val();
+        });
+    });
+
+    $('.search-button').click(function () {
+        getId.getId(text);
+    });
 });
 

@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    $("#city-scroll").click(function () {
+    $("#team-scroll").click(function () {
         scrollTo();
     });
 
