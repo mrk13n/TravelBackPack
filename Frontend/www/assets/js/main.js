@@ -78,23 +78,17 @@ exports.initialiseCities = initialiseCities;
 var Cities;
 var API = require('../API');
 var Storage = require('../LocalStorage');
-var trash = ["the","of","and","a","to","in","is","you","that","it","he","was","for","on","are","as","with","his","they","i","at","be","this","have","from","or","one","had","by","word","but","not","what","all","were","we","when","your","can","said","there","use","an","each","which","she","do","how","their","if","will","up","other","about","out","many","then","them","these","so","some","her","would","make","like","him","into","time","has","look","two","more","write","go","see","number","no","way","could","people","my","than","first","been","call","who","its","now","find","long","down","day","did","get","come","made","may","part" , "want" , "best"];
+var trash = ["the","of","and","a","to","in","is","you","that","it","he","was","for","on","are","as","with","his","they","i","at","be","this","have","from","or","one","had","by","word","but","not","what","all","were","we","when","your","can","said","there","use","an","each","which","she","do","how","their","if","will","up","other","about","out","many","then","them","these","so","some","her","would","make","like","him","into","time","has","look","two","more","write","go","see","number","no","way","could","people","my","than","first","been","call","who","its","now","find","long","down","day","did","get","come","made","may","part" , "want" , "best" , "where" , "can"];
+var wrong_symbols = [' ', ',', '.', '!', ';', ':', '?', '`', '<', '>', '/', '"', '\'', '\\', ']', '[', '}', '{', '=', '+', '-', '_', ')', '(', '*', '&', '^', '%', '$', '#', '№', '@', '~', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
 
 function getId(text) {
     var one = '';
     var words = [];
-<<<<<<< HEAD
-    var wrong_symbols = [' ', ',', '.', '!', ';', ':', '?', '`', '<', '>', '/', '"', '\'', '\\', ']', '[', '}', '{', '=', '+', '-', '_', ')', '(', '*', '&', '^', '%', '$', '#', '№', '@', '~', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
-    var nameCity;
-    var find = false;
-    var id;
-=======
     var nameCity;
     var find = false;
     var id;
     text = text.toLowerCase();
     //create array with all words
->>>>>>> 8515fe2412f4520acec356669ce263029e9eea2c
     for (var i = 0; i < text.length; i++) {
         for (var j = 0; j < wrong_symbols.length; j++) {
             if (text[i] === wrong_symbols[i]) {
@@ -110,14 +104,11 @@ function getId(text) {
         //     }
         // }
     }
-<<<<<<< HEAD
-=======
     words.push(one);
     //delete trash words
     find_words = deleteTrash(words);
     console.log(words);
     //try to find just city
->>>>>>> 8515fe2412f4520acec356669ce263029e9eea2c
     API.getCitiesList(function (err, data) {
         if (!err) {
             Cities = data;
