@@ -34,7 +34,6 @@ $(function () {
     }
 
     $("#filter-food").click(function () {
-        console.log($(window).scrollTop());
         allNotActive();
         $("#filter-food").addClass("active");
         type = 'food';
@@ -169,38 +168,33 @@ function initializeComments(type) {
 
                                 $comments.append($node);
 
-                                $node.find('.favorite').mouseover(function () {
-                                    if (!comment.favorite) {
+                                if (!comment.favorite) {
+                                    $node.find('.favorite').mouseover(function () {
                                         $(this).removeClass('glyphicon glyphicon-star-empty');
                                         $(this).addClass('glyphicon glyphicon-star');
-                                    }
-                                });
-
-                                $node.find('.favorite').mouseout(function () {
-                                    if (!comment.favorite) {
+                                    });
+                                    $node.find('.favorite').mouseout(function () {
                                         $(this).removeClass('glyphicon glyphicon-star');
                                         $(this).addClass('glyphicon glyphicon-star-empty');
-                                    }
-                                });
-
-                                $node.find('.favorite').click(function () {
-                                    if (comment.favorite) {
-                                        for (var i = 0; i < Backpack.length; i++) {
-                                            if (comment.comment._id == Backpack[i].comment._id) {
-                                                comment.favorite = false;
-                                                removeFromStorrage(Backpack, i);
-                                                $(this).removeClass('glyphicon glyphicon-star');
-                                                $(this).addClass('glyphicon glyphicon-star-empty');
-                                            }
-                                        }
-                                    } else {
+                                    });
+                                    $node.find('.favorite').click(function () {
                                         comment.favorite = true;
                                         Backpack.push(comment);
                                         saveComment(Backpack);
-                                        $(this).removeClass('glyphicon glyphicon-star-empty');
-                                        $(this).addClass('glyphicon glyphicon-star');
-                                    }
-                                });
+                                        initializeComments(type);
+                                    });
+                                }
+
+                                if (comment.favorite) {
+                                    $node.find('.favorite').click(function () {
+                                        for (var i = 0; i < Backpack.length; i++) {
+                                            if (comment.comment._id == Backpack[i].comment._id) {
+                                                removeFromStorrage(Backpack, i);
+                                                initializeComments(type);
+                                            }
+                                        }
+                                    });
+                                }
                             }
 
                             list.forEach(showOneComment);
