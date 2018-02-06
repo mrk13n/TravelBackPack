@@ -371,7 +371,8 @@ function saveComment(back) {
     Storage.set('backpack', back);
 }
 
-function ab(back) {
+
+function clearBackPack(back) {
     back = [];
     Storage.set('backpack', back);
 }

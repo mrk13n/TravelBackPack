@@ -1,782 +1,145 @@
 var Cities;
 var API = require('../API');
 var Storage = require('../LocalStorage');
-<<<<<<< HEAD
-var trash = ['a', 'able', 'about', 'above', 'abroad', 'according', 'accordingly',
-    'across',
-    'actually',
-    'adj', 'after',
-    'afterwards',
-    'again',
-    'against',
-    'ago',
-    'ahead',
-    'aint',
-    'all',
-    'allow',
-    'allows',
-    'almost',
-    'alone',
-    'along',
-    'alongside',
-    'already',
-    'also',
-    'although',
-    'always',
-    'am',
-    'amid',
-    'amidst',
-    'among',
-    'amongst',
-    'an',
-    'and',
-    'another',
-    'any',
-    'anybody',
-    'anyhow',
-    'anyone',
-    'anything',
-    'anyway',
-    'anyways',
-    'anywhere',
-    'apart',
-    'appear',
-    'appreciate',
-    'appropriate',
-    'are',
-    'arent',
-    'around',
-    'as',
-    'as',
-    'aside',
-    'ask',
-    'asking',
-    'associated',
-    'at',
-    'available',
-    'away',
-    'awfully',
-    'b',
-    'back',
-    'backward',
-    'backwards',
-    'be',
-    'became',
-    'because',
-    'become',
-    'becomes',
-    'becoming',
-    'been',
-    'before',
-    'beforehand',
-    'begin',
-    'behind',
-    'being',
-    'believe',
-    'below',
-    'beside',
-    'besides',
-    'best',
-    'better',
-    'between',
-    'beyond',
-    'both',
-    'brief',
-    'but',
-    'by',
-    'c',
-    'came',
-    'can',
-    'cannot',
-    'cant',
-    'cant',
-    'caption',
-    'cause',
-    'causes',
-    'certain',
-    'certainly',
-    'changes',
-    'clearly',
-    'cmon',
-    'co',
-    'co.',
-    'com',
-    'come',
-    'comes',
-    'concerning',
-    'consequently',
-    'consider',
-    'considering',
-    'contain',
-    'containing',
-    'contains',
-    'corresponding',
-    'could',
-    'couldnt',
-    'course',
-    'cs',
-    'currently',
-    'd',
-    'dare',
-    'darent',
-    'definitely',
-    'described',
-    'despite',
-    'did',
-    'didnt',
-    'different',
-    'directly',
-    'do',
-    'does',
-    'doesnt',
-    'doing',
-    'done',
-    'dont',
-    'down',
-    'downwards',
-    'during',
-    'e',
-    'each',
-    'edu',
-    'eg',
-    'eight',
-    'eighty',
-    'either',
-    'else',
-    'elsewhere',
-    'end',
-    'ending',
-    'enough',
-    'entirely',
-    'especially',
-    'et',
-    'etc',
-    'even',
-    'ever',
-    'evermore',
-    'every',
-    'everybody',
-    'everyone',
-    'everything',
-    'everywhere',
-    'ex',
-    'exactly',
-    'example',
-    'except',
-    'f',
-    'fairly',
-    'far',
-    'farther',
-    'few',
-    'fewer',
-    'fifth',
-    'first',
-    'five',
-    'followed',
-    'following',
-    'follows',
-    'for',
-    'forever',
-    'former',
-    'formerly',
-    'forth',
-    'forward',
-    'found',
-    'four',
-    'from',
-    'further',
-    'furthermore',
-    'g',
-    'get',
-    'gets',
-    'getting',
-    'given',
-    'gives',
-    'go',
-    'goes',
-    'going',
-    'gone',
-    'got',
-    'gotten',
-    'greetings',
-    'h',
-    'had',
-    'hadnt',
-    'half',
-    'happens',
-    'hardly',
-    'has',
-    'hasnt',
-    'have',
-    'havent',
-    'having',
-    'he',
-    'hed',
-    'hell',
-    'hello',
-    'help',
-    'hence',
-    'her',
-    'here',
-    'hereafter',
-    'hereby',
-    'herein',
-    'heres',
-    'hereupon',
-    'hers',
-    'herself',
-    'hes',
-    'hi',
-    'him',
-    'himself',
-    'his',
-    'hither',
-    'hopefully',
-    'how',
-    'howbeit',
-    'however',
-    'hundred',
-    'i',
-    'id',
-    'ie',
-    'if',
-    'ignored',
-    'ill',
-    'im',
-    'immediate',
-    'in',
-    'inasmuch',
-    'inc',
-    'inc.',
-    'indeed',
-    'indicate',
-    'indicated',
-    'indicates',
-    'inner',
-    'inside',
-    'insofar',
-    'instead',
-    'into',
-    'inward',
-    'is',
-    'isnt',
-    'it',
-    'itd',
-    'itll',
-    'its',
-    'its',
-    'itself',
-    'ive',
-    'j',
-    'just',
-    'k',
-    'keep',
-    'keeps',
-    'kept',
-    'know',
-    'known',
-    'knows',
-    'l',
-    'last',
-    'lately',
-    'later',
-    'latter',
-    'latterly',
-    'least',
-    'less',
-    'lest',
-    'let',
-    'lets',
-    'like',
-    'liked',
-    'likely',
-    'likewise',
-    'little',
-    'look',
-    'looking',
-    'looks',
-    'low',
-    'lower',
-    'ltd',
-    'm',
-    'made',
-    'mainly',
-    'make',
-    'makes',
-    'many',
-    'may',
-    'maybe',
-    'maynt',
-    'me',
-    'mean',
-    'meantime',
-    'meanwhile',
-    'merely',
-    'might',
-    'mightnt',
-    'mine',
-    'minus',
-    'miss',
-    'more',
-    'moreover',
-    'most',
-    'mostly',
-    'mr',
-    'mrs',
-    'much',
-    'must',
-    'mustnt',
-    'my',
-    'myself',
-    'n',
-    'name',
-    'namely',
-    'nd',
-    'near',
-    'nearly',
-    'necessary',
-    'need',
-    'neednt',
-    'needs',
-    'neither',
-    'never',
-    'neverf',
-    'neverless',
-    'nevertheless',
-    'new',
-    'next',
-    'nine',
-    'ninety',
-    'no',
-    'nobody',
-    'non',
-    'none',
-    'nonetheless',
-    'noone',
-    'no-one',
-    'nor',
-    'normally',
-    'not',
-    'nothing',
-    'notwithstanding',
-    'novel',
-    'now',
-    'nowhere',
-    'o',
-    'obviously',
-    'of',
-    'off',
-    'often',
-    'oh',
-    'ok',
-    'okay',
-    'old',
-    'on',
-    'once',
-    'one',
-    'ones',
-    'ones',
-    'only',
-    'onto',
-    'opposite',
-    'or',
-    'other',
-    'others',
-    'otherwise',
-    'ought',
-    'oughtnt',
-    'our',
-    'ours',
-    'ourselves',
-    'out',
-    'outside',
-    'over',
-    'overall',
-    'own',
-    'p',
-    'particular',
-    'particularly',
-    'past',
-    'per',
-    'perhaps',
-    'placed',
-    'please',
-    'plus',
-    'possible',
-    'presumably',
-    'probably',
-    'provided',
-    'provides',
-    'q',
-    'que',
-    'quite',
-    'qv',
-    'r',
-    'rather',
-    'rd',
-    're',
-    'really',
-    'reasonably',
-    'recent',
-    'recently',
-    'regarding',
-    'regardless',
-    'regards',
-    'relatively',
-    'respectively',
-    'right',
-    'round',
-    's',
-    'said',
-    'same',
-    'saw',
-    'say',
-    'saying',
-    'says',
-    'second',
-    'secondly',
-    'see',
-    'seeing',
-    'seem',
-    'seemed',
-    'seeming',
-    'seems',
-    'seen',
-    'self',
-    'selves',
-    'sensible',
-    'sent',
-    'serious',
-    'seriously',
-    'seven',
-    'several',
-    'shall',
-    'shant',
-    'she',
-    'shed',
-    'shell',
-    'shes',
-    'should',
-    'shouldnt',
-    'since',
-    'six',
-    'so',
-    'some',
-    'somebody',
-    'someday',
-    'somehow',
-    'someone',
-    'something',
-    'sometime',
-    'sometimes',
-    'somewhat',
-    'somewhere',
-    'soon',
-    'sorry',
-    'specified',
-    'specify',
-    'specifying',
-    'still',
-    'sub',
-    'such',
-    'sup',
-    'sure',
-    't',
-    'take',
-    'taken',
-    'taking',
-    'tell',
-    'tends',
-    'th',
-    'than',
-    'thank',
-    'thanks',
-    'thanx',
-    'that',
-    'thatll',
-    'thats',
-    'thats',
-    'thatve',
-    'the',
-    'their',
-    'theirs',
-    'them',
-    'themselves',
-    'then',
-    'thence',
-    'there',
-    'thereafter',
-    'thereby',
-    'thered',
-    'therefore',
-    'therein',
-    'therell',
-    'therere',
-    'theres',
-    'theres',
-    'thereupon',
-    'thereve',
-    'these',
-    'they',
-    'theyd',
-    'theyll',
-    'theyre',
-    'theyve',
-    'thing',
-    'things',
-    'think',
-    'third',
-    'thirty',
-    'this',
-    'thorough',
-    'thoroughly',
-    'those',
-    'though',
-    'three',
-    'through',
-    'throughout',
-    'thru',
-    'thus',
-    'till',
-    'to',
-    'together',
-    'too',
-    'took',
-    'toward',
-    'towards',
-    'tried',
-    'tries',
-    'truly',
-    'try',
-    'trying',
-    'ts',
-    'twice',
-    'two',
-    'u',
-    'un',
-    'under',
-    'underneath',
-    'undoing',
-    'unfortunately',
-    'unless',
-    'unlike',
-    'unlikely',
-    'until',
-    'unto',
-    'up',
-    'upon',
-    'upwards',
-    'us',
-    'use',
-    'used',
-    'useful',
-    'uses',
-    'using',
-    'usually',
-    'v',
-    'value',
-    'various',
-    'versus',
-    'very',
-    'via',
-    'viz',
-    'vs',
-    'w',
-    'want',
-    'wants',
-    'was',
-    'wasnt',
-    'way',
-    'we',
-    'wed',
-    'welcome',
-    'well',
-    'well',
-    'went',
-    'were',
-    'were',
-    'werent',
-    'weve',
-    'what',
-    'whatever',
-    'whatll',
-    'whats',
-    'whatve',
-    'when',
-    'whence',
-    'whenever',
-    'where',
-    'whereafter',
-    'whereas',
-    'whereby',
-    'wherein',
-    'wheres',
-    'whereupon',
-    'wherever',
-    'whether',
-    'which',
-    'whichever',
-    'while',
-    'whilst',
-    'whither',
-    'who',
-    'whod',
-    'whoever',
-    'whole',
-    'wholl',
-    'whom',
-    'whomever',
-    'whos',
-    'whose',
-    'why',
-    'will',
-    'willing',
-    'wish',
-    'with',
-    'within',
-    'without',
-    'wonder',
-    'wont',
-    'would',
-    'wouldnt',
-    'x',
-    'y',
-    'yes',
-    'yet',
-    'you',
-    'youd',
-    'youll',
-    'your',
-    'youre',
-    'yours',
-    'yourself',
-    'yourselves',
-    'youve',
-    'z',
-    'zero'
-]
-var cities = ['paris','barcelona','budapest','amsterdam','london','berlin'];
-=======
-var trash = ["the","of","and","a","to","in","is","you","that","it","he","was","for","on","are","as","with","his","they","i","at","be","this","have","from","or","one","had","by","word","but","not","what","all","were","we","when","your","can","said","there","use","an","each","which","she","do","how","their","if","will","up","other","about","out","many","then","them","these","so","some","her","would","make","like","him","into","time","has","look","two","more","write","go","see","number","no","way","could","people","my","than","first","been","call","who","its","now","find","long","down","day","did","get","come","made","may","part" , "want" , "best" , "where" , "can"];
-var wrong_symbols = [' ', ',', '.', '!', ';', ':', '?', '`', '<', '>', '/', '"', '\'', '\\', ']', '[', '}', '{', '=', '+', '-', '_', ')', '(', '*', '&', '^', '%', '$', '#', '№', '@', '~', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
->>>>>>> 7dd259381a642cd94a0e2778fb32df9a68324f5b
+var trash = require('./AdditionalArrays').trash;
+var wrong_symbols = require('./AdditionalArrays').wrong_symbols;
+//нашо нам цей масив? var cities = ['paris','barcelona','budapest','amsterdam','london','berlin'];
 
 function getId(text) {
     var city_name;
     var city_search;
     var find = false;
     var id;
-<<<<<<< HEAD
     var search_words = [];
     var n = 0;
-    search_words = cleanText(text);
-=======
+    //delete all symbols
+    text = deleteWrongSymbols(text);
+    //make all words to lowercase
     text = text.toLowerCase();
     //create array with all words
-    for (var i = 0; i < text.length; i++) {
-        for (var j = 0; j < wrong_symbols.length; j++) {
-            if (text[i] === wrong_symbols[i]) {
-                console.log("yes");
-            }
-        }
-        // if () {
-        //     one += text[i];
-        // } else {
-        //     if (one !== '') {
-        //         words.push(one);
-        //         one = '';
-        //     }
-        // }
-    }
-    words.push(one);
+    search_words = makeSearchArray(text);
     //delete trash words
-    find_words = deleteTrash(words);
-    console.log(words);
-    //try to find just city
->>>>>>> 7dd259381a642cd94a0e2778fb32df9a68324f5b
+    search_words = deleteTrash(search_words);
     API.getCitiesList(function (err, data) {
         if (!err) {
             Cities = data;
-            for(var i = 0;i < search_words.length;i++) {
-                for (var j = 0; j < Cities.length; j++) {
-                    if (search_words[i] === Cities[j].city.toLowerCase()) {
-                        city_name = Cities[j];
-                        search_words[i] = "";
-                        break;
+            if (search_words.length === 1) {
+                for (var i = 0; i < Cities.length; i++) {
+                    city_name = Cities[i].city.toLowerCase();
+                    if (search_words[0] === city_name) {
+                        id = Cities[i].id;
+                        Storage.set('id', id);
+                        document.location.href = '/city.html';
+                        find = true;
                     }
+                }
+                if (!find) {
+                    var a = search_words[0].length;
+                    var name;
+                    for (var j = 0; j < Cities.length; j++) {
+                        name ='';
+                        city_name = Cities[j].city.toLowerCase();
+                        for (var k = 0; k < a; k++) {
+                            name += city_name[k];
+                        }
+                        if (search_words[0] === name) {
+                            id = Cities[j].id;
+                            Storage.set('id', id);
+                            document.location.href = '/city.html';
+                            find = true;
+                        }
+                    }
+                }
+                if (!find) {
+                    $('.search-box').addClass('has-error');
+                    return(search_words[0]);
                 }
             }
-            city_search = {city: city_name.city};
-            API.getComments(city_search, function (err, data) {
-                if (!err) {
-                    var gt = true;
-                    var word_gt = false;
-                    for (i = 0; i < data.length; i++) {
-                        var comment_words = cleanText(data[i].comment);
-                        console.log(comment_words);
-                        for (var j = 0; j < search_words.length; j++){
-                            for (var k = 0; k < comment_words.length; k++){
-                                if (search_words[j] === comment_words[k]){
-                                    word_gt = true;
-                                    break;
-                                }
-                            }
-                            if (!word_gt){
-                                gt = false;
-                                break;
-                            }
-                            word_gt = false;
-                        }
-                        if(gt){
-                            console.log(data[i].comment)
-                        }
-                        gt = true;
-                        word_gt = false;
-                    }
-                }
-            });
+
+
+            // -------------------------------------------------------------------
+
+            // for(var i = 0;i < search_words.length;i++) {
+            //     for (var j = 0; j < Cities.length; j++) {
+            //         if (search_words[i] === Cities[j].city.toLowerCase()) {
+            //             city_name = Cities[j];
+            //             search_words[i] = "";
+            //             break;
+            //         }
+            //     }
+            // }
+            // city_search = {city: city_name.city};
+            // API.getComments(city_search, function (err, data) {
+            //     if (!err) {
+            //         var gt = true;
+            //         var word_gt = false;
+            //         for (i = 0; i < data.length; i++) {
+            //             var comment_words = cleanText(data[i].comment);
+            //             console.log(comment_words);
+            //             for (var j = 0; j < search_words.length; j++){
+            //                 for (var k = 0; k < comment_words.length; k++){
+            //                     if (search_words[j] === comment_words[k]){
+            //                         word_gt = true;
+            //                         break;
+            //                     }
+            //                 }
+            //                 if (!word_gt){
+            //                     gt = false;
+            //                     break;
+            //                 }
+            //                 word_gt = false;
+            //             }
+            //             if(gt){
+            //                 console.log(data[i].comment)
+            //             }
+            //             gt = true;
+            //             word_gt = false;
+            //         }
+            //     }
+            // });
+            // ------------------------------------------------------------
         }
     });
+}
 
+function deleteWrongSymbols(text) {
+    for (var i = 0; i < text.length; i++) {
+        for (var j = 0; j < wrong_symbols.length; j++) {
+            if (text[i] === wrong_symbols[j]) {
+                text = text.replace(text[i], '');
+                i--;
+                break;
+            }
+        }
+    }
+    return text;
+}
 
-    // API.getCitiesList(function (err, data) {
-    //     if (!err) {
-    //         Cities = data;
-    //         for (var i = 0; i < Cities.length; i++) {
-    //             if (text !== undefined) {
-    //                 nameCity = Cities[i].city_name.toLowerCase();
-    //                 if (text === nameCity) {
-    //                     id = Cities[i].id;
-    //                     Storage.set('id', id);
-    //                     document.location.href = '/city_name.html';
-    //                     find = true;
-    //                 }
-    //             }
-    //         }
-    //         if (!find) {
-    //             for (var j = 0; j < Cities.length; j++) {
-    //                 if (text !== undefined) {
-    //                     text = text.toLowerCase();
-    //                     var a = text.length;
-    //                     var name = '';
-    //                     nameCity = Cities[j].city_name.toLowerCase();
-    //                     for (var k = 0; k < a; k++) {
-    //                         name += nameCity[k];
-    //                     }
-    //                     if (text === name) {
-    //                         id = Cities[j].id;
-    //                         Storage.set('id', id);
-    //                         document.location.href = '/city_name.html';
-    //                         find = true;
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //         if (!find) {
-    //             $('.search-box').addClass('has-error');
-    //         }
-    //     }
-    // });
+function makeSearchArray(text) {
+    var word = '';
+    var arr = [];
+    for (var i = 0; i < text.length; i++) {
+        if (text[i] !== ' ') {
+            word += text[i];
+        } else {
+            arr.push(word);
+            word = '';
+        }
+    }
+    arr.push(word);
+    return arr;
+}
+
+function deleteTrash(words) {
+    for (var i = 0; i < words.length; i++) {
+        for (var j = 0; j < trash.length; j++) {
+            if (words[i] === trash[j]) {
+                words.splice(i, 1);
+                break;
+            }
+        }
+    }
+    return words;
 }
 
 function cleanText(text) {

@@ -39,47 +39,14 @@ exports.writeComment = function (comment, callback) {
   backendPost("/api/write-comments/", comment, callback);
 };
 },{}],2:[function(require,module,exports){
-var Templates = require('../Teamplates');
-var Cities;
-var API = require('../API');
-var $cities = $("#cities");
-var Storage = require('../LocalStorage');
-
-function showCities(list) {
-    $cities.html("");
-
-    function showOneCity(city) {
-        var html_code = Templates.City_OneItem({city: city});
-
-        var $node = $(html_code);
-
-        $node.find('.city-card').click(function () {
-            var id = this.id;
-            Storage.set('id', id);
-            document.location.href = '/city.html'
-        });
-
-        $cities.append($node);
-    }
-
-    list.forEach(showOneCity);
-}
-
-function initialiseCities() {
-    API.getCitiesList(function (err, data) {
-       if (!err) {
-           Cities = data;
-           showCities(Cities);
-       }
-    });
-}
-exports.initialiseCities = initialiseCities;
-},{"../API":1,"../LocalStorage":4,"../Teamplates":5}],3:[function(require,module,exports){
-var Cities;
-var API = require('../API');
-var Storage = require('../LocalStorage');
-<<<<<<< HEAD
-var trash = ['a', 'able', 'about', 'above', 'abroad', 'according', 'accordingly',
+var trash = [
+    'a',
+    'able',
+    'about',
+    'above',
+    'abroad',
+    'according',
+    'accordingly',
     'across',
     'actually',
     'adj', 'after',
@@ -731,129 +698,234 @@ var trash = ['a', 'able', 'about', 'above', 'abroad', 'according', 'accordingly'
     'youve',
     'z',
     'zero'
-]
-var cities = ['paris','barcelona','budapest','amsterdam','london','berlin'];
-=======
-var trash = ["the","of","and","a","to","in","is","you","that","it","he","was","for","on","are","as","with","his","they","i","at","be","this","have","from","or","one","had","by","word","but","not","what","all","were","we","when","your","can","said","there","use","an","each","which","she","do","how","their","if","will","up","other","about","out","many","then","them","these","so","some","her","would","make","like","him","into","time","has","look","two","more","write","go","see","number","no","way","could","people","my","than","first","been","call","who","its","now","find","long","down","day","did","get","come","made","may","part" , "want" , "best" , "where" , "can"];
-var wrong_symbols = [' ', ',', '.', '!', ';', ':', '?', '`', '<', '>', '/', '"', '\'', '\\', ']', '[', '}', '{', '=', '+', '-', '_', ')', '(', '*', '&', '^', '%', '$', '#', '№', '@', '~', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
->>>>>>> 7dd259381a642cd94a0e2778fb32df9a68324f5b
+];
+
+var wrong_symbols = [
+    ',',
+    '.',
+    '!',
+    ';',
+    ':',
+    '?',
+    '`',
+    '<',
+    '>',
+    '/',
+    '"',
+    '\'',
+    '\\',
+    ']',
+    '[',
+    '}',
+    '{',
+    '=',
+    '+',
+    '-',
+    '_',
+    ')',
+    '(',
+    '*',
+    '&',
+    '^',
+    '%',
+    '$',
+    '#',
+    '№',
+    '@',
+    '~',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '0'
+];
+
+exports.trash = trash;
+exports.wrong_symbols = wrong_symbols;
+},{}],3:[function(require,module,exports){
+var Templates = require('../Teamplates');
+var Cities;
+var API = require('../API');
+var $cities = $("#cities");
+var Storage = require('../LocalStorage');
+
+function showCities(list) {
+    $cities.html("");
+
+    function showOneCity(city) {
+        var html_code = Templates.City_OneItem({city: city});
+
+        var $node = $(html_code);
+
+        $node.find('.city-card').click(function () {
+            var id = this.id;
+            Storage.set('id', id);
+            document.location.href = '/city.html'
+        });
+
+        $cities.append($node);
+    }
+
+    list.forEach(showOneCity);
+}
+
+function initialiseCities() {
+    API.getCitiesList(function (err, data) {
+       if (!err) {
+           Cities = data;
+           showCities(Cities);
+       }
+    });
+}
+exports.initialiseCities = initialiseCities;
+},{"../API":1,"../LocalStorage":5,"../Teamplates":6}],4:[function(require,module,exports){
+var Cities;
+var API = require('../API');
+var Storage = require('../LocalStorage');
+var trash = require('./AdditionalArrays').trash;
+var wrong_symbols = require('./AdditionalArrays').wrong_symbols;
+//нашо нам цей масив? var cities = ['paris','barcelona','budapest','amsterdam','london','berlin'];
 
 function getId(text) {
     var city_name;
     var city_search;
     var find = false;
     var id;
-<<<<<<< HEAD
     var search_words = [];
     var n = 0;
-    search_words = cleanText(text);
-=======
+    //delete all symbols
+    text = deleteWrongSymbols(text);
+    //make all words to lowercase
     text = text.toLowerCase();
     //create array with all words
-    for (var i = 0; i < text.length; i++) {
-        for (var j = 0; j < wrong_symbols.length; j++) {
-            if (text[i] === wrong_symbols[i]) {
-                console.log("yes");
-            }
-        }
-        // if () {
-        //     one += text[i];
-        // } else {
-        //     if (one !== '') {
-        //         words.push(one);
-        //         one = '';
-        //     }
-        // }
-    }
-    words.push(one);
+    search_words = makeSearchArray(text);
     //delete trash words
-    find_words = deleteTrash(words);
-    console.log(words);
-    //try to find just city
->>>>>>> 7dd259381a642cd94a0e2778fb32df9a68324f5b
+    search_words = deleteTrash(search_words);
     API.getCitiesList(function (err, data) {
         if (!err) {
             Cities = data;
-            for(var i = 0;i < search_words.length;i++) {
-                for (var j = 0; j < Cities.length; j++) {
-                    if (search_words[i] === Cities[j].city.toLowerCase()) {
-                        city_name = Cities[j];
-                        search_words[i] = "";
-                        break;
+            if (search_words.length === 1) {
+                for (var i = 0; i < Cities.length; i++) {
+                    city_name = Cities[i].city.toLowerCase();
+                    if (search_words[0] === city_name) {
+                        id = Cities[i].id;
+                        Storage.set('id', id);
+                        document.location.href = '/city.html';
+                        find = true;
                     }
+                }
+                if (!find) {
+                    var a = search_words[0].length;
+                    var name;
+                    for (var j = 0; j < Cities.length; j++) {
+                        name ='';
+                        city_name = Cities[j].city.toLowerCase();
+                        for (var k = 0; k < a; k++) {
+                            name += city_name[k];
+                        }
+                        if (search_words[0] === name) {
+                            id = Cities[j].id;
+                            Storage.set('id', id);
+                            document.location.href = '/city.html';
+                            find = true;
+                        }
+                    }
+                }
+                if (!find) {
+                    $('.search-box').addClass('has-error');
+                    return(search_words[0]);
                 }
             }
-            city_search = {city: city_name.city};
-            API.getComments(city_search, function (err, data) {
-                if (!err) {
-                    var gt = true;
-                    var word_gt = false;
-                    for (i = 0; i < data.length; i++) {
-                        var comment_words = cleanText(data[i].comment);
-                        console.log(comment_words);
-                        for (var j = 0; j < search_words.length; j++){
-                            for (var k = 0; k < comment_words.length; k++){
-                                if (search_words[j] === comment_words[k]){
-                                    word_gt = true;
-                                    break;
-                                }
-                            }
-                            if (!word_gt){
-                                gt = false;
-                                break;
-                            }
-                            word_gt = false;
-                        }
-                        if(gt){
-                            console.log(data[i].comment)
-                        }
-                        gt = true;
-                        word_gt = false;
-                    }
-                }
-            });
+
+
+            // -------------------------------------------------------------------
+
+            // for(var i = 0;i < search_words.length;i++) {
+            //     for (var j = 0; j < Cities.length; j++) {
+            //         if (search_words[i] === Cities[j].city.toLowerCase()) {
+            //             city_name = Cities[j];
+            //             search_words[i] = "";
+            //             break;
+            //         }
+            //     }
+            // }
+            // city_search = {city: city_name.city};
+            // API.getComments(city_search, function (err, data) {
+            //     if (!err) {
+            //         var gt = true;
+            //         var word_gt = false;
+            //         for (i = 0; i < data.length; i++) {
+            //             var comment_words = cleanText(data[i].comment);
+            //             console.log(comment_words);
+            //             for (var j = 0; j < search_words.length; j++){
+            //                 for (var k = 0; k < comment_words.length; k++){
+            //                     if (search_words[j] === comment_words[k]){
+            //                         word_gt = true;
+            //                         break;
+            //                     }
+            //                 }
+            //                 if (!word_gt){
+            //                     gt = false;
+            //                     break;
+            //                 }
+            //                 word_gt = false;
+            //             }
+            //             if(gt){
+            //                 console.log(data[i].comment)
+            //             }
+            //             gt = true;
+            //             word_gt = false;
+            //         }
+            //     }
+            // });
+            // ------------------------------------------------------------
         }
     });
+}
 
+function deleteWrongSymbols(text) {
+    for (var i = 0; i < text.length; i++) {
+        for (var j = 0; j < wrong_symbols.length; j++) {
+            if (text[i] === wrong_symbols[j]) {
+                text = text.replace(text[i], '');
+                i--;
+                break;
+            }
+        }
+    }
+    return text;
+}
 
-    // API.getCitiesList(function (err, data) {
-    //     if (!err) {
-    //         Cities = data;
-    //         for (var i = 0; i < Cities.length; i++) {
-    //             if (text !== undefined) {
-    //                 nameCity = Cities[i].city_name.toLowerCase();
-    //                 if (text === nameCity) {
-    //                     id = Cities[i].id;
-    //                     Storage.set('id', id);
-    //                     document.location.href = '/city_name.html';
-    //                     find = true;
-    //                 }
-    //             }
-    //         }
-    //         if (!find) {
-    //             for (var j = 0; j < Cities.length; j++) {
-    //                 if (text !== undefined) {
-    //                     text = text.toLowerCase();
-    //                     var a = text.length;
-    //                     var name = '';
-    //                     nameCity = Cities[j].city_name.toLowerCase();
-    //                     for (var k = 0; k < a; k++) {
-    //                         name += nameCity[k];
-    //                     }
-    //                     if (text === name) {
-    //                         id = Cities[j].id;
-    //                         Storage.set('id', id);
-    //                         document.location.href = '/city_name.html';
-    //                         find = true;
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //         if (!find) {
-    //             $('.search-box').addClass('has-error');
-    //         }
-    //     }
-    // });
+function makeSearchArray(text) {
+    var word = '';
+    var arr = [];
+    for (var i = 0; i < text.length; i++) {
+        if (text[i] !== ' ') {
+            word += text[i];
+        } else {
+            arr.push(word);
+            word = '';
+        }
+    }
+    arr.push(word);
+    return arr;
+}
+
+function deleteTrash(words) {
+    for (var i = 0; i < words.length; i++) {
+        for (var j = 0; j < trash.length; j++) {
+            if (words[i] === trash[j]) {
+                words.splice(i, 1);
+                break;
+            }
+        }
+    }
+    return words;
 }
 
 function cleanText(text) {
@@ -875,7 +947,7 @@ function cleanText(text) {
 }
 
 exports.getId = getId;
-},{"../API":1,"../LocalStorage":4}],4:[function(require,module,exports){
+},{"../API":1,"../LocalStorage":5,"./AdditionalArrays":2}],5:[function(require,module,exports){
 var basil = require('basil.js');
 basil = new basil();
 
@@ -885,7 +957,7 @@ exports.get = function (key) {
 exports.set = function (key, value) {
     return basil.set(key, value);
 };
-},{"basil.js":7}],5:[function(require,module,exports){
+},{"basil.js":8}],6:[function(require,module,exports){
 
 var ejs = require('ejs');
 
@@ -898,7 +970,7 @@ exports.weatherBlock = ejs.compile(" <div class=\"weather\">\n                <d
 exports.additionalInfo = ejs.compile("\n    <div class=\"weather\">\n        <div class=\"info\">\n            <div class=\"temp\">\n                <small>COUNTRY: </small><%= city.country %>\n            </div>\n            <div class=\"wind\">\n                <small>CURRENCY: </small> <%= city.currency %>\n            </div>\n            <div class=\"description\">\n                <small>POPULATION: </small><%= city.population %>\n            </div>\n        </div>\n    </div>");
 exports.FavouriteCityComments = ejs.compile("<div class=\"col-md-6\">\n    <div class=\"city-favourite-comments-panel\">\n        <div class=\"backpack-city-name\">\n            <h2><%= city.city%></h2>\n        </div>\n        <div class=\"backpack-comments\">\n        </div>\n    </div>\n</div>");
 exports.OneFavouriteComment = ejs.compile("<div class=\"panel panel-default\">\n    <div class=\"panel-heading\">\n        <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%> <%= comment.comment.hours%>:<%= comment.comment.minutes%></span><span class=\"favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>\"></span>\n    </div>\n    <div class=\"panel-body\">\n        <%= comment.comment.comment%>\n    </div>\n</div>");
-},{"ejs":9}],6:[function(require,module,exports){
+},{"ejs":10}],7:[function(require,module,exports){
 $(function () {
     var GetCities = require('./Cities/GetCities');
     var getId = require('./Cities/GetSearch');
@@ -946,7 +1018,7 @@ $(function () {
 });
 
 
-},{"./Cities/GetCities":2,"./Cities/GetSearch":3}],7:[function(require,module,exports){
+},{"./Cities/GetCities":3,"./Cities/GetSearch":4}],8:[function(require,module,exports){
 (function () {
 	// Basil
 	var Basil = function (options) {
@@ -1334,9 +1406,9 @@ $(function () {
 
 })();
 
-},{}],8:[function(require,module,exports){
-
 },{}],9:[function(require,module,exports){
+
+},{}],10:[function(require,module,exports){
 /*
  * EJS Embedded JavaScript templates
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
@@ -2204,7 +2276,7 @@ if (typeof window != 'undefined') {
   window.ejs = exports;
 }
 
-},{"../package.json":11,"./utils":10,"fs":8,"path":12}],10:[function(require,module,exports){
+},{"../package.json":12,"./utils":11,"fs":9,"path":13}],11:[function(require,module,exports){
 /*
  * EJS Embedded JavaScript templates
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
@@ -2370,7 +2442,7 @@ exports.cache = {
   }
 };
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 module.exports={
   "_args": [
     [
@@ -2454,7 +2526,7 @@ module.exports={
   "version": "2.5.7"
 }
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -2682,7 +2754,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":13}],13:[function(require,module,exports){
+},{"_process":14}],14:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -2868,4 +2940,4 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}]},{},[6]);
+},{}]},{},[7]);
