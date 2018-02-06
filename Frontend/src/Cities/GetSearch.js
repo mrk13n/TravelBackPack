@@ -1,6 +1,7 @@
 var Cities;
 var API = require('../API');
 var Storage = require('../LocalStorage');
+<<<<<<< HEAD
 var trash = ['a', 'able', 'about', 'above', 'abroad', 'according', 'accordingly',
     'across',
     'actually',
@@ -655,15 +656,44 @@ var trash = ['a', 'able', 'about', 'above', 'abroad', 'according', 'accordingly'
     'zero'
 ]
 var cities = ['paris','barcelona','budapest','amsterdam','london','berlin'];
+=======
+var trash = ["the","of","and","a","to","in","is","you","that","it","he","was","for","on","are","as","with","his","they","i","at","be","this","have","from","or","one","had","by","word","but","not","what","all","were","we","when","your","can","said","there","use","an","each","which","she","do","how","their","if","will","up","other","about","out","many","then","them","these","so","some","her","would","make","like","him","into","time","has","look","two","more","write","go","see","number","no","way","could","people","my","than","first","been","call","who","its","now","find","long","down","day","did","get","come","made","may","part" , "want" , "best" , "where" , "can"];
+var wrong_symbols = [' ', ',', '.', '!', ';', ':', '?', '`', '<', '>', '/', '"', '\'', '\\', ']', '[', '}', '{', '=', '+', '-', '_', ')', '(', '*', '&', '^', '%', '$', '#', '№', '@', '~', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'];
+>>>>>>> 7dd259381a642cd94a0e2778fb32df9a68324f5b
 
 function getId(text) {
     var city_name;
     var city_search;
     var find = false;
     var id;
+<<<<<<< HEAD
     var search_words = [];
     var n = 0;
     search_words = cleanText(text);
+=======
+    text = text.toLowerCase();
+    //create array with all words
+    for (var i = 0; i < text.length; i++) {
+        for (var j = 0; j < wrong_symbols.length; j++) {
+            if (text[i] === wrong_symbols[i]) {
+                console.log("yes");
+            }
+        }
+        // if () {
+        //     one += text[i];
+        // } else {
+        //     if (one !== '') {
+        //         words.push(one);
+        //         one = '';
+        //     }
+        // }
+    }
+    words.push(one);
+    //delete trash words
+    find_words = deleteTrash(words);
+    console.log(words);
+    //try to find just city
+>>>>>>> 7dd259381a642cd94a0e2778fb32df9a68324f5b
     API.getCitiesList(function (err, data) {
         if (!err) {
             Cities = data;
