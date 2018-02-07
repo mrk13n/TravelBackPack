@@ -3,6 +3,7 @@ var API = require('../API');
 var Storage = require('../LocalStorage');
 var trash = require('./AdditionalArrays').trash;
 var wrong_symbols = require('./AdditionalArrays').wrong_symbols;
+var stemmer = require('stemmer');
 
 function getId(text) {
     var city_name;
@@ -10,7 +11,6 @@ function getId(text) {
     var find = false;
     var id;
     var search_words = [];
-    var n = 0;
     if (text.length !== 0) {
         search_words = keyWordsArray(text);
     } else {
@@ -21,9 +21,6 @@ function getId(text) {
         if (!err) {
             var i, j;
             Cities = data;
-            if (search_words.length === 0) {
-                $('.search-box').addClass('has-error');
-            }
             if (search_words.length === 1) {
                 for (i = 0; i < Cities.length; i++) {
                     city_name = Cities[i].city.toLowerCase();
@@ -53,9 +50,9 @@ function getId(text) {
                 }
                 if (!find) {
                     $('.search-box').addClass('has-error');
+                    return(search_words[0]);
                 }
             }
-
             if (search_words !== 0 && search_words !== 1) {
                 for(i = 0; i < search_words.length; i++) {
                     for (j = 0; j < Cities.length; j++) {
@@ -120,7 +117,10 @@ function keyWordsArray(text) {
         if (text[i] !== ' ') {
             word += text[i];
         } else {
-            if (word !== '') words.push(word);
+            if (word !== '') {
+                word = stemmer(word);
+                words.push(word);
+            }
             word = '';
         }
     }
