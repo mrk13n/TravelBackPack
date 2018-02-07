@@ -40,6 +40,7 @@ $(function () {
     });
 
     $('.search-button').click(function () {
+        text = $('input.form-control').val();
         getId.getId(text);
     });
 });

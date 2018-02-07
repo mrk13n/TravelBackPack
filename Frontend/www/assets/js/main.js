@@ -796,17 +796,25 @@ function getId(text) {
     var id;
     var search_words = [];
     var n = 0;
-    //delete all symbols
-    text = deleteWrongSymbols(text);
-    //make all words to lowercase
-    text = text.toLowerCase();
-    //create array with all words
-    search_words = makeSearchArray(text);
-    //delete trash words
-    search_words = deleteTrash(search_words);
+    if (text.length !== 0) {
+        //delete all symbols
+        text = deleteWrongSymbols(text);
+        //make all words to lowercase
+        text = text.toLowerCase();
+        //create array with all words
+        search_words = makeSearchArray(text);
+        //delete trash words
+        search_words = deleteTrash(search_words);
+    } else {
+        search_words = [];
+    }
+    if (search_words[0] === '') search_words = [];
     API.getCitiesList(function (err, data) {
         if (!err) {
             Cities = data;
+            if (search_words.length === 0) {
+                $('.search-box').addClass('has-error');
+            }
             if (search_words.length === 1) {
                 for (var i = 0; i < Cities.length; i++) {
                     city_name = Cities[i].city.toLowerCase();
@@ -836,7 +844,6 @@ function getId(text) {
                 }
                 if (!find) {
                     $('.search-box').addClass('has-error');
-                    return(search_words[0]);
                 }
             }
 
@@ -1011,6 +1018,7 @@ $(function () {
     });
 
     $('.search-button').click(function () {
+        text = $('input.form-control').val();
         getId.getId(text);
     });
 });

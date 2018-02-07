@@ -101,8 +101,4 @@ exports.getComment = function (req, res) {
     // Comments.remove(function (err, comments) {
     //     console.log("removed")
     // });
-
-    // Comments.find(function (err, a) {
-    //     console.log(a);
-    // });
 };
