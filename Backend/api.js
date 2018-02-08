@@ -44,9 +44,7 @@ exports.writeComment = function (req, res) {
                     },
                     function () {}
                 );
-                res.send({
-                    success: true
-                });
+                res.send(current_comment);
             } else {
                 current_comment = new One_Comment({
                     nickname: nickname,
@@ -65,9 +63,7 @@ exports.writeComment = function (req, res) {
 
                 newCity.save(function (err) {
                    if (!err) {
-                       res.send({
-                           success: true
-                       });
+                       res.send(current_comment);
                    }
                 });
             }

@@ -101,7 +101,6 @@ var API = require('./API');
 var Cities;
 var $comments = $("#comments");
 var a;
-var $weath = $("#weather-div");
 
 $(function () {
     var GetInfoCity = require('./Cities/GetInfoCity');
@@ -249,8 +248,6 @@ function initializeComments(type) {
 
                         comments = additional_comments;
 
-                        console.log(comments);
-
                         function showComments(list) {
                             $comments.html("");
 
@@ -327,25 +324,18 @@ function initializeComments(type) {
                 };
                 if (comment.length !== 0 && nickname.length !== 0) {
                     API.writeComment(send_comment, function (err, data) {
-                        if (data.success) {
-                            API.getComments(current_city, function (err, data) {
-                               if (!err) {
-                                   var comment = data[data.length-1];
-                                   var one = {
-                                       city: current_city.city,
-                                       favorite: false,
-                                       comment: comment
-                                   };
-                                   $node2.slideToggle(200);
-                                   addOneComment(one);
-                                   $node2.find('.username').val('');
-                                   $node2.find('#comment').val('');
-                                   a = true;
-                                   $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
-                                   $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
-                               }
-                            });
-                        }
+                        var one = {
+                            city: current_city.city,
+                            favorite: false,
+                            comment: data
+                        };
+                        $node2.slideToggle(200);
+                        addOneComment(one);
+                        $node2.find('.username').val('');
+                        $node2.find('#comment').val('');
+                        a = true;
+                        $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
+                        $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
                     });
                 }
             });
