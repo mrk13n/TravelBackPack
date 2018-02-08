@@ -20,11 +20,12 @@ exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\n
 exports.weatherBlock = ejs.compile(" <div class=\"weather\">\n                <div class=\"info\">\n                    <div class=\"temp\">\n                        <small>TEMPERATURE: </small><%= weather.main.temp %>°C\n                    </div>\n                    <div class=\"wind\">\n                        <small>WIND SPEED: </small> <%= weather.wind.speed %>m/s\n                    </div>\n                    <div class=\"description\">\n                        <%= weather.weather[0].description %>\n                    </div>\n                </div>\n                </div>\n");
 exports.additionalInfo = ejs.compile("\n    <div class=\"weather\">\n        <div class=\"info\">\n            <div class=\"temp\">\n                <small>COUNTRY: </small><%= city.country %>\n            </div>\n            <div class=\"wind\">\n                <small>CURRENCY: </small> <%= city.currency %>\n            </div>\n            <div class=\"description\">\n                <small>POPULATION: </small><%= city.population %>\n            </div>\n        </div>\n    </div>");
 exports.FavouriteCityComments = ejs.compile("<div class=\"col-md-6\">\n    <div class=\"city-favourite-comments-panel\">\n        <div class=\"backpack-city-name\">\n            <h2><%= city.city%></h2>\n        </div>\n        <div class=\"backpack-comments\">\n        </div>\n    </div>\n</div>");
-exports.OneFavouriteComment = ejs.compile("<div class=\"panel panel-default\">\n    <div class=\"panel-heading\">\n        <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%> <%= comment.comment.hours%>:<%= comment.comment.minutes%></span><span class=\"favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>\"></span>\n    </div>\n    <div class=\"panel-body\">\n        <%= comment.comment.comment%>\n    </div>\n</div>");
+exports.OneFavouriteComment = ejs.compile("<div class=\"panel panel-default\">\n    <div class=\"panel-heading\">\n        <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span><span class=\"favorite glyphicon glyphicon-star\"></span>\n    </div>\n    <div class=\"panel-body\">\n        <%= comment.comment.comment%>\n    </div>\n</div>");
 },{"ejs":6}],3:[function(require,module,exports){
 var Storage = require('./LocalStorage');
 var Templates = require('./Teamplates');
 var $cities = $('#city-favourite-comments-container');
+var Backpack = getBackpack();
 
 $(function () {
 
@@ -32,7 +33,7 @@ $(function () {
 
     if (pack !== null) {
         if(pack.length === 0){
-            document.getElementById("ffooter").style.marginTop = "100px";
+            document.getElementById("footer").style.marginTop = "100px";
         }
     }
 
@@ -63,17 +64,10 @@ $(function () {
     initializeFavorites();
 });
 
-function randomAvatar(){
-    var rand;
-    rand = Math.floor((Math.random() * 20) + 1);
-    return rand;
-}
-
 function showCities(list) {
     $cities.html("");
 
     function showOne(city) {
-        var Backpack = getBackpack();
         var html_code = Templates.FavouriteCityComments({city: city});
 
         var $node = $(html_code);
@@ -82,17 +76,14 @@ function showCities(list) {
 
         if (Backpack !== null) {
             for (var i = 0; i < Backpack.length; i++) {
-                if (city.city == Backpack[i].city) {
+                if (city.city === Backpack[i].city) {
                     var html_code2 = Templates.OneFavouriteComment({comment: Backpack[i]});
-
                     var $node2 = $(html_code2);
-
                     $node.find('.backpack-comments').append($node2);
-
                     var k = i;
                     $node2.find('.favorite').click(function () {
-                            removeFromStorrage(Backpack, k);
-                            initializeFavorites();
+                        removeFromStorrage(Backpack, k);
+                        initializeFavorites();
                     });
                 }
             }
@@ -103,14 +94,17 @@ function showCities(list) {
 }
 
 function initializeFavorites() {
-    var Backpack = getBackpack();
     var cities = getCities(Backpack);
     showCities(cities);
     // showComments(Backpack);
 }
 
 function getBackpack() {
-    return Storage.get('backpack');
+    var back = Storage.get('backpack');
+    if (back === null) {
+        back = [];
+    }
+    return back;
 }
 
 function removeFromStorrage(back, i) {

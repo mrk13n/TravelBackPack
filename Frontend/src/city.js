@@ -4,6 +4,7 @@ var API = require('./API');
 var Cities;
 var $comments = $("#comments");
 var a;
+var Backpack = getBackpack();
 
 $(function () {
     var GetInfoCity = require('./Cities/GetInfoCity');
@@ -110,6 +111,7 @@ function initializeComments(type) {
     var id = Storage.get('id');
     var city;
     var current_city;
+    $comments.append($node2);
     API.getCitiesList(function (err, data) {
         if (!err) {
             Cities = data;
@@ -133,7 +135,7 @@ function initializeComments(type) {
                         for (i = 0; i < comments.length; i++) {
                             var one;
                             var fav = false;
-                            var Backpack = getBackpack();
+                            Backpack = getBackpack();
                             if (Backpack !== null) {
                                 for (var j = 0; j < Backpack.length; j++) {
                                     if (comments[i]._id == Backpack[j].comment._id) {
@@ -148,55 +150,9 @@ function initializeComments(type) {
                             };
                             additional_comments.push(one);
                         }
-
                         comments = additional_comments;
-
-                        function showComments(list) {
-                            $comments.html("");
-
-                            function showOneComment(comment) {
-                                var Backpack = getBackpack();
-                                var html_code = Templates.Comment_OneItem({comment: comment});
-
-                                var $node = $(html_code);
-
-                                $comments.append($node);
-
-                                if (!comment.favorite) {
-                                    $node.find('.favorite').mouseover(function () {
-                                        $(this).removeClass('glyphicon glyphicon-star-empty');
-                                        $(this).addClass('glyphicon glyphicon-star');
-                                    });
-                                    $node.find('.favorite').mouseout(function () {
-                                        $(this).removeClass('glyphicon glyphicon-star');
-                                        $(this).addClass('glyphicon glyphicon-star-empty');
-                                    });
-                                    $node.find('.favorite').click(function () {
-                                        comment.favorite = true;
-                                        Backpack.push(comment);
-                                        saveComment(Backpack);
-                                        initializeComments(type);
-                                    });
-                                }
-
-                                if (comment.favorite) {
-                                    $node.find('.favorite').click(function () {
-                                        for (var i = 0; i < Backpack.length; i++) {
-                                            if (comment.comment._id == Backpack[i].comment._id) {
-                                                removeFromStorrage(Backpack, i);
-                                                initializeComments(type);
-                                            }
-                                        }
-                                    });
-                                }
-                            }
-
-                            list.forEach(showOneComment);
-                        }
-
                         showComments(comments);
                     }
-                    $comments.append($node2);
                 }
             });
 
@@ -209,7 +165,6 @@ function initializeComments(type) {
                 if(dd<10) {
                     dd = '0'+dd;
                 }
-
                 if(mm<10) {
                     mm = '0'+mm;
                 }
@@ -246,10 +201,47 @@ function initializeComments(type) {
     });
 }
 
+function showComments(list) {
+    list.forEach(addOneComment);
+}
+
 function addOneComment(comment) {
     var html_code = Templates.Comment_OneItem({comment: comment});
     var $node = $(html_code);
+    Backpack = getBackpack();
     $node.insertBefore('#form');
+
+    $node.find ('.favorite').mouseover(function () {
+        if (!comment.favorite) {
+            $(this).removeClass('glyphicon glyphicon-star-empty');
+            $(this).addClass('glyphicon glyphicon-star');
+        }
+    });
+
+    $node.find ('.favorite').mouseout(function () {
+        if (!comment.favorite) {
+            $(this).removeClass('glyphicon glyphicon-star');
+            $(this).addClass('glyphicon glyphicon-star-empty');
+        }
+    });
+
+    $node.find('.favorite').click(function () {
+        if (comment.favorite) {
+            for (var i = 0; i < Backpack.length; i++) {
+                if (comment.comment._id == Backpack[i].comment._id) {
+                    removeFromStorrage(Backpack, i);
+                    $(this).removeClass('glyphicon glyphicon-star');
+                    $(this).addClass('glyphicon glyphicon-star-empty');
+                }
+            }
+        } else {
+            Backpack.push(comment);
+            saveComment(Backpack);
+            $(this).removeClass('glyphicon glyphicon-star-empty');
+            $(this).addClass('glyphicon glyphicon-star');
+        }
+        comment.favorite =!comment.favorite;
+    });
 }
 
 function saveComment(back) {

@@ -1,6 +1,6 @@
 <div class="panel panel-default">
     <div class="panel-heading">
-        <strong><%= comment.comment.nickname%></strong> <span class="text-muted">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%> <%= comment.comment.hours%>:<%= comment.comment.minutes%></span><span class="favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>"></span>
+        <strong><%= comment.comment.nickname%></strong> <span class="text-muted">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span><span class="favorite glyphicon glyphicon-star"></span>
     </div>
     <div class="panel-body">
         <%= comment.comment.comment%>

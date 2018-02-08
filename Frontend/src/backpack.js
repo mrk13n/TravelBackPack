@@ -1,6 +1,7 @@
 var Storage = require('./LocalStorage');
 var Templates = require('./Teamplates');
 var $cities = $('#city-favourite-comments-container');
+var Backpack = getBackpack();
 
 $(function () {
 
@@ -8,7 +9,7 @@ $(function () {
 
     if (pack !== null) {
         if(pack.length === 0){
-            document.getElementById("ffooter").style.marginTop = "100px";
+            document.getElementById("footer").style.marginTop = "100px";
         }
     }
 
@@ -39,17 +40,15 @@ $(function () {
     initializeFavorites();
 });
 
-function randomAvatar(){
-    var rand;
-    rand = Math.floor((Math.random() * 20) + 1);
-    return rand;
+function initializeFavorites() {
+    var cities = getCities(Backpack);
+    showCities(cities);
 }
 
 function showCities(list) {
     $cities.html("");
 
     function showOne(city) {
-        var Backpack = getBackpack();
         var html_code = Templates.FavouriteCityComments({city: city});
 
         var $node = $(html_code);
@@ -58,17 +57,14 @@ function showCities(list) {
 
         if (Backpack !== null) {
             for (var i = 0; i < Backpack.length; i++) {
-                if (city.city == Backpack[i].city) {
+                if (city.city === Backpack[i].city) {
                     var html_code2 = Templates.OneFavouriteComment({comment: Backpack[i]});
-
                     var $node2 = $(html_code2);
-
                     $node.find('.backpack-comments').append($node2);
-
                     var k = i;
                     $node2.find('.favorite').click(function () {
-                            removeFromStorrage(Backpack, k);
-                            initializeFavorites();
+                        removeFromStorrage(Backpack, k);
+                        initializeFavorites();
                     });
                 }
             }
@@ -76,22 +72,6 @@ function showCities(list) {
     }
 
     list.forEach(showOne);
-}
-
-function initializeFavorites() {
-    var Backpack = getBackpack();
-    var cities = getCities(Backpack);
-    showCities(cities);
-    // showComments(Backpack);
-}
-
-function getBackpack() {
-    return Storage.get('backpack');
-}
-
-function removeFromStorrage(back, i) {
-    back.splice(i, 1);
-    Storage.set('backpack', back);
 }
 
 function getCities(back) {
@@ -115,4 +95,17 @@ function getCities(back) {
         }
     }
     return cities;
+}
+
+function getBackpack() {
+    var back = Storage.get('backpack');
+    if (back === null) {
+        back = [];
+    }
+    return back;
+}
+
+function removeFromStorrage(back, i) {
+    back.splice(i, 1);
+    Storage.set('backpack', back);
 }

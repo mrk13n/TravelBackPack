@@ -93,7 +93,7 @@ exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\n
 exports.weatherBlock = ejs.compile(" <div class=\"weather\">\n                <div class=\"info\">\n                    <div class=\"temp\">\n                        <small>TEMPERATURE: </small><%= weather.main.temp %>°C\n                    </div>\n                    <div class=\"wind\">\n                        <small>WIND SPEED: </small> <%= weather.wind.speed %>m/s\n                    </div>\n                    <div class=\"description\">\n                        <%= weather.weather[0].description %>\n                    </div>\n                </div>\n                </div>\n");
 exports.additionalInfo = ejs.compile("\n    <div class=\"weather\">\n        <div class=\"info\">\n            <div class=\"temp\">\n                <small>COUNTRY: </small><%= city.country %>\n            </div>\n            <div class=\"wind\">\n                <small>CURRENCY: </small> <%= city.currency %>\n            </div>\n            <div class=\"description\">\n                <small>POPULATION: </small><%= city.population %>\n            </div>\n        </div>\n    </div>");
 exports.FavouriteCityComments = ejs.compile("<div class=\"col-md-6\">\n    <div class=\"city-favourite-comments-panel\">\n        <div class=\"backpack-city-name\">\n            <h2><%= city.city%></h2>\n        </div>\n        <div class=\"backpack-comments\">\n        </div>\n    </div>\n</div>");
-exports.OneFavouriteComment = ejs.compile("<div class=\"panel panel-default\">\n    <div class=\"panel-heading\">\n        <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%> <%= comment.comment.hours%>:<%= comment.comment.minutes%></span><span class=\"favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>\"></span>\n    </div>\n    <div class=\"panel-body\">\n        <%= comment.comment.comment%>\n    </div>\n</div>");
+exports.OneFavouriteComment = ejs.compile("<div class=\"panel panel-default\">\n    <div class=\"panel-heading\">\n        <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span><span class=\"favorite glyphicon glyphicon-star\"></span>\n    </div>\n    <div class=\"panel-body\">\n        <%= comment.comment.comment%>\n    </div>\n</div>");
 },{"ejs":8}],5:[function(require,module,exports){
 var Storage = require('./LocalStorage');
 var Templates = require('./Teamplates');
@@ -101,6 +101,7 @@ var API = require('./API');
 var Cities;
 var $comments = $("#comments");
 var a;
+var Backpack = getBackpack();
 
 $(function () {
     var GetInfoCity = require('./Cities/GetInfoCity');
@@ -207,6 +208,7 @@ function initializeComments(type) {
     var id = Storage.get('id');
     var city;
     var current_city;
+    $comments.append($node2);
     API.getCitiesList(function (err, data) {
         if (!err) {
             Cities = data;
@@ -230,7 +232,7 @@ function initializeComments(type) {
                         for (i = 0; i < comments.length; i++) {
                             var one;
                             var fav = false;
-                            var Backpack = getBackpack();
+                            Backpack = getBackpack();
                             if (Backpack !== null) {
                                 for (var j = 0; j < Backpack.length; j++) {
                                     if (comments[i]._id == Backpack[j].comment._id) {
@@ -245,55 +247,9 @@ function initializeComments(type) {
                             };
                             additional_comments.push(one);
                         }
-
                         comments = additional_comments;
-
-                        function showComments(list) {
-                            $comments.html("");
-
-                            function showOneComment(comment) {
-                                var Backpack = getBackpack();
-                                var html_code = Templates.Comment_OneItem({comment: comment});
-
-                                var $node = $(html_code);
-
-                                $comments.append($node);
-
-                                if (!comment.favorite) {
-                                    $node.find('.favorite').mouseover(function () {
-                                        $(this).removeClass('glyphicon glyphicon-star-empty');
-                                        $(this).addClass('glyphicon glyphicon-star');
-                                    });
-                                    $node.find('.favorite').mouseout(function () {
-                                        $(this).removeClass('glyphicon glyphicon-star');
-                                        $(this).addClass('glyphicon glyphicon-star-empty');
-                                    });
-                                    $node.find('.favorite').click(function () {
-                                        comment.favorite = true;
-                                        Backpack.push(comment);
-                                        saveComment(Backpack);
-                                        initializeComments(type);
-                                    });
-                                }
-
-                                if (comment.favorite) {
-                                    $node.find('.favorite').click(function () {
-                                        for (var i = 0; i < Backpack.length; i++) {
-                                            if (comment.comment._id == Backpack[i].comment._id) {
-                                                removeFromStorrage(Backpack, i);
-                                                initializeComments(type);
-                                            }
-                                        }
-                                    });
-                                }
-                            }
-
-                            list.forEach(showOneComment);
-                        }
-
                         showComments(comments);
                     }
-                    $comments.append($node2);
                 }
             });
 
@@ -306,7 +262,6 @@ function initializeComments(type) {
                 if(dd<10) {
                     dd = '0'+dd;
                 }
-
                 if(mm<10) {
                     mm = '0'+mm;
                 }
@@ -343,10 +298,47 @@ function initializeComments(type) {
     });
 }
 
+function showComments(list) {
+    list.forEach(addOneComment);
+}
+
 function addOneComment(comment) {
     var html_code = Templates.Comment_OneItem({comment: comment});
     var $node = $(html_code);
+    Backpack = getBackpack();
     $node.insertBefore('#form');
+
+    $node.find ('.favorite').mouseover(function () {
+        if (!comment.favorite) {
+            $(this).removeClass('glyphicon glyphicon-star-empty');
+            $(this).addClass('glyphicon glyphicon-star');
+        }
+    });
+
+    $node.find ('.favorite').mouseout(function () {
+        if (!comment.favorite) {
+            $(this).removeClass('glyphicon glyphicon-star');
+            $(this).addClass('glyphicon glyphicon-star-empty');
+        }
+    });
+
+    $node.find('.favorite').click(function () {
+        if (comment.favorite) {
+            for (var i = 0; i < Backpack.length; i++) {
+                if (comment.comment._id == Backpack[i].comment._id) {
+                    removeFromStorrage(Backpack, i);
+                    $(this).removeClass('glyphicon glyphicon-star');
+                    $(this).addClass('glyphicon glyphicon-star-empty');
+                }
+            }
+        } else {
+            Backpack.push(comment);
+            saveComment(Backpack);
+            $(this).removeClass('glyphicon glyphicon-star-empty');
+            $(this).addClass('glyphicon glyphicon-star');
+        }
+        comment.favorite =!comment.favorite;
+    });
 }
 
 function saveComment(back) {
