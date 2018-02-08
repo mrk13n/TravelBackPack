@@ -305,7 +305,8 @@ var trash = [
     'itd',
     'itll',
     'its',
-    'its',
+    'itʼs',
+    'it\'s',
     'itself',
     'ive',
     'j',
@@ -384,7 +385,6 @@ var trash = [
     'neverf',
     'neverless',
     'nevertheless',
-    'new',
     'next',
     'nine',
     'ninety',
@@ -787,99 +787,113 @@ var Storage = require('../LocalStorage');
 var trash = require('./AdditionalArrays').trash;
 var wrong_symbols = require('./AdditionalArrays').wrong_symbols;
 var stemmer = require('stemmer');
-//нашо нам цей масив? var cities = ['paris','barcelona','budapest','amsterdam','london','berlin'];
 
 function getId(text) {
-    var city_name;
-    var city_search;
-    var find = false;
-    var id;
-    var search_words = [];
-    var n = 0;
-    search_words = keyWordsArray(text);
     API.getCitiesList(function (err, data) {
-        if (!err) {
-            Cities = data;
-            if (search_words.length === 1) {
-                for (var i = 0; i < Cities.length; i++) {
-                    city_name = Cities[i].city.toLowerCase();
-                    if (search_words[0] === city_name) {
-                        id = Cities[i].id;
-                        Storage.set('id', id);
-                        document.location.href = '/city.html';
-                        find = true;
-                    }
-                }
-                if (!find) {
-                    var a = search_words[0].length;
-                    var name;
-                    for (var j = 0; j < Cities.length; j++) {
-                        name ='';
-                        city_name = Cities[j].city.toLowerCase();
-                        for (var k = 0; k < a; k++) {
-                            name += city_name[k];
-                        }
-                        if (search_words[0] === name) {
-                            id = Cities[j].id;
-                            Storage.set('id', id);
-                            document.location.href = '/city.html';
-                            find = true;
-                        }
-                    }
-                }
-                if (!find) {
-                    $('.search-box').addClass('has-error');
-                    return(search_words[0]);
-                }
-            }
-
-            for(var i = 0;i < search_words.length;i++) {
-                for (var j = 0; j < Cities.length; j++) {
-                    if (search_words[i] === Cities[j].city.toLowerCase()) {
-                        city_name = Cities[j];
-                        search_words.splice(i,1);
-                        break;
-                    }
-                }
-            }
-            city_search = {city: city_name.city};
-            API.getComments(city_search, function (err, data) {
-                if (!err) {
-                    var gt = true;
-                    var word_gt = false;
-                    for (i = 0; i < data.length; i++) {
-                        var comment_words = keyWordsArray(data[i].comment);
-                        for (var j = 0; j < search_words.length; j++){
-                            for (var k = 0; k < comment_words.length; k++){
-                                if (search_words[j] === comment_words[k]){
-                                    word_gt = true;
-                                    break;
-                                }
-                            }
-                            if (!word_gt){
-                                gt = false;
-                                break;
-                            }
-                            word_gt = false;
-                        }
-                        if(gt){
-                            console.log(data[i].comment)
-                        }
-                        gt = true;
-                        word_gt = false;
-                    }
-                }
-            });
-        }
+       if (!err) {
+           var city_name;
+           var city_search;
+           var find = false;
+           var id;
+           var search_words = [];
+           var i, j;
+           Cities = data;
+           if (text.length !== 0) {
+               search_words = keyWordsArray(text, Cities);
+           } else {
+               search_words = [];
+           }
+           if (search_words[0] === '') search_words = [];
+           console.log(search_words);
+           if (search_words.length === 0) {
+               $('.search-box').addClass('has-error');
+           }
+           if (search_words.length === 1) {
+               for (i = 0; i < Cities.length; i++) {
+                   city_name = Cities[i].city.toLowerCase();
+                   if (search_words[0] === city_name) {
+                       id = Cities[i].id;
+                       Storage.set('id', id);
+                       document.location.href = '/city.html';
+                       find = true;
+                   }
+               }
+               if (!find) {
+                   var a = search_words[0].length;
+                   var name;
+                   for (i = 0; i < Cities.length; i++) {
+                       name ='';
+                       city_name = Cities[i].city.toLowerCase();
+                       for (var k = 0; k < a; k++) {
+                           name += city_name[k];
+                       }
+                       if (search_words[0] === name) {
+                           id = Cities[i].id;
+                           Storage.set('id', id);
+                           document.location.href = '/city.html';
+                           find = true;
+                       }
+                   }
+               }
+               if (!find) {
+                   $('.search-box').addClass('has-error');
+               }
+           }
+           if (search_words !== 0 && search_words !== 1) {
+               for(i = 0; i < search_words.length; i++) {
+                   for (j = 0; j < Cities.length; j++) {
+                       city_name = Cities[i].city.toLowerCase();
+                       if (search_words[i] === Cities[j].city.toLowerCase()) {
+                           city_name = Cities[j];
+                           search_words.splice(i,1);
+                           break;
+                       }
+                   }
+               }
+               city_search = {city: city_name.city};
+               API.getComments(city_search, function (err, data) {
+                   if (!err) {
+                       if (!data.emptyForm) {
+                           var gt = true;
+                           var word_gt = false;
+                           for (i = 0; i < data.length; i++) {
+                               var comment_words = keyWordsArray(data[i].comment, Cities);
+                               for (j = 0; j < search_words.length; j++){
+                                   for (var k = 0; k < comment_words.length; k++){
+                                       if (search_words[j] === comment_words[k]){
+                                           word_gt = true;
+                                           break;
+                                       }
+                                   }
+                                   if (!word_gt){
+                                       gt = false;
+                                       break;
+                                   }
+                                   word_gt = false;
+                               }
+                               if(gt){
+                                   console.log(data[i].comment)
+                               }
+                               gt = true;
+                               word_gt = false;
+                           }
+                       }
+                   }
+               });
+           }
+       }
     });
 }
 
-function keyWordsArray(text) {
+function keyWordsArray(text, cities) {
     var word = '';
     var words = [];
+    var help_arr;
+    var find = false;
     text = text.toLowerCase();
-    for (var i = 0; i < text.length; i++) {
-        for (var j = 0; j < wrong_symbols.length; j++) {
+    var i, j;
+    for (i = 0; i < text.length; i++) {
+        for (j = 0; j < wrong_symbols.length; j++) {
             if (text[i] === wrong_symbols[j]) {
                 text = text.replace(text[i], '');
                 i--;
@@ -887,24 +901,46 @@ function keyWordsArray(text) {
             }
         }
     }
-    for (var i = 0; i < text.length; i++) {
+    for (i = 0; i < text.length; i++) {
         if (text[i] !== ' ') {
             word += text[i];
         } else {
-            word = stemmer(word);
-            words.push(word);
+            if (word !== '') words.push(word);
             word = '';
         }
     }
-    words.push(word);
-
-    for (var i = 0; i < words.length; i++) {
-        for (var j = 0; j < trash.length; j++) {
+    if (word !== '') words.push(word);
+    for (i = 0; i < words.length; i++) {
+        for (j = 0; j < trash.length; j++) {
             if (words[i] === trash[j]) {
                 words.splice(i, 1);
+                i--;
                 break;
             }
         }
+    }
+    for (i = 0; i < words.length; i++) {
+        for (j = 0; j < cities.length; j++) {
+            if (words[i] === cities[j].city.toLowerCase()) {
+                find = true;
+                break;
+            }
+        }
+        if (!find) words[i] = stemmer(words[i]);
+        find = false;
+    }
+    find = false;
+    help_arr = words;
+    words = [];
+    for (i = 0; i < help_arr.length; i++) {
+        for (j = 0; j < words.length; j++) {
+            if (help_arr[i] === words[j]) {
+                find = true;
+                break;
+            }
+        }
+        if (!find) words.push(help_arr[i]);
+        find = false;
     }
     return words;
 }
@@ -925,14 +961,14 @@ exports.set = function (key, value) {
 var ejs = require('ejs');
 
 
-exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\r\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\r\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\r\n    </div>\r\n</div>");
-exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\r\n    <div class=\"col-xs-2\">\r\n        <div class=\"thumbnail thumb_city\">\r\n            <img class=\"img-responsive user-photo\" src=\"assets/images/avatars/<%= comment.rand%>.png\">\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-10\">\r\n        <div class=\"panel panel-default\">\r\n            <div class=\"panel-heading\">\r\n                <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%> <%= comment.comment.hours%>:<%= comment.comment.minutes%></span><span class=\"favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>\"></span>\r\n            </div>\r\n            <div class=\"panel-body\">\r\n                <%= comment.comment.comment%>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>");
-exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\r\n    <div class=\"title-box\">\r\n        <p>experience</p>\r\n        <h1 class=\"city-name\"><%= city.city%></h1>\r\n        <p>like a local</p>\r\n    </div>\r\n    <div class=\"local-search-container\">\r\n        <div class=\"search-box\">\r\n            <input type=\"text\" class=\"form-control\" id=\"searchBox\" placeholder=\"\">\r\n        </div>\r\n        <div class=\"btn search-button\">\r\n            <p class=\"search-icon\">Search</p>\r\n        </div>\r\n    </div>\r\n</div>");
-exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\r\n    <div class=\"col-xs-2\"></div>\r\n    <div class=\"col-xs-10\">\r\n        <div class=\"panel panel-default\">\r\n            <div class=\"panel-heading\">\r\n                <input type=\"text\" class=\"form-control username\" placeholder=\"Enter username\">\r\n            </div>\r\n            <div class=\"panel-body\">\r\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\"></textarea>\r\n                <button type=\"submit\" class=\"btn btn-send\">\r\n                    Send <span class=\"glyphicon glyphicon-send\"></span>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>");
-exports.weatherBlock = ejs.compile(" <div class=\"weather\">\r\n                <div class=\"info\">\r\n                    <div class=\"temp\">\r\n                        <small>TEMPERATURE: </small><%= weather.main.temp %>°C\r\n                    </div>\r\n                    <div class=\"wind\">\r\n                        <small>WIND SPEED: </small> <%= weather.wind.speed %>m/s\r\n                    </div>\r\n                    <div class=\"description\">\r\n                        <%= weather.weather[0].description %>\r\n                    </div>\r\n                </div>\r\n                </div>\r\n");
-exports.additionalInfo = ejs.compile("\r\n    <div class=\"weather\">\r\n        <div class=\"info\">\r\n            <div class=\"temp\">\r\n                <small>COUNTRY: </small><%= city.country %>\r\n            </div>\r\n            <div class=\"wind\">\r\n                <small>CURRENCY: </small> <%= city.currency %>\r\n            </div>\r\n            <div class=\"description\">\r\n                <small>POPULATION: </small><%= city.population %>\r\n            </div>\r\n        </div>\r\n    </div>");
-exports.FavouriteCityComments = ejs.compile("<div class=\"col-md-6\">\r\n    <div class=\"city-favourite-comments-panel\">\r\n        <div class=\"backpack-city-name\">\r\n            <h2><%= city.city%></h2>\r\n        </div>\r\n        <div class=\"backpack-comments\">\r\n        </div>\r\n    </div>\r\n</div>");
-exports.OneFavouriteComment = ejs.compile("<div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n        <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%> <%= comment.comment.hours%>:<%= comment.comment.minutes%></span><span class=\"favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>\"></span>\r\n    </div>\r\n    <div class=\"panel-body\">\r\n        <%= comment.comment.comment%>\r\n    </div>\r\n</div>");
+exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
+exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\n    <div class=\"col-xs-2\">\n        <div class=\"thumbnail thumb_city\">\n            <img class=\"img-responsive user-photo\" src=\"assets/images/avatars/<%= comment.rand%>.png\">\n        </div>\n    </div>\n\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%> <%= comment.comment.hours%>:<%= comment.comment.minutes%></span><span class=\"favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>\"></span>\n            </div>\n            <div class=\"panel-body\">\n                <%= comment.comment.comment%>\n            </div>\n        </div>\n    </div>\n</div>");
+exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\n    <div class=\"title-box\">\n        <p>experience</p>\n        <h1 class=\"city-name\"><%= city.city%></h1>\n        <p>like a local</p>\n    </div>\n    <div class=\"local-search-container\">\n        <div class=\"search-box\">\n            <input type=\"text\" class=\"form-control\" id=\"searchBox\" placeholder=\"\">\n        </div>\n        <div class=\"btn search-button\">\n            <p class=\"search-icon\">Search</p>\n        </div>\n    </div>\n</div>");
+exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\n    <div class=\"col-xs-2\"></div>\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <input type=\"text\" class=\"form-control username\" placeholder=\"Enter username\">\n            </div>\n            <div class=\"panel-body\">\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\"></textarea>\n                <button type=\"submit\" class=\"btn btn-send\">\n                    Send <span class=\"glyphicon glyphicon-send\"></span>\n                </button>\n            </div>\n        </div>\n    </div>\n</div>");
+exports.weatherBlock = ejs.compile(" <div class=\"weather\">\n                <div class=\"info\">\n                    <div class=\"temp\">\n                        <small>TEMPERATURE: </small><%= weather.main.temp %>°C\n                    </div>\n                    <div class=\"wind\">\n                        <small>WIND SPEED: </small> <%= weather.wind.speed %>m/s\n                    </div>\n                    <div class=\"description\">\n                        <%= weather.weather[0].description %>\n                    </div>\n                </div>\n                </div>\n");
+exports.additionalInfo = ejs.compile("\n    <div class=\"weather\">\n        <div class=\"info\">\n            <div class=\"temp\">\n                <small>COUNTRY: </small><%= city.country %>\n            </div>\n            <div class=\"wind\">\n                <small>CURRENCY: </small> <%= city.currency %>\n            </div>\n            <div class=\"description\">\n                <small>POPULATION: </small><%= city.population %>\n            </div>\n        </div>\n    </div>");
+exports.FavouriteCityComments = ejs.compile("<div class=\"col-md-6\">\n    <div class=\"city-favourite-comments-panel\">\n        <div class=\"backpack-city-name\">\n            <h2><%= city.city%></h2>\n        </div>\n        <div class=\"backpack-comments\">\n        </div>\n    </div>\n</div>");
+exports.OneFavouriteComment = ejs.compile("<div class=\"panel panel-default\">\n    <div class=\"panel-heading\">\n        <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%> <%= comment.comment.hours%>:<%= comment.comment.minutes%></span><span class=\"favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>\"></span>\n    </div>\n    <div class=\"panel-body\">\n        <%= comment.comment.comment%>\n    </div>\n</div>");
 },{"ejs":10}],7:[function(require,module,exports){
 $(function () {
     var GetCities = require('./Cities/GetCities');
@@ -2411,7 +2447,7 @@ module.exports={
   "_args": [
     [
       "ejs@2.5.7",
-      "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack"
+      "/home/mrk13/Documents/GitHub/TravelBackPack"
     ]
   ],
   "_from": "ejs@2.5.7",
@@ -2435,7 +2471,7 @@ module.exports={
   ],
   "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz",
   "_spec": "2.5.7",
-  "_where": "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack",
+  "_where": "/home/mrk13/Documents/GitHub/TravelBackPack",
   "author": {
     "name": "Matthew Eernisse",
     "email": "mde@fleegix.org",
