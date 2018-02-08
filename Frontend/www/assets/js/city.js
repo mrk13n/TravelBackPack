@@ -87,7 +87,7 @@ var ejs = require('ejs');
 
 
 exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
-exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\n    <div class=\"col-xs-2\">\n        <div class=\"thumbnail thumb_city\">\n            <img class=\"img-responsive user-photo\" src=\"assets/images/avatars/<%= comment.rand%>.png\">\n        </div>\n    </div>\n\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%> <%= comment.comment.hours%>:<%= comment.comment.minutes%></span><span class=\"favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>\"></span>\n            </div>\n            <div class=\"panel-body\">\n                <%= comment.comment.comment%>\n            </div>\n        </div>\n    </div>\n</div>");
+exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\n    <div class=\"col-xs-2\">\n        <div class=\"thumbnail thumb_city\">\n            <img class=\"img-responsive user-photo\" src=\"assets/images/avatars/<%= comment.comment.avatar%>.png\">\n        </div>\n    </div>\n\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span><span class=\"favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>\"></span>\n            </div>\n            <div class=\"panel-body\">\n                <%= comment.comment.comment%>\n            </div>\n        </div>\n    </div>\n</div>");
 exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\n    <div class=\"title-box\">\n        <p>experience</p>\n        <h1 class=\"city-name\"><%= city.city%></h1>\n        <p>like a local</p>\n    </div>\n    <div class=\"local-search-container\">\n        <div class=\"search-box\">\n            <input type=\"text\" class=\"form-control\" id=\"searchBox\" placeholder=\"\">\n        </div>\n        <div class=\"btn search-button\">\n            <p class=\"search-icon\">Search</p>\n        </div>\n    </div>\n</div>");
 exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\n    <div class=\"col-xs-2\"></div>\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <input type=\"text\" class=\"form-control username\" placeholder=\"Enter username\">\n            </div>\n            <div class=\"panel-body\">\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\"></textarea>\n                <button type=\"submit\" class=\"btn btn-send\">\n                    Send <span class=\"glyphicon glyphicon-send\"></span>\n                </button>\n            </div>\n        </div>\n    </div>\n</div>");
 exports.weatherBlock = ejs.compile(" <div class=\"weather\">\n                <div class=\"info\">\n                    <div class=\"temp\">\n                        <small>TEMPERATURE: </small><%= weather.main.temp %>°C\n                    </div>\n                    <div class=\"wind\">\n                        <small>WIND SPEED: </small> <%= weather.wind.speed %>m/s\n                    </div>\n                    <div class=\"description\">\n                        <%= weather.weather[0].description %>\n                    </div>\n                </div>\n                </div>\n");
@@ -204,7 +204,6 @@ function initializeComments(type) {
     $comments.html('');
     var html_code2 = Templates.SendForm();
     var $node2 = $(html_code2);
-
     var comments = [];
     var id = Storage.get('id');
     var city;
@@ -228,10 +227,9 @@ function initializeComments(type) {
                                 comments.push(data[i]);
                             }
                         }
-                        var z = [];
+                        var additional_comments = [];
                         for (i = 0; i < comments.length; i++) {
                             var one;
-                            var rand;
                             var fav = false;
                             var Backpack = getBackpack();
                             if (Backpack !== null) {
@@ -241,17 +239,17 @@ function initializeComments(type) {
                                     }
                                 }
                             }
-                            rand = randomAvatar();
                             one = {
                                 city: current_city.city,
                                 favorite: fav,
-                                rand: rand,
                                 comment: comments[i]
                             };
-                            z.push(one);
+                            additional_comments.push(one);
                         }
 
-                        comments = z;
+                        comments = additional_comments;
+
+                        console.log(comments);
 
                         function showComments(list) {
                             $comments.html("");
@@ -301,42 +299,19 @@ function initializeComments(type) {
                     $comments.append($node2);
                 }
             });
-            var weather;
-            $.ajax({
-                url: 'https://api.openweathermap.org/data/2.5/weather?q='+current_city.city+"&units=metric"+
-                "&APPID=d41f5cc0cbb6152f6a6af0037d456d08",
-                type: "GET",
-                dataType: "jsonp",
-                success: function (data) {
-                    weather = data;
-                    $weath.html("");
-                    var html_code3 = Templates.weatherBlock({weather: weather});
-                    var $node3 = $(html_code3);
-                    $weath.append($node3);
-                }
-            });
-
-
 
             $node2.find('.btn-send').click(function () {
                 var today = new Date();
                 var dd = today.getDate();
                 var mm = today.getMonth()+1;
                 var yyyy = today.getFullYear();
-                var hh = today.getHours();
-                var mn = today.getMinutes();
+                var avatar = randomAvatar();
                 if(dd<10) {
                     dd = '0'+dd;
                 }
 
                 if(mm<10) {
                     mm = '0'+mm;
-                }
-                if (hh<10) {
-                    hh = '0'+hh;
-                }
-                if (mn<10) {
-                    mn = '0'+mn;
                 }
                 var comment = $('#comment').val();
                 var nickname = $('.username').val();
@@ -347,17 +322,29 @@ function initializeComments(type) {
                     year: yyyy,
                     day: dd,
                     month: mm,
-                    hours: hh,
-                    minutes: mn,
-                    type: type
+                    type: type,
+                    avatar: avatar
                 };
                 if (comment.length !== 0 && nickname.length !== 0) {
                     API.writeComment(send_comment, function (err, data) {
                         if (data.success) {
-                            initializeComments(type);
-                            a = true;
-                            $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
-                            $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
+                            API.getComments(current_city, function (err, data) {
+                               if (!err) {
+                                   var comment = data[data.length-1];
+                                   var one = {
+                                       city: current_city.city,
+                                       favorite: false,
+                                       comment: comment
+                                   };
+                                   $node2.slideToggle(200);
+                                   addOneComment(one);
+                                   $node2.find('.username').val('');
+                                   $node2.find('#comment').val('');
+                                   a = true;
+                                   $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
+                                   $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
+                               }
+                            });
                         }
                     });
                 }
@@ -366,10 +353,15 @@ function initializeComments(type) {
     });
 }
 
+function addOneComment(comment) {
+    var html_code = Templates.Comment_OneItem({comment: comment});
+    var $node = $(html_code);
+    $node.insertBefore('#form');
+}
+
 function saveComment(back) {
     Storage.set('backpack', back);
 }
-
 
 function clearBackPack(back) {
     back = [];

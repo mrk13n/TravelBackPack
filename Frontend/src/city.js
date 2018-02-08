@@ -4,7 +4,6 @@ var API = require('./API');
 var Cities;
 var $comments = $("#comments");
 var a;
-var $weath = $("#weather-div");
 
 $(function () {
     var GetInfoCity = require('./Cities/GetInfoCity');
@@ -107,7 +106,6 @@ function initializeComments(type) {
     $comments.html('');
     var html_code2 = Templates.SendForm();
     var $node2 = $(html_code2);
-
     var comments = [];
     var id = Storage.get('id');
     var city;
@@ -131,10 +129,9 @@ function initializeComments(type) {
                                 comments.push(data[i]);
                             }
                         }
-                        var z = [];
+                        var additional_comments = [];
                         for (i = 0; i < comments.length; i++) {
                             var one;
-                            var rand;
                             var fav = false;
                             var Backpack = getBackpack();
                             if (Backpack !== null) {
@@ -144,17 +141,15 @@ function initializeComments(type) {
                                     }
                                 }
                             }
-                            rand = randomAvatar();
                             one = {
                                 city: current_city.city,
                                 favorite: fav,
-                                rand: rand,
                                 comment: comments[i]
                             };
-                            z.push(one);
+                            additional_comments.push(one);
                         }
 
-                        comments = z;
+                        comments = additional_comments;
 
                         function showComments(list) {
                             $comments.html("");
@@ -204,42 +199,19 @@ function initializeComments(type) {
                     $comments.append($node2);
                 }
             });
-            var weather;
-            $.ajax({
-                url: 'https://api.openweathermap.org/data/2.5/weather?q='+current_city.city+"&units=metric"+
-                "&APPID=d41f5cc0cbb6152f6a6af0037d456d08",
-                type: "GET",
-                dataType: "jsonp",
-                success: function (data) {
-                    weather = data;
-                    $weath.html("");
-                    var html_code3 = Templates.weatherBlock({weather: weather});
-                    var $node3 = $(html_code3);
-                    $weath.append($node3);
-                }
-            });
-
-
 
             $node2.find('.btn-send').click(function () {
                 var today = new Date();
                 var dd = today.getDate();
                 var mm = today.getMonth()+1;
                 var yyyy = today.getFullYear();
-                var hh = today.getHours();
-                var mn = today.getMinutes();
+                var avatar = randomAvatar();
                 if(dd<10) {
                     dd = '0'+dd;
                 }
 
                 if(mm<10) {
                     mm = '0'+mm;
-                }
-                if (hh<10) {
-                    hh = '0'+hh;
-                }
-                if (mn<10) {
-                    mn = '0'+mn;
                 }
                 var comment = $('#comment').val();
                 var nickname = $('.username').val();
@@ -250,17 +222,29 @@ function initializeComments(type) {
                     year: yyyy,
                     day: dd,
                     month: mm,
-                    hours: hh,
-                    minutes: mn,
-                    type: type
+                    type: type,
+                    avatar: avatar
                 };
                 if (comment.length !== 0 && nickname.length !== 0) {
                     API.writeComment(send_comment, function (err, data) {
                         if (data.success) {
-                            initializeComments(type);
-                            a = true;
-                            $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
-                            $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
+                            API.getComments(current_city, function (err, data) {
+                               if (!err) {
+                                   var comment = data[data.length-1];
+                                   var one = {
+                                       city: current_city.city,
+                                       favorite: false,
+                                       comment: comment
+                                   };
+                                   $node2.slideToggle(200);
+                                   addOneComment(one);
+                                   $node2.find('.username').val('');
+                                   $node2.find('#comment').val('');
+                                   a = true;
+                                   $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
+                                   $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
+                               }
+                            });
                         }
                     });
                 }
@@ -269,10 +253,15 @@ function initializeComments(type) {
     });
 }
 
+function addOneComment(comment) {
+    var html_code = Templates.Comment_OneItem({comment: comment});
+    var $node = $(html_code);
+    $node.insertBefore('#form');
+}
+
 function saveComment(back) {
     Storage.set('backpack', back);
 }
-
 
 function clearBackPack(back) {
     back = [];

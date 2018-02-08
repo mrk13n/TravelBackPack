@@ -16,10 +16,8 @@ var one_comment = new mongoose.Schema({
     year: {type: String},
     day: {type: String},
     month: {type: String},
-    hours: {type: String},
-    minutes: {type: String},
     type: {type: String},
-    fav: {type: Boolean}
+    avatar: {type: String}
 });
 
 var comments = new mongoose.Schema({
