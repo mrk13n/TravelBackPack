@@ -133,7 +133,6 @@ var trash = [
     'can',
     'cannot',
     'cant',
-    'cant',
     'caption',
     'cause',
     'causes',
