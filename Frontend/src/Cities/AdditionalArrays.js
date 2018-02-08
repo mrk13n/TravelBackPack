@@ -345,7 +345,6 @@ var trash = [
     'neverf',
     'neverless',
     'nevertheless',
-    'new',
     'next',
     'nine',
     'ninety',
