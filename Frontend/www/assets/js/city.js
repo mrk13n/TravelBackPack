@@ -86,6 +86,7 @@ exports.set = function (key, value) {
 var ejs = require('ejs');
 
 
+<<<<<<< HEAD
 exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\r\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\r\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\r\n    </div>\r\n</div>");
 exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\r\n    <div class=\"col-xs-2\">\r\n        <div class=\"thumbnail thumb_city\">\r\n            <img class=\"img-responsive user-photo\" src=\"assets/images/avatars/<%= comment.comment.avatar%>.png\">\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-10\">\r\n        <div class=\"panel panel-default\">\r\n            <div class=\"panel-heading\">\r\n                <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span><span class=\"favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>\"></span>\r\n            </div>\r\n            <div class=\"panel-body\">\r\n                <%= comment.comment.comment%>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>");
 exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\r\n    <div class=\"title-box\">\r\n        <p>experience</p>\r\n        <h1 class=\"city-name\"><%= city.city%></h1>\r\n        <p>like a local</p>\r\n    </div>\r\n    <div class=\"local-search-container\">\r\n        <div class=\"search-box\">\r\n            <input type=\"text\" class=\"form-control\" id=\"searchBox\" placeholder=\"\">\r\n        </div>\r\n        <div class=\"btn search-button\">\r\n            <p class=\"search-icon\">Search</p>\r\n        </div>\r\n    </div>\r\n</div>");
@@ -94,6 +95,16 @@ exports.weatherBlock = ejs.compile(" <div class=\"weather\">\r\n                
 exports.additionalInfo = ejs.compile("\r\n    <div class=\"weather\">\r\n        <div class=\"info\">\r\n            <div class=\"temp\">\r\n                <small>COUNTRY: </small><%= city.country %>\r\n            </div>\r\n            <div class=\"wind\">\r\n                <small>CURRENCY: </small> <%= city.currency %>\r\n            </div>\r\n            <div class=\"description\">\r\n                <small>POPULATION: </small><%= city.population %>\r\n            </div>\r\n        </div>\r\n    </div>");
 exports.FavouriteCityComments = ejs.compile("<div class=\"col-md-6\">\r\n    <div class=\"city-favourite-comments-panel\">\r\n        <div class=\"backpack-city-name\">\r\n            <h2><%= city.city%></h2>\r\n        </div>\r\n        <div class=\"backpack-comments\">\r\n        </div>\r\n    </div>\r\n</div>");
 exports.OneFavouriteComment = ejs.compile("<div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n        <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%> <%= comment.comment.hours%>:<%= comment.comment.minutes%></span><span class=\"favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>\"></span>\r\n    </div>\r\n    <div class=\"panel-body\">\r\n        <%= comment.comment.comment%>\r\n    </div>\r\n</div>");
+=======
+exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
+exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\n    <div class=\"col-xs-2\">\n        <div class=\"thumbnail thumb_city\">\n            <img class=\"img-responsive user-photo\" src=\"assets/images/avatars/<%= comment.comment.avatar%>.png\">\n        </div>\n    </div>\n\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span><span class=\"favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>\"></span>\n            </div>\n            <div class=\"panel-body\">\n                <%= comment.comment.comment%>\n            </div>\n        </div>\n    </div>\n</div>");
+exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\n    <div class=\"title-box\">\n        <p>experience</p>\n        <h1 class=\"city-name\"><%= city.city%></h1>\n        <p>like a local</p>\n    </div>\n    <div class=\"local-search-container\">\n        <div class=\"search-box\">\n            <input type=\"text\" class=\"form-control\" id=\"searchBox\" placeholder=\"\">\n        </div>\n        <div class=\"btn search-button\">\n            <p class=\"search-icon\">Search</p>\n        </div>\n    </div>\n</div>");
+exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\n    <div class=\"col-xs-2\"></div>\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <input type=\"text\" class=\"form-control username\" placeholder=\"Enter username\">\n            </div>\n            <div class=\"panel-body\">\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\"></textarea>\n                <button type=\"submit\" class=\"btn btn-send\">\n                    Send <span class=\"glyphicon glyphicon-send\"></span>\n                </button>\n            </div>\n        </div>\n    </div>\n</div>");
+exports.weatherBlock = ejs.compile(" <div class=\"weather\">\n                <div class=\"info\">\n                    <div class=\"temp\">\n                        <small>TEMPERATURE: </small><%= weather.main.temp %>°C\n                    </div>\n                    <div class=\"wind\">\n                        <small>WIND SPEED: </small> <%= weather.wind.speed %>m/s\n                    </div>\n                    <div class=\"description\">\n                        <%= weather.weather[0].description %>\n                    </div>\n                </div>\n                </div>\n");
+exports.additionalInfo = ejs.compile("\n    <div class=\"weather\">\n        <div class=\"info\">\n            <div class=\"temp\">\n                <small>COUNTRY: </small><%= city.country %>\n            </div>\n            <div class=\"wind\">\n                <small>CURRENCY: </small> <%= city.currency %>\n            </div>\n            <div class=\"description\">\n                <small>POPULATION: </small><%= city.population %>\n            </div>\n        </div>\n    </div>");
+exports.FavouriteCityComments = ejs.compile("<div class=\"col-md-6\">\n    <div class=\"city-favourite-comments-panel\">\n        <div class=\"backpack-city-name\">\n            <h2><%= city.city%></h2>\n        </div>\n        <div class=\"backpack-comments\">\n        </div>\n    </div>\n</div>");
+exports.OneFavouriteComment = ejs.compile("<div class=\"panel panel-default\">\n    <div class=\"panel-heading\">\n        <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span><span class=\"favorite glyphicon glyphicon-star\"></span>\n    </div>\n    <div class=\"panel-body\">\n        <%= comment.comment.comment%>\n    </div>\n</div>");
+>>>>>>> b6463e347fe986847efa6012f11a7137d6572559
 },{"ejs":8}],5:[function(require,module,exports){
 var Storage = require('./LocalStorage');
 var Templates = require('./Teamplates');
@@ -101,6 +112,10 @@ var API = require('./API');
 var Cities;
 var $comments = $("#comments");
 var a;
+<<<<<<< HEAD
+=======
+var Backpack = getBackpack();
+>>>>>>> b6463e347fe986847efa6012f11a7137d6572559
 
 $(function () {
     var GetInfoCity = require('./Cities/GetInfoCity');
@@ -207,6 +222,7 @@ function initializeComments(type) {
     var id = Storage.get('id');
     var city;
     var current_city;
+    $comments.append($node2);
     API.getCitiesList(function (err, data) {
         if (!err) {
             Cities = data;
@@ -230,7 +246,7 @@ function initializeComments(type) {
                         for (i = 0; i < comments.length; i++) {
                             var one;
                             var fav = false;
-                            var Backpack = getBackpack();
+                            Backpack = getBackpack();
                             if (Backpack !== null) {
                                 for (var j = 0; j < Backpack.length; j++) {
                                     if (comments[i]._id == Backpack[j].comment._id) {
@@ -245,8 +261,8 @@ function initializeComments(type) {
                             };
                             additional_comments.push(one);
                         }
-
                         comments = additional_comments;
+<<<<<<< HEAD
 
                         function showComments(list) {
                             $comments.html("");
@@ -291,9 +307,10 @@ function initializeComments(type) {
                             list.forEach(showOneComment);
                         }
 
+=======
+>>>>>>> b6463e347fe986847efa6012f11a7137d6572559
                         showComments(comments);
                     }
-                    $comments.append($node2);
                 }
             });
 
@@ -306,7 +323,6 @@ function initializeComments(type) {
                 if(dd<10) {
                     dd = '0'+dd;
                 }
-
                 if(mm<10) {
                     mm = '0'+mm;
                 }
@@ -324,25 +340,18 @@ function initializeComments(type) {
                 };
                 if (comment.length !== 0 && nickname.length !== 0) {
                     API.writeComment(send_comment, function (err, data) {
-                        if (data.success) {
-                            API.getComments(current_city, function (err, data) {
-                               if (!err) {
-                                   var comment = data[data.length-1];
-                                   var one = {
-                                       city: current_city.city,
-                                       favorite: false,
-                                       comment: comment
-                                   };
-                                   $node2.slideToggle(200);
-                                   addOneComment(one);
-                                   $node2.find('.username').val('');
-                                   $node2.find('#comment').val('');
-                                   a = true;
-                                   $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
-                                   $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
-                               }
-                            });
-                        }
+                        var one = {
+                            city: current_city.city,
+                            favorite: false,
+                            comment: data
+                        };
+                        $node2.slideToggle(200);
+                        addOneComment(one);
+                        $node2.find('.username').val('');
+                        $node2.find('#comment').val('');
+                        a = true;
+                        $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
+                        $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
                     });
                 }
             });
@@ -350,10 +359,47 @@ function initializeComments(type) {
     });
 }
 
+function showComments(list) {
+    list.forEach(addOneComment);
+}
+
 function addOneComment(comment) {
     var html_code = Templates.Comment_OneItem({comment: comment});
     var $node = $(html_code);
+    Backpack = getBackpack();
     $node.insertBefore('#form');
+
+    $node.find ('.favorite').mouseover(function () {
+        if (!comment.favorite) {
+            $(this).removeClass('glyphicon glyphicon-star-empty');
+            $(this).addClass('glyphicon glyphicon-star');
+        }
+    });
+
+    $node.find ('.favorite').mouseout(function () {
+        if (!comment.favorite) {
+            $(this).removeClass('glyphicon glyphicon-star');
+            $(this).addClass('glyphicon glyphicon-star-empty');
+        }
+    });
+
+    $node.find('.favorite').click(function () {
+        if (comment.favorite) {
+            for (var i = 0; i < Backpack.length; i++) {
+                if (comment.comment._id == Backpack[i].comment._id) {
+                    removeFromStorrage(Backpack, i);
+                    $(this).removeClass('glyphicon glyphicon-star');
+                    $(this).addClass('glyphicon glyphicon-star-empty');
+                }
+            }
+        } else {
+            Backpack.push(comment);
+            saveComment(Backpack);
+            $(this).removeClass('glyphicon glyphicon-star-empty');
+            $(this).addClass('glyphicon glyphicon-star');
+        }
+        comment.favorite =!comment.favorite;
+    });
 }
 
 function saveComment(back) {
