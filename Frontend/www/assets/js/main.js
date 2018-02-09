@@ -804,7 +804,6 @@ function getId(text) {
                search_words = [];
            }
            if (search_words[0] === '') search_words = [];
-           console.log(search_words);
            if (search_words.length === 0) {
                $('.search-box').addClass('has-error');
            }

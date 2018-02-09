@@ -64,6 +64,11 @@ $(function () {
     initializeFavorites();
 });
 
+function initializeFavorites() {
+    var cities = getCities(Backpack);
+    showCities(cities);
+}
+
 function showCities(list) {
     $cities.html("");
 
@@ -93,25 +98,6 @@ function showCities(list) {
     list.forEach(showOne);
 }
 
-function initializeFavorites() {
-    var cities = getCities(Backpack);
-    showCities(cities);
-    // showComments(Backpack);
-}
-
-function getBackpack() {
-    var back = Storage.get('backpack');
-    if (back === null) {
-        back = [];
-    }
-    return back;
-}
-
-function removeFromStorrage(back, i) {
-    back.splice(i, 1);
-    Storage.set('backpack', back);
-}
-
 function getCities(back) {
     var cities = [];
     if (back !== null) {
@@ -133,6 +119,19 @@ function getCities(back) {
         }
     }
     return cities;
+}
+
+function getBackpack() {
+    var back = Storage.get('backpack');
+    if (back === null) {
+        back = [];
+    }
+    return back;
+}
+
+function removeFromStorrage(back, i) {
+    back.splice(i, 1);
+    Storage.set('backpack', back);
 }
 },{"./LocalStorage":1,"./Teamplates":2}],4:[function(require,module,exports){
 (function () {
