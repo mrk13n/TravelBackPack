@@ -187,7 +187,7 @@ function initializeComments(type) {
                             favorite: false,
                             comment: data
                         };
-                        $node2.slideToggle(200);
+                        $node2.slideToggle(1000);
                         addOneComment(one);
                         $node2.find('.username').val('');
                         $node2.find('#comment').val('');

@@ -14,7 +14,10 @@ function getId(text) {
            var id;
            var search_words = [];
            var search_rate;
-           var i, j;
+           var i, j, k;
+           var length;
+           var name;
+           var city;
            Cities = data;
            if (text.length !== 0) {
                search_words = keyWordsArray(text, Cities);
@@ -36,12 +39,11 @@ function getId(text) {
                    }
                }
                if (!find) {
-                   var a = search_words[0].length;
-                   var name;
+                   length = search_words[0].length;
                    for (i = 0; i < Cities.length; i++) {
                        name ='';
                        city_name = Cities[i].city.toLowerCase();
-                       for (var k = 0; k < a; k++) {
+                       for (k = 0; k < length; k++) {
                            name += city_name[k];
                        }
                        if (search_words[0] === name) {
@@ -56,15 +58,90 @@ function getId(text) {
                    $('.search-box').addClass('has-error');
                }
            }
-           if (search_words !== 0 && search_words !== 1) {
+           if (search_words.length === 2) {
+               city = search_words[0] + " " + search_words[1];
+               for (i = 0; i < Cities.length; i++) {
+                   city_name = Cities[i].city.toLowerCase();
+                   if (city === city_name) {
+                       id = Cities[i].id;
+                       Storage.set('id', id);
+                       document.location.href = '/city.html';
+                       find = true;
+                   }
+               }
+               if (!find) {
+                   length = city.length;
+                   for (i = 0; i < Cities.length; i++) {
+                       name ='';
+                       city_name = Cities[i].city.toLowerCase();
+                       for (k = 0; k < length; k++) {
+                           name += city_name[k];
+                       }
+                       if (city === name) {
+                           id = Cities[i].id;
+                           Storage.set('id', id);
+                           document.location.href = '/city.html';
+                           find = true;
+                       }
+                   }
+               }
+               if (!find) {
+                   $('.search-box').addClass('has-error');
+               }
+           }
+           if (search_words.length === 3) {
+               city = search_words[0] + " " + search_words[1] + " " + search_words[2];
+               for (i = 0; i < Cities.length; i++) {
+                   city_name = Cities[i].city.toLowerCase();
+                   if (city === city_name) {
+                       id = Cities[i].id;
+                       Storage.set('id', id);
+                       document.location.href = '/city.html';
+                       find = true;
+                   }
+               }
+               if (!find) {
+                   length = city.length;
+                   for (i = 0; i < Cities.length; i++) {
+                       name ='';
+                       city_name = Cities[i].city.toLowerCase();
+                       for (k = 0; k < length; k++) {
+                           name += city_name[k];
+                       }
+                       if (city === name) {
+                           id = Cities[i].id;
+                           Storage.set('id', id);
+                           document.location.href = '/city.html';
+                           find = true;
+                       }
+                   }
+               }
+               if (!find) {
+                   $('.search-box').addClass('has-error');
+               }
+           }
+           if (search_words.length > 3) {
                for(i = 0; i < search_words.length; i++) {
                    for (j = 0; j < Cities.length; j++) {
                        city_name = Cities[i].city.toLowerCase();
+                       if (i !== search_words.length-1) var two_words = search_words[i] + " " + search_words[i+1];
+                       if (i !== search_words.length-2) var three_words = search_words[i] + " " + search_words[i-1] + " " + search_words[i-2];
                        if (search_words[i] === Cities[j].city.toLowerCase()) {
                            city_name = Cities[j];
                            search_words.splice(i,1);
                            break;
                        }
+                       if (two_words === Cities[j].city.toLowerCase()) {
+                           city_name = Cities[j];
+                           search_words.splice(i,2);
+                           break;
+                       }
+                       if (three_words === Cities[j].city.toLowerCase()) {
+                           city_name = Cities[j];
+                           search_words.slice(i, 3);
+                           break;
+                       }
+
                    }
                }
                city_search = {city: city_name.city};
