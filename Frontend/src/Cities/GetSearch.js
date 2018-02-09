@@ -13,6 +13,7 @@ function getId(text) {
            var find = false;
            var id;
            var search_words = [];
+           var search_rate;
            var i, j;
            Cities = data;
            if (text.length !== 0) {
@@ -72,26 +73,32 @@ function getId(text) {
                        if (!data.emptyForm) {
                            var gt = true;
                            var word_gt = false;
+                           search_rate = 0;
                            for (i = 0; i < data.length; i++) {
                                var comment_words = keyWordsArray(data[i].comment, Cities);
                                for (j = 0; j < search_words.length; j++){
                                    for (var k = 0; k < comment_words.length; k++){
                                        if (search_words[j] === comment_words[k]){
-                                           word_gt = true;
+                                           // word_gt = true;
+                                           search_rate += 1;
                                            break;
                                        }
                                    }
-                                   if (!word_gt){
-                                       gt = false;
-                                       break;
-                                   }
-                                   word_gt = false;
+                                   // if (!word_gt){
+                                   //     gt = false;
+                                   //     break;
+                                   // }
+                                   // word_gt = false;
                                }
-                               if(gt){
+                               if (Math.abs(search_rate-search_words.length) < 2 && search_rate > 0){
                                    console.log(data[i].comment)
                                }
-                               gt = true;
-                               word_gt = false;
+                               // if(gt){
+                               //     console.log(data[i].comment)
+                               // }
+                               // gt = true;
+                               // word_gt = false;
+
                            }
                        }
                    }
