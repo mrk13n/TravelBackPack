@@ -17,11 +17,11 @@ var cities = [
     },
     {
         id: 3,
-        city: "Budapest",
-        country: 'Hungary',
-        currency: "HUF",
-        population: "1,759m",
-        icon: 'assets/images/budapest.jpg'
+        city: "London",
+        country: "Great Britain",
+        currency: "GBP",
+        population: "8,788m",
+        icon: 'assets/images/london.jpg'
     },
     {
         id: 4,
@@ -33,46 +33,6 @@ var cities = [
     },
     {
         id: 5,
-        city: "London",
-        country: "Great Britain",
-        currency: "GBP",
-        population: "8,788m",
-        icon: 'assets/images/london.jpg'
-    },
-    {
-        id: 6,
-        city: "Berlin",
-        country: 'Germany',
-        currency: "EUR",
-        population: "3,47m",
-        icon: 'assets/images/berlin.jpg'
-    },
-    {
-        id: 7,
-        city: "Saint Petersburg",
-        country: "Russia",
-        currency: "RUB",
-        population: "4,991m",
-        icon: 'assets/images/saintp.jpg'
-    },
-    {
-        id: 8,
-        city: "Barcelona",
-        country: "Spain",
-        currency: "EUR",
-        population: "1,609m",
-        icon: 'assets/images/barselona.jpg'
-    },
-    {
-        id: 9,
-        city: "Lviv",
-        country: "Ukraine",
-        currency: "UAH",
-        population: "723k",
-        icon: 'assets/images/lviv.jpg'
-    },
-    {
-        id: 10,
         city: "Rome",
         country: "Italy",
         currency: "EUR",
@@ -80,21 +40,65 @@ var cities = [
         icon: 'assets/images/rome.jpeg'
     },
     {
-        id: 11,
-        city: "Florence",
+        id: 6,
+        city: "Barcelona",
+        country: "Spain",
+        currency: "EUR",
+        population: "1,609m",
+        icon: 'assets/images/barselona.jpg'
+    },
+    {
+        id: 7,
+        city: "Kyiv",
+        country: "Ukraine",
+        currency: "UAH",
+        population: "2,804m",
+        icon: 'assets/images/kyiv.jpg'
+    },
+
+    {
+        id: 8,
+        city: "Istanbul",
+        country: "Turkey",
+        currency: "UAH",
+        population: "723k",
+        icon: 'assets/images/istanbul.jpeg'
+    },
+
+    {
+        id: 9,
+        city: "Tokyo",
         country: "Italy",
         currency: "EUR",
         population: "379k",
-        icon: 'assets/images/florence.jpg'
+        icon: 'assets/images/tokyo.jpeg'
     },
     {
-        id: 12,
-        city: "Krakow",
+        id: 10,
+        city: "Singapore",
         country: "Poland",
         currency: "PLN",
         population: "754k",
-        icon: 'assets/images/krakow.jpg'
+        icon: 'assets/images/singapore.jpeg'
     },
+    {
+        id: 11,
+        city: "Sydney",
+        country: "Poland",
+        currency: "PLN",
+        population: "754k",
+        icon: 'assets/images/sydney.jpeg'
+    },
+    {
+        id: 12,
+        city: "Bangkok",
+        country: "Poland",
+        currency: "PLN",
+        population: "754k",
+        icon: 'assets/images/bangkok.jpeg'
+    }
+
+    /*
     {
         id: 13,
         city: "Kyiv",
@@ -166,7 +170,7 @@ var cities = [
         currency: "PLN",
         population: "1,735m",
         icon: 'assets/images/warsaw.jpg'
-    }
+    }*/
 ];
 
 module.exports = cities;
