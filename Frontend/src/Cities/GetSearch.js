@@ -5,7 +5,7 @@ var trash = require('./AdditionalArrays').trash;
 var wrong_symbols = require('./AdditionalArrays').wrong_symbols;
 var stemmer = require('stemmer');
 
-function getId(text) {
+function getComments(text) {
     API.getCitiesList(function (err, data) {
        if (!err) {
            var city_name;
@@ -245,4 +245,4 @@ function keyWordsArray(text, cities) {
     return words;
 }
 
-exports.getId = getId;
+exports.getComments = getComments;

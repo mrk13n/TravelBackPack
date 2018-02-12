@@ -788,7 +788,7 @@ var trash = require('./AdditionalArrays').trash;
 var wrong_symbols = require('./AdditionalArrays').wrong_symbols;
 var stemmer = require('stemmer');
 
-function getId(text) {
+function getComments(text) {
     API.getCitiesList(function (err, data) {
        if (!err) {
            var city_name;
@@ -1028,7 +1028,7 @@ function keyWordsArray(text, cities) {
     return words;
 }
 
-exports.getId = getId;
+exports.getComments = getComments;
 },{"../API":1,"../LocalStorage":5,"./AdditionalArrays":2,"stemmer":15}],5:[function(require,module,exports){
 var basil = require('basil.js');
 basil = new basil();
@@ -1055,7 +1055,7 @@ exports.OneFavouriteComment = ejs.compile("<div class=\"panel panel-default\">\n
 },{"ejs":10}],7:[function(require,module,exports){
 $(function () {
     var GetCities = require('./Cities/GetCities');
-    var getId = require('./Cities/GetSearch');
+    var getComments = require('./Cities/GetSearch');
     var text;
     GetCities.initialiseCities();
 
@@ -1089,14 +1089,14 @@ $(function () {
         $('#searchBox').keyup(function (e) {
             text = $('input.form-control').val();
             if (e.keyCode === 13) {
-                getId.getId(text);
+                getComments.getComments(text);
             }
         });
     });
 
     $('.search-button').click(function () {
         text = $('input.form-control').val();
-        getId.getId(text);
+        getComments.getComments(text);
     });
 });
 

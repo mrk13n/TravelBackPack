@@ -1,6 +1,6 @@
 $(function () {
     var GetCities = require('./Cities/GetCities');
-    var getId = require('./Cities/GetSearch');
+    var getComments = require('./Cities/GetSearch');
     var text;
     GetCities.initialiseCities();
 
@@ -34,14 +34,14 @@ $(function () {
         $('#searchBox').keyup(function (e) {
             text = $('input.form-control').val();
             if (e.keyCode === 13) {
-                getId.getId(text);
+                getComments.getComments(text);
             }
         });
     });
 
     $('.search-button').click(function () {
         text = $('input.form-control').val();
-        getId.getId(text);
+        getComments.getComments(text);
     });
 });
 
