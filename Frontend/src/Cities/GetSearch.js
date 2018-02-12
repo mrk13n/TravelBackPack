@@ -58,69 +58,7 @@ function getComments(text) {
                    $('.search-box').addClass('has-error');
                }
            }
-           if (search_words.length === 2) {
-               city = search_words[0] + " " + search_words[1];
-               for (i = 0; i < Cities.length; i++) {
-                   city_name = Cities[i].city.toLowerCase();
-                   if (city === city_name) {
-                       id = Cities[i].id;
-                       Storage.set('id', id);
-                       document.location.href = '/city.html';
-                       find = true;
-                   }
-               }
-               if (!find) {
-                   length = city.length;
-                   for (i = 0; i < Cities.length; i++) {
-                       name ='';
-                       city_name = Cities[i].city.toLowerCase();
-                       for (k = 0; k < length; k++) {
-                           name += city_name[k];
-                       }
-                       if (city === name) {
-                           id = Cities[i].id;
-                           Storage.set('id', id);
-                           document.location.href = '/city.html';
-                           find = true;
-                       }
-                   }
-               }
-               if (!find) {
-                   $('.search-box').addClass('has-error');
-               }
-           }
-           if (search_words.length === 3) {
-               city = search_words[0] + " " + search_words[1] + " " + search_words[2];
-               for (i = 0; i < Cities.length; i++) {
-                   city_name = Cities[i].city.toLowerCase();
-                   if (city === city_name) {
-                       id = Cities[i].id;
-                       Storage.set('id', id);
-                       document.location.href = '/city.html';
-                       find = true;
-                   }
-               }
-               if (!find) {
-                   length = city.length;
-                   for (i = 0; i < Cities.length; i++) {
-                       name ='';
-                       city_name = Cities[i].city.toLowerCase();
-                       for (k = 0; k < length; k++) {
-                           name += city_name[k];
-                       }
-                       if (city === name) {
-                           id = Cities[i].id;
-                           Storage.set('id', id);
-                           document.location.href = '/city.html';
-                           find = true;
-                       }
-                   }
-               }
-               if (!find) {
-                   $('.search-box').addClass('has-error');
-               }
-           }
-           if (search_words.length > 3) {
+           if (search_words.length > 1) {
                for(i = 0; i < search_words.length; i++) {
                    for (j = 0; j < Cities.length; j++) {
                        city_name = Cities[i].city.toLowerCase();
@@ -246,3 +184,67 @@ function keyWordsArray(text, cities) {
 }
 
 exports.getComments = getComments;
+
+
+// if (search_words.length === 2) {
+//     city = search_words[0] + " " + search_words[1];
+//     for (i = 0; i < Cities.length; i++) {
+//         city_name = Cities[i].city.toLowerCase();
+//         if (city === city_name) {
+//             id = Cities[i].id;
+//             Storage.set('id', id);
+//             document.location.href = '/city.html';
+//             find = true;
+//         }
+//     }
+//     if (!find) {
+//         length = city.length;
+//         for (i = 0; i < Cities.length; i++) {
+//             name ='';
+//             city_name = Cities[i].city.toLowerCase();
+//             for (k = 0; k < length; k++) {
+//                 name += city_name[k];
+//             }
+//             if (city === name) {
+//                 id = Cities[i].id;
+//                 Storage.set('id', id);
+//                 document.location.href = '/city.html';
+//                 find = true;
+//             }
+//         }
+//     }
+//     if (!find) {
+//         $('.search-box').addClass('has-error');
+//     }
+// }
+// if (search_words.length === 3) {
+//     city = search_words[0] + " " + search_words[1] + " " + search_words[2];
+//     for (i = 0; i < Cities.length; i++) {
+//         city_name = Cities[i].city.toLowerCase();
+//         if (city === city_name) {
+//             id = Cities[i].id;
+//             Storage.set('id', id);
+//             document.location.href = '/city.html';
+//             find = true;
+//         }
+//     }
+//     if (!find) {
+//         length = city.length;
+//         for (i = 0; i < Cities.length; i++) {
+//             name ='';
+//             city_name = Cities[i].city.toLowerCase();
+//             for (k = 0; k < length; k++) {
+//                 name += city_name[k];
+//             }
+//             if (city === name) {
+//                 id = Cities[i].id;
+//                 Storage.set('id', id);
+//                 document.location.href = '/city.html';
+//                 find = true;
+//             }
+//         }
+//     }
+//     if (!find) {
+//         $('.search-box').addClass('has-error');
+//     }
+// }
