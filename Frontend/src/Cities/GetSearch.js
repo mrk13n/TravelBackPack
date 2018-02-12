@@ -59,13 +59,8 @@ function getComments(text) {
                     $('.search-box').addClass('has-error');
                 }
             }
-<<<<<<< HEAD
             if (search_words.length > 1) {
                 for(i = 0; i < search_words.length; i++) {
-=======
-            if (search_words > 1) {
-                for (i = 0; i < search_words.length; i++) {
->>>>>>> b293d3ad1da82807af25aaa1db346ce66d7f35ee
                     for (j = 0; j < Cities.length; j++) {
                         city_name = Cities[i].city.toLowerCase();
                         if (i !== search_words.length-1) var two_words = search_words[i] + " " + search_words[i+1];
@@ -97,37 +92,18 @@ function getComments(text) {
                             search_rate = 0;
                             for (i = 0; i < data.length; i++) {
                                 var comment_words = keyWordsArray(data[i].comment, Cities);
-<<<<<<< HEAD
                                 for (j = 0; j < search_words.length; j++){
                                     for (var k = 0; k < comment_words.length; k++){
                                         if (search_words[j] === comment_words[k]){
-=======
-                                console.log(comment_words);
-                                for (j = 0; j < search_words.length; j++) {
-                                    for (var k = 0; k < comment_words.length; k++) {
-                                        if (search_words[j] === comment_words[k]) {
-                                            // word_gt = true;
->>>>>>> b293d3ad1da82807af25aaa1db346ce66d7f35ee
                                             search_rate += 1;
                                             break;
                                         }
                                     }
                                 }
-<<<<<<< HEAD
                                 if (Math.abs(search_rate-search_words.length) < 2 && search_rate > 0){
                                     search_rate = 0;
                                     console.log(data[i].comment)
                                 }
-=======
-                                if (Math.abs(search_rate - search_words.length) < 2 && search_rate > 0) {
-                                    console.log(data[i].comment)
-                                }
-                                // if(gt){
-                                //     console.log(data[i].comment)
-                                // }
-                                // gt = true;
-                                // word_gt = false;
->>>>>>> b293d3ad1da82807af25aaa1db346ce66d7f35ee
                             }
                         }
                     }
