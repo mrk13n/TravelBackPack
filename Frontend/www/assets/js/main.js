@@ -790,181 +790,105 @@ var stemmer = require('stemmer');
 
 function getId(text) {
     API.getCitiesList(function (err, data) {
-       if (!err) {
-           var city_name;
-           var city_search;
-           var find = false;
-           var id;
-           var search_words = [];
-           var search_rate;
-           var i, j, k;
-           var length;
-           var name;
-           var city;
-           Cities = data;
-           if (text.length !== 0) {
-               search_words = keyWordsArray(text, Cities);
-           } else {
-               search_words = [];
-           }
-           if (search_words[0] === '') search_words = [];
-           if (search_words.length === 0) {
-               $('.search-box').addClass('has-error');
-           }
-           if (search_words.length === 1) {
-               for (i = 0; i < Cities.length; i++) {
-                   city_name = Cities[i].city.toLowerCase();
-                   if (search_words[0] === city_name) {
-                       id = Cities[i].id;
-                       Storage.set('id', id);
-                       document.location.href = '/city.html';
-                       find = true;
-                   }
-               }
-               if (!find) {
-                   length = search_words[0].length;
-                   for (i = 0; i < Cities.length; i++) {
-                       name ='';
-                       city_name = Cities[i].city.toLowerCase();
-                       for (k = 0; k < length; k++) {
-                           name += city_name[k];
-                       }
-                       if (search_words[0] === name) {
-                           id = Cities[i].id;
-                           Storage.set('id', id);
-                           document.location.href = '/city.html';
-                           find = true;
-                       }
-                   }
-               }
-               if (!find) {
-                   $('.search-box').addClass('has-error');
-               }
-           }
-           if (search_words.length === 2) {
-               city = search_words[0] + " " + search_words[1];
-               for (i = 0; i < Cities.length; i++) {
-                   city_name = Cities[i].city.toLowerCase();
-                   if (city === city_name) {
-                       id = Cities[i].id;
-                       Storage.set('id', id);
-                       document.location.href = '/city.html';
-                       find = true;
-                   }
-               }
-               if (!find) {
-                   length = city.length;
-                   for (i = 0; i < Cities.length; i++) {
-                       name ='';
-                       city_name = Cities[i].city.toLowerCase();
-                       for (k = 0; k < length; k++) {
-                           name += city_name[k];
-                       }
-                       if (city === name) {
-                           id = Cities[i].id;
-                           Storage.set('id', id);
-                           document.location.href = '/city.html';
-                           find = true;
-                       }
-                   }
-               }
-               if (!find) {
-                   $('.search-box').addClass('has-error');
-               }
-           }
-           if (search_words.length === 3) {
-               city = search_words[0] + " " + search_words[1] + " " + search_words[2];
-               for (i = 0; i < Cities.length; i++) {
-                   city_name = Cities[i].city.toLowerCase();
-                   if (city === city_name) {
-                       id = Cities[i].id;
-                       Storage.set('id', id);
-                       document.location.href = '/city.html';
-                       find = true;
-                   }
-               }
-               if (!find) {
-                   length = city.length;
-                   for (i = 0; i < Cities.length; i++) {
-                       name ='';
-                       city_name = Cities[i].city.toLowerCase();
-                       for (k = 0; k < length; k++) {
-                           name += city_name[k];
-                       }
-                       if (city === name) {
-                           id = Cities[i].id;
-                           Storage.set('id', id);
-                           document.location.href = '/city.html';
-                           find = true;
-                       }
-                   }
-               }
-               if (!find) {
-                   $('.search-box').addClass('has-error');
-               }
-           }
-           if (search_words.length > 3) {
-               for(i = 0; i < search_words.length; i++) {
-                   for (j = 0; j < Cities.length; j++) {
-                       city_name = Cities[i].city.toLowerCase();
-                       if (i !== search_words.length-1) var two_words = search_words[i] + " " + search_words[i+1];
-                       if (i !== search_words.length-2) var three_words = search_words[i] + " " + search_words[i-1] + " " + search_words[i-2];
-                       if (search_words[i] === Cities[j].city.toLowerCase()) {
-                           city_name = Cities[j];
-                           search_words.splice(i,1);
-                           break;
-                       }
-                       if (two_words === Cities[j].city.toLowerCase()) {
-                           city_name = Cities[j];
-                           search_words.splice(i,2);
-                           break;
-                       }
-                       if (three_words === Cities[j].city.toLowerCase()) {
-                           city_name = Cities[j];
-                           search_words.slice(i, 3);
-                           break;
-                       }
+        if (!err) {
+            var city_name;
+            var city_search;
+            var find = false;
+            var id;
+            var search_words = [];
+            var search_rate;
+            var i, j;
+            Cities = data;
+            if (text.length !== 0) {
+                search_words = keyWordsArray(text, Cities);
+            } else {
+                search_words = [];
+            }
+            if (search_words[0] === '') search_words = [];
+            if (search_words.length === 0) {
+                $('.search-box').addClass('has-error');
+            }
+            if (search_words.length === 1) {
+                for (i = 0; i < Cities.length; i++) {
+                    city_name = Cities[i].city.toLowerCase();
+                    if (search_words[0] === city_name) {
+                        id = Cities[i].id;
+                        Storage.set('id', id);
+                        document.location.href = '/city.html';
+                        find = true;
+                    }
+                }
+                if (!find) {
+                    var a = search_words[0].length;
+                    var name;
+                    for (i = 0; i < Cities.length; i++) {
+                        name ='';
+                        city_name = Cities[i].city.toLowerCase();
+                        for (var k = 0; k < a; k++) {
+                            name += city_name[k];
+                        }
+                        if (search_words[0] === name) {
+                            id = Cities[i].id;
+                            Storage.set('id', id);
+                            document.location.href = '/city.html';
+                            find = true;
+                        }
+                    }
+                }
+                if (!find) {
+                    $('.search-box').addClass('has-error');
+                }
+            }
+            if (search_words > 1) {
+                for(i = 0; i < search_words.length; i++) {
+                    for (j = 0; j < Cities.length; j++) {
+                        city_name = Cities[i].city.toLowerCase();
+                        if (search_words[i] === Cities[j].city.toLowerCase()) {
+                            city_name = Cities[j];
+                            search_words.splice(i,1);
+                            break;
+                        }
+                    }
+                }
+                city_search = {city: city_name.city};
+                API.getComments(city_search, function (err, data) {
+                    if (!err) {
+                        if (!data.emptyForm) {
+                            var gt = true;
+                            var word_gt = false;
+                            search_rate = 0;
+                            for (i = 0; i < data.length; i++) {
+                                var comment_words = keyWordsArray(data[i].comment, Cities);
+                                console.log(comment_words);
+                                for (j = 0; j < search_words.length; j++){
+                                    for (var k = 0; k < comment_words.length; k++){
+                                        if (search_words[j] === comment_words[k]){
+                                            // word_gt = true;
+                                            search_rate += 1;
+                                            break;
+                                        }
+                                    }
+                                    // if (!word_gt){
+                                    //     gt = false;
+                                    //     break;
+                                    // }
+                                    // word_gt = false;
+                                }
+                                if (Math.abs(search_rate-search_words.length) < 2 && search_rate > 0){
+                                    console.log(data[i].comment)
+                                }
+                                // if(gt){
+                                //     console.log(data[i].comment)
+                                // }
+                                // gt = true;
+                                // word_gt = false;
 
-                   }
-               }
-               city_search = {city: city_name.city};
-               API.getComments(city_search, function (err, data) {
-                   if (!err) {
-                       if (!data.emptyForm) {
-                           var gt = true;
-                           var word_gt = false;
-                           search_rate = 0;
-                           for (i = 0; i < data.length; i++) {
-                               var comment_words = keyWordsArray(data[i].comment, Cities);
-                               for (j = 0; j < search_words.length; j++){
-                                   for (var k = 0; k < comment_words.length; k++){
-                                       if (search_words[j] === comment_words[k]){
-                                           // word_gt = true;
-                                           search_rate += 1;
-                                           break;
-                                       }
-                                   }
-                                   // if (!word_gt){
-                                   //     gt = false;
-                                   //     break;
-                                   // }
-                                   // word_gt = false;
-                               }
-                               if (Math.abs(search_rate-search_words.length) < 2 && search_rate > 0){
-                                   console.log(data[i].comment)
-                               }
-                               // if(gt){
-                               //     console.log(data[i].comment)
-                               // }
-                               // gt = true;
-                               // word_gt = false;
-
-                           }
-                       }
-                   }
-               });
-           }
-       }
+                            }
+                        }
+                    }
+                });
+            }
+        }
     });
 }
 
@@ -2530,7 +2454,7 @@ module.exports={
   "_args": [
     [
       "ejs@2.5.7",
-      "C:\\Users\\Maria\\Documents\\GitHub\\TravelBackPack"
+      "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack"
     ]
   ],
   "_from": "ejs@2.5.7",
@@ -2554,7 +2478,7 @@ module.exports={
   ],
   "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz",
   "_spec": "2.5.7",
-  "_where": "C:\\Users\\Maria\\Documents\\GitHub\\TravelBackPack",
+  "_where": "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack",
   "author": {
     "name": "Matthew Eernisse",
     "email": "mde@fleegix.org",
