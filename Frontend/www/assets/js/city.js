@@ -1848,11 +1848,7 @@ module.exports={
   "_args": [
     [
       "ejs@2.5.7",
-<<<<<<< HEAD
-      "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack"
-=======
       "/home/mrk13/Documents/GitHub/TravelBackPack"
->>>>>>> 787976d35b56dc9ad91eeeb1331c605dfa34786e
     ]
   ],
   "_from": "ejs@2.5.7",
@@ -1876,11 +1872,7 @@ module.exports={
   ],
   "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz",
   "_spec": "2.5.7",
-<<<<<<< HEAD
-  "_where": "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack",
-=======
   "_where": "/home/mrk13/Documents/GitHub/TravelBackPack",
->>>>>>> 787976d35b56dc9ad91eeeb1331c605dfa34786e
   "author": {
     "name": "Matthew Eernisse",
     "email": "mde@fleegix.org",
