@@ -1,6 +1,6 @@
 exports.mainPage = function(req, res) {
     res.render('mainPage', {
-        pageTitle: 'BackPack',
+        pageTitle: 'TravelHack',
         mainActive: true,
         mapActive: false,
         cityActive: false,
