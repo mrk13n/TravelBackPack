@@ -27,16 +27,16 @@ $(function () {
         }, 2200);
     });
 
-    $('#searchBox').focus(function () {
-        $('#searchBox').keyup(function (e) {
-            text = $('input.form-control').val();
-            if (e.keyCode === 13) {
-                getComments.getComments(text);
-            }
-        });
-        $('.search-button').click(function () {
+    $('#searchBox').keyup(function (e) {
+        text = $('input.form-control').val();
+        if (e.keyCode === 13) {
             getComments.getComments(text);
-        });
+        }
+    });
+
+    $('.search-button').click(function () {
+        text = $('input.form-control').val();
+        getComments.getComments(text);
     });
 });
 

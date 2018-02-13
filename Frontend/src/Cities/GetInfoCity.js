@@ -25,10 +25,28 @@ function showInfo() {
             var html_code2 = Templates.additionalInfo({city:city});
             var $node = $(html_code);
             var $node2 = $(html_code2);
+            $node.find('#searchBox').keyup(function (e) {
+                text = $('input.form-control').val();
+                if (e.keyCode === 13) {
+                    getLocalComments.getLocalComments(text);
+                }
+            });
             $node.find('.search-button').click(function () {
                 text = $('input.form-control').val();
                 getLocalComments.getLocalComments(text);
             });
+            // $node.find('#search-box').focus(function () {
+            //     $('#searchBox').keyup(function (e) {
+            //         if (e.keyCode === 13) {
+            //             getLocalComments.getLocalComments(text);
+            //         }
+            //     });
+            //     $('input.form-control').keyup(function (e) {
+            //         if (e.keyCode === 13) {
+            //             getLocalComments.getLocalComments(text);
+            //         }
+            //     });
+            // });
             $city.append($node);
             $addinfo.append($node2);
         }
