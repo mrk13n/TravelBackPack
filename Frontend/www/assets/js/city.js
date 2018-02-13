@@ -39,12 +39,720 @@ exports.writeComment = function (comment, callback) {
   backendPost("/api/write-comments/", comment, callback);
 };
 },{}],2:[function(require,module,exports){
+var trash = [
+    'a',
+    'able',
+    'about',
+    'above',
+    'abroad',
+    'according',
+    'accordingly',
+    'across',
+    'actually',
+    'adj', 'after',
+    'afterwards',
+    'again',
+    'against',
+    'ago',
+    'ahead',
+    'aint',
+    'all',
+    'allow',
+    'allows',
+    'almost',
+    'alone',
+    'along',
+    'alongside',
+    'already',
+    'also',
+    'although',
+    'always',
+    'am',
+    'amid',
+    'amidst',
+    'among',
+    'amongst',
+    'an',
+    'and',
+    'another',
+    'any',
+    'anybody',
+    'anyhow',
+    'anyone',
+    'anything',
+    'anyway',
+    'anyways',
+    'anywhere',
+    'apart',
+    'appear',
+    'appreciate',
+    'appropriate',
+    'are',
+    'arent',
+    'around',
+    'as',
+    'as',
+    'aside',
+    'ask',
+    'asking',
+    'associated',
+    'at',
+    'available',
+    'away',
+    'awfully',
+    'b',
+    'back',
+    'backward',
+    'backwards',
+    'be',
+    'became',
+    'because',
+    'become',
+    'becomes',
+    'becoming',
+    'been',
+    'before',
+    'beforehand',
+    'begin',
+    'behind',
+    'being',
+    'believe',
+    'below',
+    'beside',
+    'besides',
+    'best',
+    'better',
+    'between',
+    'beyond',
+    'both',
+    'brief',
+    'but',
+    'by',
+    'c',
+    'came',
+    'can',
+    'cannot',
+    'cant',
+    'caption',
+    'cause',
+    'causes',
+    'certain',
+    'certainly',
+    'changes',
+    'clearly',
+    'cmon',
+    'co',
+    'com',
+    'come',
+    'comes',
+    'concerning',
+    'consequently',
+    'consider',
+    'considering',
+    'contain',
+    'containing',
+    'contains',
+    'corresponding',
+    'could',
+    'couldnt',
+    'course',
+    'cs',
+    'currently',
+    'd',
+    'dare',
+    'darent',
+    'definitely',
+    'described',
+    'despite',
+    'did',
+    'didnt',
+    'different',
+    'directly',
+    'do',
+    'does',
+    'doesnt',
+    'doing',
+    'done',
+    'dont',
+    'down',
+    'downwards',
+    'during',
+    'e',
+    'each',
+    'edu',
+    'eg',
+    'eight',
+    'eighty',
+    'either',
+    'else',
+    'elsewhere',
+    'end',
+    'ending',
+    'enough',
+    'entirely',
+    'especially',
+    'et',
+    'etc',
+    'even',
+    'ever',
+    'evermore',
+    'every',
+    'everybody',
+    'everyone',
+    'everything',
+    'everywhere',
+    'ex',
+    'exactly',
+    'example',
+    'except',
+    'f',
+    'fairly',
+    'far',
+    'farther',
+    'few',
+    'fewer',
+    'fifth',
+    'first',
+    'five',
+    'followed',
+    'following',
+    'follows',
+    'for',
+    'forever',
+    'former',
+    'formerly',
+    'forth',
+    'forward',
+    'found',
+    'four',
+    'from',
+    'further',
+    'furthermore',
+    'g',
+    'get',
+    'gets',
+    'getting',
+    'given',
+    'gives',
+    'go',
+    'goes',
+    'going',
+    'gone',
+    'got',
+    'gotten',
+    'greetings',
+    'h',
+    'had',
+    'hadnt',
+    'half',
+    'happens',
+    'hardly',
+    'has',
+    'hasnt',
+    'have',
+    'havent',
+    'having',
+    'he',
+    'hed',
+    'hell',
+    'hello',
+    'help',
+    'hence',
+    'her',
+    'here',
+    'hereafter',
+    'hereby',
+    'herein',
+    'heres',
+    'hereupon',
+    'hers',
+    'herself',
+    'hes',
+    'hi',
+    'him',
+    'himself',
+    'his',
+    'hither',
+    'hopefully',
+    'how',
+    'howbeit',
+    'however',
+    'hundred',
+    'i',
+    'id',
+    'ie',
+    'if',
+    'ignored',
+    'ill',
+    'im',
+    'immediate',
+    'in',
+    'inasmuch',
+    'inc',
+    'indeed',
+    'indicate',
+    'indicated',
+    'indicates',
+    'inner',
+    'inside',
+    'insofar',
+    'instead',
+    'into',
+    'inward',
+    'is',
+    'isnt',
+    'it',
+    'itd',
+    'itll',
+    'its',
+    'itʼs',
+    'it\'s',
+    'itself',
+    'ive',
+    'j',
+    'just',
+    'k',
+    'keep',
+    'keeps',
+    'kept',
+    'know',
+    'known',
+    'knows',
+    'l',
+    'last',
+    'lately',
+    'later',
+    'latter',
+    'latterly',
+    'least',
+    'less',
+    'lest',
+    'let',
+    'lets',
+    'like',
+    'liked',
+    'likely',
+    'likewise',
+    'little',
+    'look',
+    'looking',
+    'looks',
+    'low',
+    'lower',
+    'ltd',
+    'm',
+    'made',
+    'mainly',
+    'make',
+    'makes',
+    'many',
+    'may',
+    'maybe',
+    'maynt',
+    'me',
+    'mean',
+    'meantime',
+    'meanwhile',
+    'merely',
+    'might',
+    'mightnt',
+    'mine',
+    'minus',
+    'miss',
+    'more',
+    'moreover',
+    'most',
+    'mostly',
+    'mr',
+    'mrs',
+    'much',
+    'must',
+    'mustnt',
+    'my',
+    'myself',
+    'n',
+    'name',
+    'namely',
+    'nd',
+    'near',
+    'nearly',
+    'necessary',
+    'need',
+    'neednt',
+    'needs',
+    'neither',
+    'never',
+    'neverf',
+    'neverless',
+    'nevertheless',
+    'next',
+    'nine',
+    'ninety',
+    'no',
+    'nobody',
+    'non',
+    'none',
+    'nonetheless',
+    'noone',
+    'no-one',
+    'nor',
+    'normally',
+    'not',
+    'nothing',
+    'notwithstanding',
+    'novel',
+    'now',
+    'nowhere',
+    'o',
+    'obviously',
+    'of',
+    'off',
+    'often',
+    'oh',
+    'ok',
+    'okay',
+    'old',
+    'on',
+    'once',
+    'one',
+    'ones',
+    'ones',
+    'only',
+    'onto',
+    'opposite',
+    'or',
+    'other',
+    'others',
+    'otherwise',
+    'ought',
+    'oughtnt',
+    'our',
+    'ours',
+    'ourselves',
+    'out',
+    'outside',
+    'over',
+    'overall',
+    'own',
+    'p',
+    'particular',
+    'particularly',
+    'past',
+    'per',
+    'perhaps',
+    'placed',
+    'please',
+    'plus',
+    'possible',
+    'presumably',
+    'probably',
+    'provided',
+    'provides',
+    'q',
+    'que',
+    'quite',
+    'qv',
+    'r',
+    'rather',
+    'rd',
+    're',
+    'really',
+    'reasonably',
+    'recent',
+    'recently',
+    'regarding',
+    'regardless',
+    'regards',
+    'relatively',
+    'respectively',
+    'right',
+    'round',
+    's',
+    'said',
+    'same',
+    'saw',
+    'say',
+    'saying',
+    'says',
+    'second',
+    'secondly',
+    'see',
+    'seeing',
+    'seem',
+    'seemed',
+    'seeming',
+    'seems',
+    'seen',
+    'self',
+    'selves',
+    'sensible',
+    'sent',
+    'serious',
+    'seriously',
+    'seven',
+    'several',
+    'shall',
+    'shant',
+    'she',
+    'shed',
+    'shell',
+    'shes',
+    'should',
+    'shouldnt',
+    'since',
+    'six',
+    'so',
+    'some',
+    'somebody',
+    'someday',
+    'somehow',
+    'someone',
+    'something',
+    'sometime',
+    'sometimes',
+    'somewhat',
+    'somewhere',
+    'soon',
+    'sorry',
+    'specified',
+    'specify',
+    'specifying',
+    'still',
+    'sub',
+    'such',
+    'sup',
+    'sure',
+    't',
+    'take',
+    'taken',
+    'taking',
+    'tell',
+    'tends',
+    'th',
+    'than',
+    'thank',
+    'thanks',
+    'thanx',
+    'that',
+    'thatll',
+    'thats',
+    'thats',
+    'thatve',
+    'the',
+    'their',
+    'theirs',
+    'them',
+    'themselves',
+    'then',
+    'thence',
+    'there',
+    'thereafter',
+    'thereby',
+    'thered',
+    'therefore',
+    'therein',
+    'therell',
+    'therere',
+    'theres',
+    'theres',
+    'thereupon',
+    'thereve',
+    'these',
+    'they',
+    'theyd',
+    'theyll',
+    'theyre',
+    'theyve',
+    'thing',
+    'things',
+    'think',
+    'third',
+    'thirty',
+    'this',
+    'thorough',
+    'thoroughly',
+    'those',
+    'though',
+    'three',
+    'through',
+    'throughout',
+    'thru',
+    'thus',
+    'till',
+    'to',
+    'together',
+    'too',
+    'took',
+    'toward',
+    'towards',
+    'tried',
+    'tries',
+    'truly',
+    'try',
+    'trying',
+    'ts',
+    'twice',
+    'two',
+    'u',
+    'un',
+    'under',
+    'underneath',
+    'undoing',
+    'unfortunately',
+    'unless',
+    'unlike',
+    'unlikely',
+    'until',
+    'unto',
+    'up',
+    'upon',
+    'upwards',
+    'us',
+    'use',
+    'used',
+    'useful',
+    'uses',
+    'using',
+    'usually',
+    'v',
+    'value',
+    'various',
+    'versus',
+    'very',
+    'via',
+    'viz',
+    'vs',
+    'w',
+    'want',
+    'wants',
+    'was',
+    'wasnt',
+    'way',
+    'we',
+    'wed',
+    'welcome',
+    'well',
+    'well',
+    'went',
+    'were',
+    'were',
+    'werent',
+    'weve',
+    'what',
+    'whatever',
+    'whatll',
+    'whats',
+    'whatve',
+    'when',
+    'whence',
+    'whenever',
+    'where',
+    'whereafter',
+    'whereas',
+    'whereby',
+    'wherein',
+    'wheres',
+    'whereupon',
+    'wherever',
+    'whether',
+    'which',
+    'whichever',
+    'while',
+    'whilst',
+    'whither',
+    'who',
+    'whod',
+    'whoever',
+    'whole',
+    'wholl',
+    'whom',
+    'whomever',
+    'whos',
+    'whose',
+    'why',
+    'will',
+    'willing',
+    'wish',
+    'with',
+    'within',
+    'without',
+    'wonder',
+    'wont',
+    'would',
+    'wouldnt',
+    'x',
+    'y',
+    'yes',
+    'yet',
+    'you',
+    'youd',
+    'youll',
+    'your',
+    'youre',
+    'yours',
+    'yourself',
+    'yourselves',
+    'youve',
+    'z',
+    'zero'
+];
+
+var wrong_symbols = [
+    ',',
+    '.',
+    '!',
+    ';',
+    ':',
+    '?',
+    '`',
+    '<',
+    '>',
+    '/',
+    '"',
+    '\'',
+    '\\',
+    ']',
+    '[',
+    '}',
+    '{',
+    '=',
+    '+',
+    '-',
+    '_',
+    ')',
+    '(',
+    '*',
+    '&',
+    '^',
+    '%',
+    '$',
+    '#',
+    '№',
+    '@',
+    '~',
+    '1',
+    '2',
+    '3',
+    '4',
+    '5',
+    '6',
+    '7',
+    '8',
+    '9',
+    '0'
+];
+
+exports.trash = trash;
+exports.wrong_symbols = wrong_symbols;
+},{}],3:[function(require,module,exports){
 var Templates = require('../Teamplates');
-var Cities;
 var API = require('../API');
 var Storage = require('../LocalStorage');
+var getLocalComments = require('./GetLocalSearch');
 var $city = $('#info');
 var $addinfo = $("#additional_info");
+var Cities;
+var text;
 
 function showInfo() {
     $city.html("");
@@ -64,6 +772,28 @@ function showInfo() {
             var html_code2 = Templates.additionalInfo({city:city});
             var $node = $(html_code);
             var $node2 = $(html_code2);
+            $node.find('#searchBox').keyup(function (e) {
+                text = $('input.form-control').val();
+                if (e.keyCode === 13) {
+                    getLocalComments.getLocalComments(text);
+                }
+            });
+            $node.find('.search-button').click(function () {
+                text = $('input.form-control').val();
+                getLocalComments.getLocalComments(text);
+            });
+            // $node.find('#search-box').focus(function () {
+            //     $('#searchBox').keyup(function (e) {
+            //         if (e.keyCode === 13) {
+            //             getLocalComments.getLocalComments(text);
+            //         }
+            //     });
+            //     $('input.form-control').keyup(function (e) {
+            //         if (e.keyCode === 13) {
+            //             getLocalComments.getLocalComments(text);
+            //         }
+            //     });
+            // });
             $city.append($node);
             $addinfo.append($node2);
         }
@@ -71,7 +801,129 @@ function showInfo() {
 }
 
 exports.showInfo = showInfo;
-},{"../API":1,"../LocalStorage":3,"../Teamplates":4}],3:[function(require,module,exports){
+},{"../API":1,"../LocalStorage":5,"../Teamplates":6,"./GetLocalSearch":4}],4:[function(require,module,exports){
+var Cities;
+var API = require('../API');
+var Storage = require('../LocalStorage');
+var trash = require('./AdditionalArrays').trash;
+var wrong_symbols = require('./AdditionalArrays').wrong_symbols;
+var stemmer = require('stemmer');
+
+function getLocalComments(text) {
+    API.getCitiesList(function (err, data) {
+        if (!err) {
+            var id = Storage.get('id');
+            var city;
+            var city_search;
+            var search_words = [];
+            var search_rate;
+            var i, j;
+            Cities = data;
+            if (text.length !== 0) {
+                search_words = keyWordsArray(text, Cities);
+            } else {
+                search_words = [];
+            }
+            console.log(search_words);
+            if (search_words[0] === '') search_words = [];
+            if (search_words.length === 0) {
+                $('.search-box').addClass('has-error');
+            }
+            for (i = 0; i < Cities.length; i++) {
+                if (id == Cities[i].id) {
+                    city = Cities[i];
+                    break;
+                }
+            }
+            city_search = {city: city.city};
+            API.getComments(city_search, function (err, data) {
+                if (!err) {
+                    if (!data.emptyForm) {
+                        search_rate = 0;
+                        for (i = 0; i < data.length; i++) {
+                            var comment_words = keyWordsArray(data[i].comment, Cities);
+                            for (j = 0; j < search_words.length; j++){
+                                for (var k = 0; k < comment_words.length; k++){
+                                    if (search_words[j] === comment_words[k]){
+                                        search_rate += 1;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (Math.abs(search_rate-search_words.length) < 2 && search_rate > 0){
+                                search_rate = 0;
+                                console.log(data[i].comment)
+                            }
+                        }
+                    }
+                }
+            })
+        }
+    });
+}
+
+function keyWordsArray(text, cities) {
+    var word = '';
+    var words = [];
+    var help_arr;
+    var find = false;
+    text = text.toLowerCase();
+    var i, j;
+    for (i = 0; i < text.length; i++) {
+        for (j = 0; j < wrong_symbols.length; j++) {
+            if (text[i] === wrong_symbols[j]) {
+                text = text.replace(text[i], '');
+                i--;
+                break;
+            }
+        }
+    }
+    for (i = 0; i < text.length; i++) {
+        if (text[i] !== ' ') {
+            word += text[i];
+        } else {
+            if (word !== '') words.push(word);
+            word = '';
+        }
+    }
+    if (word !== '') words.push(word);
+    for (i = 0; i < words.length; i++) {
+        for (j = 0; j < trash.length; j++) {
+            if (words[i] === trash[j]) {
+                words.splice(i, 1);
+                i--;
+                break;
+            }
+        }
+    }
+    for (i = 0; i < words.length; i++) {
+        for (j = 0; j < cities.length; j++) {
+            if (words[i] === cities[j].city.toLowerCase()) {
+                find = true;
+                break;
+            }
+        }
+        if (!find) words[i] = stemmer(words[i]);
+        find = false;
+    }
+    find = false;
+    help_arr = words;
+    words = [];
+    for (i = 0; i < help_arr.length; i++) {
+        for (j = 0; j < words.length; j++) {
+            if (help_arr[i] === words[j]) {
+                find = true;
+                break;
+            }
+        }
+        if (!find) words.push(help_arr[i]);
+        find = false;
+    }
+    return words;
+}
+
+exports.getLocalComments = getLocalComments;
+},{"../API":1,"../LocalStorage":5,"./AdditionalArrays":2,"stemmer":15}],5:[function(require,module,exports){
 var basil = require('basil.js');
 basil = new basil();
 
@@ -81,33 +933,35 @@ exports.get = function (key) {
 exports.set = function (key, value) {
     return basil.set(key, value);
 };
-},{"basil.js":6}],4:[function(require,module,exports){
+},{"basil.js":8}],6:[function(require,module,exports){
 
 var ejs = require('ejs');
 
 
-exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\r\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\r\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\r\n    </div>\r\n</div>");
-exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\r\n    <div class=\"col-xs-2\">\r\n        <div class=\"thumbnail thumb_city\">\r\n            <img class=\"img-responsive user-photo\" src=\"assets/images/avatars/<%= comment.comment.avatar%>.png\">\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-10\">\r\n        <div class=\"panel panel-default\">\r\n            <div class=\"panel-heading\">\r\n                <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span><span class=\"favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>\"></span>\r\n            </div>\r\n            <div class=\"panel-body\">\r\n                <%= comment.comment.comment%>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>");
-exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\r\n    <div class=\"title-box\">\r\n        <p>experience</p>\r\n        <h1 class=\"city-name\"><%= city.city%></h1>\r\n        <p>like a local</p>\r\n    </div>\r\n    <div class=\"local-search-container\">\r\n        <div class=\"search-box\">\r\n            <input type=\"text\" class=\"form-control\" id=\"searchBox\" placeholder=\"\">\r\n        </div>\r\n        <div class=\"btn search-button\">\r\n            <p class=\"search-icon\">Search</p>\r\n        </div>\r\n    </div>\r\n</div>");
-exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\r\n    <div class=\"col-xs-2\"></div>\r\n    <div class=\"col-xs-10\">\r\n        <div class=\"panel panel-default\">\r\n            <div class=\"panel-heading\">\r\n                <input type=\"text\" class=\"form-control username\" placeholder=\"Enter username\">\r\n            </div>\r\n            <div class=\"panel-body\">\r\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\"></textarea>\r\n                <button type=\"submit\" class=\"btn btn-send\">\r\n                    Send <span class=\"glyphicon glyphicon-send\"></span>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>");
-exports.weatherBlock = ejs.compile(" <div class=\"weather\">\r\n                <div class=\"info\">\r\n                    <div class=\"temp\">\r\n                        <small>TEMPERATURE: </small><%= weather.main.temp %>°C\r\n                    </div>\r\n                    <div class=\"wind\">\r\n                        <small>WIND SPEED: </small> <%= weather.wind.speed %>m/s\r\n                    </div>\r\n                    <div class=\"description\">\r\n                        <%= weather.weather[0].description %>\r\n                    </div>\r\n                </div>\r\n                </div>\r\n");
-exports.additionalInfo = ejs.compile("\r\n    <div class=\"weather\">\r\n        <div class=\"info\">\r\n            <div class=\"temp\">\r\n                <small>COUNTRY: </small><%= city.country %>\r\n            </div>\r\n            <div class=\"wind\">\r\n                <small>CURRENCY: </small> <%= city.currency %>\r\n            </div>\r\n            <div class=\"description\">\r\n                <small>POPULATION: </small><%= city.population %>\r\n            </div>\r\n        </div>\r\n    </div>");
-exports.FavouriteCityComments = ejs.compile("<div class=\"col-md-6\">\r\n    <div class=\"city-favourite-comments-panel\">\r\n        <div class=\"backpack-city-name\">\r\n            <h2><%= city.city%></h2>\r\n        </div>\r\n        <div class=\"backpack-comments\">\r\n        </div>\r\n    </div>\r\n</div>");
-exports.OneFavouriteComment = ejs.compile("<div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n        <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span><span class=\"favorite glyphicon glyphicon-star\"></span>\r\n    </div>\r\n    <div class=\"panel-body\">\r\n        <%= comment.comment.comment%>\r\n    </div>\r\n</div>");
-},{"ejs":8}],5:[function(require,module,exports){
+exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
+exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\n    <div class=\"col-xs-2\">\n        <div class=\"thumbnail thumb_city\">\n            <img class=\"img-responsive user-photo\" src=\"assets/images/avatars/<%= comment.comment.avatar%>.png\">\n        </div>\n    </div>\n\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span><span class=\"favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>\"></span>\n            </div>\n            <div class=\"panel-body\">\n                <%= comment.comment.comment%>\n            </div>\n        </div>\n    </div>\n</div>");
+exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\n    <div class=\"title-box\">\n        <p>experience</p>\n        <h1 class=\"city-name\"><%= city.city%></h1>\n        <p>like a local</p>\n    </div>\n    <div class=\"local-search-container\">\n        <div class=\"search-box\">\n            <input type=\"text\" class=\"form-control\" id=\"searchBox\" placeholder=\"\">\n        </div>\n        <div class=\"btn search-button\">\n            <p class=\"search-icon\">Search</p>\n        </div>\n    </div>\n</div>");
+exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\n    <div class=\"col-xs-2\"></div>\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <input type=\"text\" class=\"form-control username\" placeholder=\"Enter username\">\n            </div>\n            <div class=\"panel-body\">\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\"></textarea>\n                <button type=\"submit\" class=\"btn btn-send\">\n                    Send <span class=\"glyphicon glyphicon-send\"></span>\n                </button>\n            </div>\n        </div>\n    </div>\n</div>");
+exports.weatherBlock = ejs.compile(" <div class=\"weather\">\n                <div class=\"info\">\n                    <div class=\"temp\">\n                        <small>TEMPERATURE: </small><%= weather.main.temp %>°C\n                    </div>\n                    <div class=\"wind\">\n                        <small>WIND SPEED: </small> <%= weather.wind.speed %>m/s\n                    </div>\n                    <div class=\"description\">\n                        <%= weather.weather[0].description %>\n                    </div>\n                </div>\n                </div>\n");
+exports.additionalInfo = ejs.compile("\n    <div class=\"weather\">\n        <div class=\"info\">\n            <div class=\"temp\">\n                <small>COUNTRY: </small><%= city.country %>\n            </div>\n            <div class=\"wind\">\n                <small>CURRENCY: </small> <%= city.currency %>\n            </div>\n            <div class=\"description\">\n                <small>POPULATION: </small><%= city.population %>\n            </div>\n        </div>\n    </div>");
+exports.FavouriteCityComments = ejs.compile("<div class=\"col-md-6\">\n    <div class=\"city-favourite-comments-panel\">\n        <div class=\"backpack-city-name\">\n            <h2><%= city.city%></h2>\n        </div>\n        <div class=\"backpack-comments\">\n        </div>\n    </div>\n</div>");
+exports.OneFavouriteComment = ejs.compile("<div class=\"panel panel-default\">\n    <div class=\"panel-heading\">\n        <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span><span class=\"favorite glyphicon glyphicon-star\"></span>\n    </div>\n    <div class=\"panel-body\">\n        <%= comment.comment.comment%>\n    </div>\n</div>");
+},{"ejs":10}],7:[function(require,module,exports){
 var Storage = require('./LocalStorage');
 var Templates = require('./Teamplates');
 var API = require('./API');
+var GetInfoCity = require('./Cities/GetInfoCity');
+var getLocalComments = require('./Cities/GetLocalSearch');
 var Cities;
+var icon_position;
+var type;
+var text;
 var $comments = $("#comments");
-var a;
 var Backpack = getBackpack();
 
 $(function () {
-    var GetInfoCity = require('./Cities/GetInfoCity');
     GetInfoCity.showInfo();
-    var type;
-    a = true;
+    icon_position = true;
     $( ".show-weather" ).click(function() {
         $( "#weather-div" ).show( "slow" );
     });
@@ -119,16 +973,6 @@ $(function () {
     $(".scroll-page").click(function () {
         scrollDown();
     });
-
-    function scrollTo() {
-        $('html, body').animate({ scrollTop: $('#city-filter').offset().top }, 'slow');
-        return false;
-    }
-
-    function scrollDown() {
-        $('html, body').animate({ scrollTop: $(document).height() }, 1000);
-        return false;
-    }
 
     $("#filter-food").click(function () {
         allNotActive();
@@ -169,14 +1013,14 @@ $(function () {
     $('.btn-add').click(function () {
         scrollDown();
         $('#form').slideToggle(400);
-        if (a) {
+        if (icon_position) {
             $('#right').removeClass('glyphicon glyphicon-chevron-right img-circle');
             $('#right').addClass('glyphicon glyphicon-chevron-up img-circle');
-            a = !a;
+            icon_position = !icon_position;
         } else {
             $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
             $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
-            a = !a;
+            icon_position = !icon_position;
         }
     });
 
@@ -190,7 +1034,6 @@ $(function () {
             $('.niceStaff').css('display', 'none');
         }, 2200);
     });
-
 });
 
 function allNotActive() {
@@ -198,6 +1041,16 @@ function allNotActive() {
     $("#filter-house").removeClass("active");
     $("#filter-hitchhiking").removeClass("active");
     $("#filter-abandoned").removeClass("active");
+}
+
+function scrollTo() {
+    $('html, body').animate({ scrollTop: $('#city-filter').offset().top }, 'slow');
+    return false;
+}
+
+function scrollDown() {
+    $('html, body').animate({ scrollTop: $(document).height() }, 1000);
+    return false;
 }
 
 function initializeComments(type) {
@@ -208,11 +1061,12 @@ function initializeComments(type) {
     var id = Storage.get('id');
     var city;
     var current_city;
+    var i;
     $comments.append($node2);
     API.getCitiesList(function (err, data) {
         if (!err) {
             Cities = data;
-            for (var i = 0; i < Cities.length; i++) {
+            for (i = 0; i < Cities.length; i++) {
                 if (id == Cities[i].id) {
                     city = Cities[i];
                     break;
@@ -222,7 +1076,6 @@ function initializeComments(type) {
             API.getComments(current_city, function (err, data) {
                 if (!err) {
                     if (!data.emptyForm) {
-                        var i;
                         for (i = 0; i < data.length; i++) {
                             if (data[i].type == type) {
                                 comments.push(data[i]);
@@ -288,7 +1141,7 @@ function initializeComments(type) {
                         addOneComment(one);
                         $node2.find('.username').val('');
                         $node2.find('#comment').val('');
-                        a = true;
+                        icon_position = true;
                         $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
                         $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
                     });
@@ -419,7 +1272,7 @@ function randomAvatar(){
 //     //     }
 //     // });
 // }
-},{"./API":1,"./Cities/GetInfoCity":2,"./LocalStorage":3,"./Teamplates":4}],6:[function(require,module,exports){
+},{"./API":1,"./Cities/GetInfoCity":3,"./Cities/GetLocalSearch":4,"./LocalStorage":5,"./Teamplates":6}],8:[function(require,module,exports){
 (function () {
 	// Basil
 	var Basil = function (options) {
@@ -807,9 +1660,9 @@ function randomAvatar(){
 
 })();
 
-},{}],7:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 
-},{}],8:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 /*
  * EJS Embedded JavaScript templates
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
@@ -1677,7 +2530,7 @@ if (typeof window != 'undefined') {
   window.ejs = exports;
 }
 
-},{"../package.json":10,"./utils":9,"fs":7,"path":11}],9:[function(require,module,exports){
+},{"../package.json":12,"./utils":11,"fs":9,"path":13}],11:[function(require,module,exports){
 /*
  * EJS Embedded JavaScript templates
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
@@ -1843,12 +2696,16 @@ exports.cache = {
   }
 };
 
-},{}],10:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 module.exports={
   "_args": [
     [
       "ejs@2.5.7",
+<<<<<<< HEAD
       "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack"
+=======
+      "/home/mrk13/Documents/GitHub/TravelBackPack"
+>>>>>>> a8f940b0491e43fadf3c3368aa33f931aef2f485
     ]
   ],
   "_from": "ejs@2.5.7",
@@ -1872,7 +2729,11 @@ module.exports={
   ],
   "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz",
   "_spec": "2.5.7",
+<<<<<<< HEAD
   "_where": "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack",
+=======
+  "_where": "/home/mrk13/Documents/GitHub/TravelBackPack",
+>>>>>>> a8f940b0491e43fadf3c3368aa33f931aef2f485
   "author": {
     "name": "Matthew Eernisse",
     "email": "mde@fleegix.org",
@@ -1927,7 +2788,7 @@ module.exports={
   "version": "2.5.7"
 }
 
-},{}],11:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -2155,7 +3016,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":12}],12:[function(require,module,exports){
+},{"_process":14}],14:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -2341,4 +3202,190 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}]},{},[5]);
+},{}],15:[function(require,module,exports){
+'use strict';
+
+module.exports = stemmer;
+
+/* Character code for `y`. */
+var CC_Y = 'y'.charCodeAt(0);
+
+/* Standard suffix manipulations. */
+var step2list = {
+  ational: 'ate',
+  tional: 'tion',
+  enci: 'ence',
+  anci: 'ance',
+  izer: 'ize',
+  bli: 'ble',
+  alli: 'al',
+  entli: 'ent',
+  eli: 'e',
+  ousli: 'ous',
+  ization: 'ize',
+  ation: 'ate',
+  ator: 'ate',
+  alism: 'al',
+  iveness: 'ive',
+  fulness: 'ful',
+  ousness: 'ous',
+  aliti: 'al',
+  iviti: 'ive',
+  biliti: 'ble',
+  logi: 'log'
+};
+
+var step3list = {
+  icate: 'ic',
+  ative: '',
+  alize: 'al',
+  iciti: 'ic',
+  ical: 'ic',
+  ful: '',
+  ness: ''
+};
+
+/* Consonant-vowel sequences. */
+var consonant = '[^aeiou]';
+var vowel = '[aeiouy]';
+var consonantSequence = '(' + consonant + '[^aeiouy]*)';
+var vowelSequence = '(' + vowel + '[aeiou]*)';
+
+var MEASURE_GT_0 = new RegExp(
+  '^' + consonantSequence + '?' + vowelSequence + consonantSequence
+);
+
+var MEASURE_EQ_1 = new RegExp(
+  '^' + consonantSequence + '?' + vowelSequence + consonantSequence +
+  vowelSequence + '?$'
+);
+
+var MEASURE_GT_1 = new RegExp(
+  '^' + consonantSequence + '?' +
+  '(' + vowelSequence + consonantSequence + '){2,}'
+);
+
+var VOWEL_IN_STEM = new RegExp(
+  '^' + consonantSequence + '?' + vowel
+);
+
+var CONSONANT_LIKE = new RegExp(
+  '^' + consonantSequence + vowel + '[^aeiouwxy]$'
+);
+
+/* Exception expressions. */
+var SUFFIX_LL = /ll$/;
+var SUFFIX_E = /^(.+?)e$/;
+var SUFFIX_Y = /^(.+?)y$/;
+var SUFFIX_ION = /^(.+?(s|t))(ion)$/;
+var SUFFIX_ED_OR_ING = /^(.+?)(ed|ing)$/;
+var SUFFIX_AT_OR_BL_OR_IZ = /(at|bl|iz)$/;
+var SUFFIX_EED = /^(.+?)eed$/;
+var SUFFIX_S = /^.+?[^s]s$/;
+var SUFFIX_SSES_OR_IES = /^.+?(ss|i)es$/;
+var SUFFIX_MULTI_CONSONANT_LIKE = /([^aeiouylsz])\1$/;
+var STEP_2 = new RegExp(
+  '^(.+?)(ational|tional|enci|anci|izer|bli|alli|entli|eli|ousli|' +
+  'ization|ation|ator|alism|iveness|fulness|ousness|aliti|iviti|' +
+  'biliti|logi)$'
+);
+var STEP_3 = /^(.+?)(icate|ative|alize|iciti|ical|ful|ness)$/;
+var STEP_4 = new RegExp(
+  '^(.+?)(al|ance|ence|er|ic|able|ible|ant|ement|ment|ent|ou|ism|ate|' +
+  'iti|ous|ive|ize)$'
+);
+
+/* Stem `value`. */
+function stemmer(value) {
+  var firstCharacterWasLowerCaseY;
+  var match;
+
+  value = String(value).toLowerCase();
+
+  /* Exit early. */
+  if (value.length < 3) {
+    return value;
+  }
+
+  /* Detect initial `y`, make sure it never matches. */
+  if (value.charCodeAt(0) === CC_Y) {
+    firstCharacterWasLowerCaseY = true;
+    value = 'Y' + value.substr(1);
+  }
+
+  /* Step 1a. */
+  if (SUFFIX_SSES_OR_IES.test(value)) {
+    /* Remove last two characters. */
+    value = value.substr(0, value.length - 2);
+  } else if (SUFFIX_S.test(value)) {
+    /* Remove last character. */
+    value = value.substr(0, value.length - 1);
+  }
+
+  /* Step 1b. */
+  if (match = SUFFIX_EED.exec(value)) {
+    if (MEASURE_GT_0.test(match[1])) {
+      /* Remove last character. */
+      value = value.substr(0, value.length - 1);
+    }
+  } else if ((match = SUFFIX_ED_OR_ING.exec(value)) && VOWEL_IN_STEM.test(match[1])) {
+    value = match[1];
+
+    if (SUFFIX_AT_OR_BL_OR_IZ.test(value)) {
+      /* Append `e`. */
+      value += 'e';
+    } else if (SUFFIX_MULTI_CONSONANT_LIKE.test(value)) {
+      /* Remove last character. */
+      value = value.substr(0, value.length - 1);
+    } else if (CONSONANT_LIKE.test(value)) {
+      /* Append `e`. */
+      value += 'e';
+    }
+  }
+
+  /* Step 1c. */
+  if ((match = SUFFIX_Y.exec(value)) && VOWEL_IN_STEM.test(match[1])) {
+    /* Remove suffixing `y` and append `i`. */
+    value = match[1] + 'i';
+  }
+
+  /* Step 2. */
+  if ((match = STEP_2.exec(value)) && MEASURE_GT_0.test(match[1])) {
+    value = match[1] + step2list[match[2]];
+  }
+
+  /* Step 3. */
+  if ((match = STEP_3.exec(value)) && MEASURE_GT_0.test(match[1])) {
+    value = match[1] + step3list[match[2]];
+  }
+
+  /* Step 4. */
+  if (match = STEP_4.exec(value)) {
+    if (MEASURE_GT_1.test(match[1])) {
+      value = match[1];
+    }
+  } else if ((match = SUFFIX_ION.exec(value)) && MEASURE_GT_1.test(match[1])) {
+    value = match[1];
+  }
+
+  /* Step 5. */
+  if (
+    (match = SUFFIX_E.exec(value)) &&
+    (MEASURE_GT_1.test(match[1]) || (MEASURE_EQ_1.test(match[1]) && !CONSONANT_LIKE.test(match[1])))
+  ) {
+    value = match[1];
+  }
+
+  if (SUFFIX_LL.test(value) && MEASURE_GT_1.test(value)) {
+    value = value.substr(0, value.length - 1);
+  }
+
+  /* Turn initial `Y` back to `y`. */
+  if (firstCharacterWasLowerCaseY) {
+    value = 'y' + value.substr(1);
+  }
+
+  return value;
+}
+
+},{}]},{},[7]);
