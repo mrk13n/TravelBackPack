@@ -1,17 +1,14 @@
+var GetCities = require('./Cities/GetCities');
+var getComments = require('./Cities/GetSearch');
+var text;
+
 $(function () {
-    var GetCities = require('./Cities/GetCities');
-    var getComments = require('./Cities/GetSearch');
-    var text;
     GetCities.initialiseCities();
 
     $("#city-scroll").click(function(){
         scrollTo();
     });
 
-    function scrollTo() {
-        $('html, body').animate({ scrollTop: $('.greetings').offset().top }, 'slow');
-        return false;
-    }
     $(function() {
         $('a[href*=#]').on('click', function(e) {
             e.preventDefault();
@@ -37,11 +34,14 @@ $(function () {
                 getComments.getComments(text);
             }
         });
-    });
-
-    $('.search-button').click(function () {
-        text = $('input.form-control').val();
-        getComments.getComments(text);
+        $('.search-button').click(function () {
+            getComments.getComments(text);
+        });
     });
 });
+
+function scrollTo() {
+    $('html, body').animate({ scrollTop: $('.greetings').offset().top }, 'slow');
+    return false;
+}
 

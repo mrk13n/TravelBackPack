@@ -1,9 +1,11 @@
 var Templates = require('../Teamplates');
-var Cities;
 var API = require('../API');
 var Storage = require('../LocalStorage');
+var getLocalComments = require('./GetLocalSearch');
 var $city = $('#info');
 var $addinfo = $("#additional_info");
+var Cities;
+var text;
 
 function showInfo() {
     $city.html("");
@@ -23,6 +25,10 @@ function showInfo() {
             var html_code2 = Templates.additionalInfo({city:city});
             var $node = $(html_code);
             var $node2 = $(html_code2);
+            $node.find('.search-button').click(function () {
+                text = $('input.form-control').val();
+                getLocalComments.getLocalComments(text);
+            });
             $city.append($node);
             $addinfo.append($node2);
         }

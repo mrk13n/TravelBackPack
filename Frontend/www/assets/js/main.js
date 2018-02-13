@@ -800,7 +800,6 @@ function getComments(text) {
             var i, j, k;
             var length;
             var name;
-            var city;
             Cities = data;
             if (text.length !== 0) {
                 search_words = keyWordsArray(text, Cities);
@@ -870,8 +869,6 @@ function getComments(text) {
                 API.getComments(city_search, function (err, data) {
                     if (!err) {
                         if (!data.emptyForm) {
-                            var gt = true;
-                            var word_gt = false;
                             search_rate = 0;
                             for (i = 0; i < data.length; i++) {
                                 var comment_words = keyWordsArray(data[i].comment, Cities);
@@ -982,20 +979,17 @@ exports.additionalInfo = ejs.compile("\n    <div class=\"weather\">\n        <di
 exports.FavouriteCityComments = ejs.compile("<div class=\"col-md-6\">\n    <div class=\"city-favourite-comments-panel\">\n        <div class=\"backpack-city-name\">\n            <h2><%= city.city%></h2>\n        </div>\n        <div class=\"backpack-comments\">\n        </div>\n    </div>\n</div>");
 exports.OneFavouriteComment = ejs.compile("<div class=\"panel panel-default\">\n    <div class=\"panel-heading\">\n        <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span><span class=\"favorite glyphicon glyphicon-star\"></span>\n    </div>\n    <div class=\"panel-body\">\n        <%= comment.comment.comment%>\n    </div>\n</div>");
 },{"ejs":10}],7:[function(require,module,exports){
+var GetCities = require('./Cities/GetCities');
+var getComments = require('./Cities/GetSearch');
+var text;
+
 $(function () {
-    var GetCities = require('./Cities/GetCities');
-    var getComments = require('./Cities/GetSearch');
-    var text;
     GetCities.initialiseCities();
 
     $("#city-scroll").click(function(){
         scrollTo();
     });
 
-    function scrollTo() {
-        $('html, body').animate({ scrollTop: $('.greetings').offset().top }, 'slow');
-        return false;
-    }
     $(function() {
         $('a[href*=#]').on('click', function(e) {
             e.preventDefault();
@@ -1021,13 +1015,16 @@ $(function () {
                 getComments.getComments(text);
             }
         });
-    });
-
-    $('.search-button').click(function () {
-        text = $('input.form-control').val();
-        getComments.getComments(text);
+        $('.search-button').click(function () {
+            getComments.getComments(text);
+        });
     });
 });
+
+function scrollTo() {
+    $('html, body').animate({ scrollTop: $('.greetings').offset().top }, 'slow');
+    return false;
+}
 
 
 },{"./Cities/GetCities":3,"./Cities/GetSearch":4}],8:[function(require,module,exports){

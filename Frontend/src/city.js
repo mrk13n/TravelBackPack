@@ -1,16 +1,18 @@
 var Storage = require('./LocalStorage');
 var Templates = require('./Teamplates');
 var API = require('./API');
+var GetInfoCity = require('./Cities/GetInfoCity');
+var getLocalComments = require('./Cities/GetLocalSearch');
 var Cities;
+var icon_position;
+var type;
+var text;
 var $comments = $("#comments");
-var a;
 var Backpack = getBackpack();
 
 $(function () {
-    var GetInfoCity = require('./Cities/GetInfoCity');
     GetInfoCity.showInfo();
-    var type;
-    a = true;
+    icon_position = true;
     $( ".show-weather" ).click(function() {
         $( "#weather-div" ).show( "slow" );
     });
@@ -22,16 +24,6 @@ $(function () {
     $(".scroll-page").click(function () {
         scrollDown();
     });
-
-    function scrollTo() {
-        $('html, body').animate({ scrollTop: $('#city-filter').offset().top }, 'slow');
-        return false;
-    }
-
-    function scrollDown() {
-        $('html, body').animate({ scrollTop: $(document).height() }, 1000);
-        return false;
-    }
 
     $("#filter-food").click(function () {
         allNotActive();
@@ -72,14 +64,14 @@ $(function () {
     $('.btn-add').click(function () {
         scrollDown();
         $('#form').slideToggle(400);
-        if (a) {
+        if (icon_position) {
             $('#right').removeClass('glyphicon glyphicon-chevron-right img-circle');
             $('#right').addClass('glyphicon glyphicon-chevron-up img-circle');
-            a = !a;
+            icon_position = !icon_position;
         } else {
             $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
             $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
-            a = !a;
+            icon_position = !icon_position;
         }
     });
 
@@ -93,7 +85,6 @@ $(function () {
             $('.niceStaff').css('display', 'none');
         }, 2200);
     });
-
 });
 
 function allNotActive() {
@@ -101,6 +92,16 @@ function allNotActive() {
     $("#filter-house").removeClass("active");
     $("#filter-hitchhiking").removeClass("active");
     $("#filter-abandoned").removeClass("active");
+}
+
+function scrollTo() {
+    $('html, body').animate({ scrollTop: $('#city-filter').offset().top }, 'slow');
+    return false;
+}
+
+function scrollDown() {
+    $('html, body').animate({ scrollTop: $(document).height() }, 1000);
+    return false;
 }
 
 function initializeComments(type) {
@@ -111,11 +112,12 @@ function initializeComments(type) {
     var id = Storage.get('id');
     var city;
     var current_city;
+    var i;
     $comments.append($node2);
     API.getCitiesList(function (err, data) {
         if (!err) {
             Cities = data;
-            for (var i = 0; i < Cities.length; i++) {
+            for (i = 0; i < Cities.length; i++) {
                 if (id == Cities[i].id) {
                     city = Cities[i];
                     break;
@@ -125,7 +127,6 @@ function initializeComments(type) {
             API.getComments(current_city, function (err, data) {
                 if (!err) {
                     if (!data.emptyForm) {
-                        var i;
                         for (i = 0; i < data.length; i++) {
                             if (data[i].type == type) {
                                 comments.push(data[i]);
@@ -191,7 +192,7 @@ function initializeComments(type) {
                         addOneComment(one);
                         $node2.find('.username').val('');
                         $node2.find('#comment').val('');
-                        a = true;
+                        icon_position = true;
                         $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
                         $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
                     });

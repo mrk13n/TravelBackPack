@@ -17,7 +17,6 @@ function getComments(text) {
             var i, j, k;
             var length;
             var name;
-            var city;
             Cities = data;
             if (text.length !== 0) {
                 search_words = keyWordsArray(text, Cities);
@@ -87,8 +86,6 @@ function getComments(text) {
                 API.getComments(city_search, function (err, data) {
                     if (!err) {
                         if (!data.emptyForm) {
-                            var gt = true;
-                            var word_gt = false;
                             search_rate = 0;
                             for (i = 0; i < data.length; i++) {
                                 var comment_words = keyWordsArray(data[i].comment, Cities);
