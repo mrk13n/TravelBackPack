@@ -825,7 +825,7 @@ function getComments(text) {
                 if (!find) {
                     length = search_words[0].length;
                     for (i = 0; i < Cities.length; i++) {
-                        name = '';
+                        name ='';
                         city_name = Cities[i].city.toLowerCase();
                         for (k = 0; k < length; k++) {
                             name += city_name[k];
@@ -842,20 +842,15 @@ function getComments(text) {
                     $('.search-box').addClass('has-error');
                 }
             }
-<<<<<<< HEAD
             if (search_words.length > 1) {
                 for(i = 0; i < search_words.length; i++) {
-=======
-            if (search_words > 1) {
-                for (i = 0; i < search_words.length; i++) {
->>>>>>> b293d3ad1da82807af25aaa1db346ce66d7f35ee
                     for (j = 0; j < Cities.length; j++) {
                         city_name = Cities[i].city.toLowerCase();
                         if (i !== search_words.length-1) var two_words = search_words[i] + " " + search_words[i+1];
                         if (i !== search_words.length-2) var three_words = search_words[i] + " " + search_words[i-1] + " " + search_words[i-2];
                         if (search_words[i] === Cities[j].city.toLowerCase()) {
                             city_name = Cities[j];
-                            search_words.splice(i, 1);
+                            search_words.splice(i,1);
                             break;
                         }
                         if (two_words === Cities[j].city.toLowerCase()) {
@@ -880,37 +875,18 @@ function getComments(text) {
                             search_rate = 0;
                             for (i = 0; i < data.length; i++) {
                                 var comment_words = keyWordsArray(data[i].comment, Cities);
-<<<<<<< HEAD
                                 for (j = 0; j < search_words.length; j++){
                                     for (var k = 0; k < comment_words.length; k++){
                                         if (search_words[j] === comment_words[k]){
-=======
-                                console.log(comment_words);
-                                for (j = 0; j < search_words.length; j++) {
-                                    for (var k = 0; k < comment_words.length; k++) {
-                                        if (search_words[j] === comment_words[k]) {
-                                            // word_gt = true;
->>>>>>> b293d3ad1da82807af25aaa1db346ce66d7f35ee
                                             search_rate += 1;
                                             break;
                                         }
                                     }
                                 }
-<<<<<<< HEAD
                                 if (Math.abs(search_rate-search_words.length) < 2 && search_rate > 0){
                                     search_rate = 0;
                                     console.log(data[i].comment)
                                 }
-=======
-                                if (Math.abs(search_rate - search_words.length) < 2 && search_rate > 0) {
-                                    console.log(data[i].comment)
-                                }
-                                // if(gt){
-                                //     console.log(data[i].comment)
-                                // }
-                                // gt = true;
-                                // word_gt = false;
->>>>>>> b293d3ad1da82807af25aaa1db346ce66d7f35ee
                             }
                         }
                     }
@@ -2483,11 +2459,7 @@ module.exports={
   "_args": [
     [
       "ejs@2.5.7",
-<<<<<<< HEAD
       "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack"
-=======
-      "/home/mrk13/Documents/GitHub/TravelBackPack"
->>>>>>> b293d3ad1da82807af25aaa1db346ce66d7f35ee
     ]
   ],
   "_from": "ejs@2.5.7",
@@ -2511,11 +2483,7 @@ module.exports={
   ],
   "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz",
   "_spec": "2.5.7",
-<<<<<<< HEAD
   "_where": "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack",
-=======
-  "_where": "/home/mrk13/Documents/GitHub/TravelBackPack",
->>>>>>> b293d3ad1da82807af25aaa1db346ce66d7f35ee
   "author": {
     "name": "Matthew Eernisse",
     "email": "mde@fleegix.org",
