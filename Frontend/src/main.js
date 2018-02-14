@@ -1,6 +1,9 @@
 var GetCities = require('./Cities/GetCities');
 var getComments = require('./Cities/GetSearch');
+var Templates = require('./Teamplates');
+var Storage = require('./LocalStorage');
 var text;
+var comment_list = [];
 
 $(function () {
     GetCities.initialiseCities();
@@ -30,7 +33,7 @@ $(function () {
     $('#searchBox').keyup(function (e) {
         text = $('input.form-control').val();
         if (e.keyCode === 13) {
-            getComments.getComments(text);
+            comment_list = getComments.getComments(text);
         }
     });
 

@@ -1,9 +1,11 @@
 var Cities;
 var API = require('../API');
 var Storage = require('../LocalStorage');
+var Templates = require('../Teamplates');
 var trash = require('./AdditionalArrays').trash;
 var wrong_symbols = require('./AdditionalArrays').wrong_symbols;
 var stemmer = require('stemmer');
+var $comments = $('#comments');
 
 function getComments(text) {
     API.getCitiesList(function (err, data) {
@@ -17,6 +19,7 @@ function getComments(text) {
             var i, j, k;
             var length;
             var name;
+            var comment_list = [];
             Cities = data;
             if (text.length !== 0) {
                 search_words = keyWordsArray(text, Cities);
@@ -99,15 +102,45 @@ function getComments(text) {
                                 }
                                 if (Math.abs(search_rate-search_words.length) < 2 && search_rate > 0){
                                     search_rate = 0;
-                                    console.log(data[i].comment)
+                                    comment_list.push(data[i]);
                                 }
                             }
+                            var additional_comments = [];
+                            for (i = 0; i < comment_list.length; i++) {
+                                var one;
+                                var fav = false;
+                                var Backpack = getBackpack();
+                                if (Backpack !== null) {
+                                    for (var j = 0; j < Backpack.length; j++) {
+                                        if (comment_list[i]._id == Backpack[j].comment._id) {
+                                            fav = true;
+                                        }
+                                    }
+                                }
+                                one = {
+                                    city: city_name.city,
+                                    favorite: fav,
+                                    comment: comment_list[i]
+                                };
+                                additional_comments.push(one);
+                            }
+                            comment_list = additional_comments;
+                            console.log(comment_list);
+                            showResults(comment_list);
                         }
                     }
                 });
             }
         }
     });
+}
+
+function getBackpack() {
+    var back = Storage.get('backpack');
+    if (back === null) {
+        back = [];
+    }
+    return back;
 }
 
 function keyWordsArray(text, cities) {
@@ -168,6 +201,65 @@ function keyWordsArray(text, cities) {
         find = false;
     }
     return words;
+}
+
+function showResults(list) {
+    $comments.html('');
+    list.forEach(showOneComment);
+    scrollToResults();
+}
+
+function scrollToResults() {
+    $('html, body').animate({ scrollTop: $('.greetings').offset().top }, 'slow');
+    return false;
+}
+
+function showOneComment(comment) {
+    var html_code = Templates.Comment_OneItem({comment: comment});
+    var $node = $(html_code);
+    var Backpack = getBackpack();
+    $comments.append($node);
+
+    $node.find ('.favorite').mouseover(function () {
+        if (!comment.favorite) {
+            $(this).removeClass('glyphicon glyphicon-star-empty');
+            $(this).addClass('glyphicon glyphicon-star');
+        }
+    });
+
+    $node.find ('.favorite').mouseout(function () {
+        if (!comment.favorite) {
+            $(this).removeClass('glyphicon glyphicon-star');
+            $(this).addClass('glyphicon glyphicon-star-empty');
+        }
+    });
+
+    $node.find('.favorite').click(function () {
+        if (comment.favorite) {
+            for (var i = 0; i < Backpack.length; i++) {
+                if (comment.comment._id == Backpack[i].comment._id) {
+                    removeFromStorrage(Backpack, i);
+                    $(this).removeClass('glyphicon glyphicon-star');
+                    $(this).addClass('glyphicon glyphicon-star-empty');
+                }
+            }
+        } else {
+            Backpack.push(comment);
+            saveComment(Backpack);
+            $(this).removeClass('glyphicon glyphicon-star-empty');
+            $(this).addClass('glyphicon glyphicon-star');
+        }
+        comment.favorite =!comment.favorite;
+    });
+}
+
+function saveComment(back) {
+    Storage.set('backpack', back);
+}
+
+function removeFromStorrage(back, i) {
+    back.splice(i, 1);
+    Storage.set('backpack', back);
 }
 
 exports.getComments = getComments;
