@@ -188,8 +188,10 @@ function initializeComments(type) {
                             favorite: false,
                             comment: data
                         };
-                        $node2.slideToggle(1000);
-                        addOneComment(one);
+                        $node2.slideToggle(400);
+                        setTimeout(function f() {
+                            addOneComment(one);
+                        }, 500);
                         $node2.find('.username').val('');
                         $node2.find('#comment').val('');
                         icon_position = true;
@@ -210,7 +212,9 @@ function addOneComment(comment) {
     var html_code = Templates.Comment_OneItem({comment: comment});
     var $node = $(html_code);
     Backpack = getBackpack();
+    $node.hide();
     $node.insertBefore('#form');
+    $node.slideToggle(300);
 
     $node.find ('.favorite').mouseover(function () {
         if (!comment.favorite) {
@@ -272,54 +276,3 @@ function randomAvatar(){
     rand = Math.floor((Math.random() * 20) + 1);
     return rand;
 }
-
-
-// if (!comment.favorite) {
-//     $node.find('.favorite').mouseover(function () {
-//         $(this).removeClass('glyphicon glyphicon-star-empty');
-//         $(this).addClass('glyphicon glyphicon-star');
-//     });
-//
-//     $node.find('.favorite').mouseout(function () {
-//         $(this).removeClass('glyphicon glyphicon-star');
-//         $(this).addClass('glyphicon glyphicon-star-empty');
-//     });
-//
-//     $node.find('.favorite').click(function () {
-//         comment.favorite = true;
-//         Backpack.push(comment);
-//         saveComment(Backpack);
-//         $(this).removeClass('glyphicon glyphicon-star-empty');
-//         $(this).addClass('glyphicon glyphicon-star');
-//         // showOneComment(comment);
-//         // initializeComments(type);
-//     });
-// } else {
-//     $node.find('.favorite').click(function () {
-//         for (var i = 0; i < Backpack.length; i++) {
-//             if (comment.comment._id == Backpack[i].comment._id) {
-//                 comment.favorite = false;
-//                 removeFromStorrage(Backpack, i);
-//                 $(this).removeClass('glyphicon glyphicon-star');
-//                 $(this).addClass('glyphicon glyphicon-star-empty');
-//                 // initializeComments(type);
-//                 // showOneComment(comment);
-//             }
-//         }
-//     });
-// }
-//
-// if (comment.favorite) {
-//     // $node.find('.favorite').click(function () {
-//     //     for (var i = 0; i < Backpack.length; i++) {
-//     //         if (comment.comment._id == Backpack[i].comment._id) {
-//     //             comment.favorite = false;
-//     //             removeFromStorrage(Backpack, i);
-//     //             $(this).removeClass('glyphicon glyphicon-star');
-//     //             $(this).addClass('glyphicon glyphicon-star-empty');
-//     //             // initializeComments(type);
-//     //             // showOneComment(comment);
-//     //         }
-//     //     }
-//     // });
-// }
