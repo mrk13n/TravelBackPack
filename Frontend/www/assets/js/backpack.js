@@ -132,6 +132,7 @@ function getBackpack() {
 function removeFromStorrage(back, i) {
     back.splice(i, 1);
     Storage.set('backpack', back);
+
 }
 },{"./LocalStorage":1,"./Teamplates":2}],4:[function(require,module,exports){
 (function () {

@@ -26,7 +26,6 @@ function getComments(text) {
             } else {
                 search_words = [];
             }
-            console.log(search_words);
             if (search_words[0] === '') search_words = [];
             if (search_words.length === 0) {
                 $('.search-box').addClass('has-error');
@@ -89,6 +88,7 @@ function getComments(text) {
                 API.getComments(city_search, function (err, data) {
                     if (!err) {
                         if (!data.emptyForm) {
+                            console.log("lol");
                             search_rate = 0;
                             for (i = 0; i < data.length; i++) {
                                 var comment_words = keyWordsArray(data[i].comment, Cities);
@@ -100,6 +100,7 @@ function getComments(text) {
                                         }
                                     }
                                 }
+                                console.log(comment_words , search_rate);
                                 if (Math.abs(search_rate-search_words.length) < 2 && search_rate > 0){
                                     search_rate = 0;
                                     comment_list.push(data[i]);
@@ -125,7 +126,6 @@ function getComments(text) {
                                 additional_comments.push(one);
                             }
                             comment_list = additional_comments;
-                            console.log(comment_list);
                             showResults(comment_list);
                         }
                     }
