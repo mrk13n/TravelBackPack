@@ -1,11 +1,16 @@
 var GetCities = require('./Cities/GetCities');
 var getComments = require('./Cities/GetSearch');
-var Templates = require('./Teamplates');
-var Storage = require('./LocalStorage');
 var text;
+
 var comment_list = [];
 
 $(function () {
+    $(window).load(function () {
+        setTimeout(function () {
+            $('.preloader').fadeOut('slow', function () {});
+            $('body').css('overflow-y', 'visible');
+        }, 1500);
+    });
     GetCities.initialiseCities();
 
     $("#city-scroll").click(function(){

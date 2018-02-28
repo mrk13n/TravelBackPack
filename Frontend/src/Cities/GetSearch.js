@@ -72,14 +72,28 @@ function getComments(text) {
                             break;
                         }
                         if (two_words === Cities[j].city.toLowerCase()) {
-                            city_name = Cities[j];
-                            search_words.splice(i,2);
-                            break;
+                            if (search_words.length === 2) {
+                                id = Cities[i].id;
+                                Storage.set('id', id);
+                                document.location.href = '/city.html';
+                                find = true;
+                            } else {
+                                city_name = Cities[j];
+                                search_words.splice(i,2);
+                                break;
+                            }
                         }
                         if (three_words === Cities[j].city.toLowerCase()) {
-                            city_name = Cities[j];
-                            search_words.slice(i, 3);
-                            break;
+                            if (search_words.length === 3) {
+                                id = Cities[i].id;
+                                Storage.set('id', id);
+                                document.location.href = '/city.html';
+                                find = true;
+                            } else {
+                                city_name = Cities[j];
+                                search_words.slice(i, 3);
+                                break;
+                            }
                         }
 
                     }
@@ -126,6 +140,11 @@ function getComments(text) {
                                 additional_comments.push(one);
                             }
                             comment_list = additional_comments;
+<<<<<<< HEAD
+=======
+                            console.log(comment_list);
+                            $('.search-box').removeClass('has-error');
+>>>>>>> a1eb1400850f615161ca21f428163895ada41549
                             showResults(comment_list);
                         }
                     }

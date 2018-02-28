@@ -11,6 +11,12 @@ var $comments = $("#comments");
 var Backpack = getBackpack();
 
 $(function () {
+    $(window).load(function () {
+        // setTimeout(function () {
+        //     $('.preloader').fadeOut('slow', function () {});
+        //     $('body').css('overflow-y', 'visible');
+        // }, 1500);
+    });
     GetInfoCity.showInfo();
     icon_position = true;
     $( ".show-weather" ).click(function() {
@@ -154,10 +160,16 @@ function initializeComments(type) {
                         comments = additional_comments;
                         showComments(comments);
                     }
+                    setTimeout(function () {
+                        $('.preloader').fadeOut('slow', function () {});
+                        $('body').css('overflow-y', 'visible');
+                    }, 1500);
                 }
             });
 
             $node2.find('.btn-send').click(function () {
+                $('.preloader').css('opacity', '0.75');
+                $('.preloader').fadeIn('slow', function () {});
                 var today = new Date();
                 var dd = today.getDate();
                 var mm = today.getMonth()+1;
@@ -188,8 +200,20 @@ function initializeComments(type) {
                             favorite: false,
                             comment: data
                         };
-                        $node2.slideToggle(1000);
-                        addOneComment(one);
+                        $node2.slideToggle(400);
+                        setTimeout(function f() {
+                            addOneComment(one);
+                            $('.loader').fadeOut('slow', function () {});
+                            $('.success').fadeIn('slow', function () {});
+                            setTimeout(function () {
+                                $('.preloader').fadeOut('slow', function () {});
+                            }, 750);
+                            setTimeout(function () {
+                                $('.preloader').css('opacity', '1');
+                                $('.loader').fadeIn('slow', function () {});
+                                $('.success').fadeOut('slow', function () {});
+                            }, 1500);
+                        }, 500);
                         $node2.find('.username').val('');
                         $node2.find('#comment').val('');
                         icon_position = true;
@@ -210,7 +234,9 @@ function addOneComment(comment) {
     var html_code = Templates.Comment_OneItem({comment: comment});
     var $node = $(html_code);
     Backpack = getBackpack();
+    $node.hide();
     $node.insertBefore('#form');
+    $node.slideToggle(300);
 
     $node.find ('.favorite').mouseover(function () {
         if (!comment.favorite) {
@@ -272,54 +298,3 @@ function randomAvatar(){
     rand = Math.floor((Math.random() * 20) + 1);
     return rand;
 }
-
-
-// if (!comment.favorite) {
-//     $node.find('.favorite').mouseover(function () {
-//         $(this).removeClass('glyphicon glyphicon-star-empty');
-//         $(this).addClass('glyphicon glyphicon-star');
-//     });
-//
-//     $node.find('.favorite').mouseout(function () {
-//         $(this).removeClass('glyphicon glyphicon-star');
-//         $(this).addClass('glyphicon glyphicon-star-empty');
-//     });
-//
-//     $node.find('.favorite').click(function () {
-//         comment.favorite = true;
-//         Backpack.push(comment);
-//         saveComment(Backpack);
-//         $(this).removeClass('glyphicon glyphicon-star-empty');
-//         $(this).addClass('glyphicon glyphicon-star');
-//         // showOneComment(comment);
-//         // initializeComments(type);
-//     });
-// } else {
-//     $node.find('.favorite').click(function () {
-//         for (var i = 0; i < Backpack.length; i++) {
-//             if (comment.comment._id == Backpack[i].comment._id) {
-//                 comment.favorite = false;
-//                 removeFromStorrage(Backpack, i);
-//                 $(this).removeClass('glyphicon glyphicon-star');
-//                 $(this).addClass('glyphicon glyphicon-star-empty');
-//                 // initializeComments(type);
-//                 // showOneComment(comment);
-//             }
-//         }
-//     });
-// }
-//
-// if (comment.favorite) {
-//     // $node.find('.favorite').click(function () {
-//     //     for (var i = 0; i < Backpack.length; i++) {
-//     //         if (comment.comment._id == Backpack[i].comment._id) {
-//     //             comment.favorite = false;
-//     //             removeFromStorrage(Backpack, i);
-//     //             $(this).removeClass('glyphicon glyphicon-star');
-//     //             $(this).addClass('glyphicon glyphicon-star-empty');
-//     //             // initializeComments(type);
-//     //             // showOneComment(comment);
-//     //         }
-//     //     }
-//     // });
-// }

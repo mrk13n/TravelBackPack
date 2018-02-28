@@ -1,6 +1,7 @@
 exports.mainPage = function(req, res) {
     res.render('mainPage', {
         pageTitle: 'TravelHack',
+        less: 'main',
         mainActive: true,
         mapActive: false,
         cityActive: false,
@@ -12,6 +13,7 @@ exports.mainPage = function(req, res) {
 exports.cityPage = function (req, res) {
     res.render('cityPage', {
         pageTitle: 'City',
+        less: 'city',
         mainActive: false,
         mapActive: false,
         cityActive: true,
@@ -23,6 +25,7 @@ exports.cityPage = function (req, res) {
 exports.backpackPage = function (req, res) {
     res.render('backpackPage', {
         pageTitle: 'Your backpacks',
+        less: 'backpack',
         mainActive: false,
         mapActive: false,
         cityActive: false,
@@ -34,6 +37,7 @@ exports.backpackPage = function (req, res) {
 exports.aboutUs = function (req, res) {
     res.render('aboutPage', {
         pageTitle: 'About us',
+        less: 'about',
         mainActive: false,
         mapActive: false,
         cityActive: false,
