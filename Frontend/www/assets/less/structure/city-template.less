@@ -1,13 +1,13 @@
 .title-box {
   margin-top: 50px;
-  color: white;
+  color: @w;
   text-align: center;
   text-transform: uppercase;
   p {
     margin: 0;
     font-size: 30px;
     text-transform: uppercase;
-    text-shadow: 2px 1px 4px #000;
+    text-shadow: 2px 1px 4px @b;
   }
 }
 
@@ -15,7 +15,7 @@
   margin: 0;
   font-size: 65px;
   text-transform: uppercase;
-  text-shadow: 2px 1px 4px #000;
+  text-shadow: 2px 1px 4px @b;
 }
 
 .new-city-hero {
@@ -27,8 +27,7 @@
 
 .city-info{
   margin-top: 10px;
-  padding: 10px;
-  padding-bottom: 0px;
+  padding: 10px 10px 0;
   border-radius: 10px;
 }
 
@@ -41,19 +40,19 @@
 }
 
 .btn-glyphicon {
-  padding:8px;
-  background:#ffffff;
-  margin-right:4px;
+  padding: 8px;
+  background: @w;
+  margin-right: 4px;
 }
 .icon-btn {
   padding: 1px 15px 3px 2px;
-  border-radius:50px;
+  border-radius: 50px;
 }
 
 .btn-add {
-  position:relative;
-  top:30%;
-  left:41%;
+  position: relative;
+  top: 30%;
+  left: 41%;
   width: 200px;
   padding: 15px;
   margin-top: 30px;
@@ -69,8 +68,8 @@
 
 #weather-widget{
   position: absolute;
-  top:100px;
-  left:0.8%;
+  top: 100px;
+  left: 0.8%;
   margin-top: 50px;
 }
 
@@ -80,8 +79,8 @@
   background-color: @mainColor;
   border-color: transparent;
   font-size: 13px;
-  color:white;
-  border-radius:0 0 5px 5px;
+  color: @w;
+  border-radius: 0 0 5px 5px;
   display: none;
 }
 
@@ -92,7 +91,7 @@
   background-color: @mainColor;
   border-color: transparent;
   font-size: 20px;
-  border-radius:5px 5px 0 0;
+  border-radius: 5px 5px 0 0;
 }
 
 .description{
@@ -102,7 +101,7 @@
 .btn-send {
   float: right;
   background-color: @mainColor;
-  color: white;
+  color: @w;
   margin-top: 15px;
 }
 
@@ -115,11 +114,11 @@
 }
 
 li.active {
-  background-color: #F1C40F;
+  background-color: @filters;
 }
 
 #city-filter ul li.active a {
-  color: white;
+  color: @w;
 }
 
 #city-filter ul li a:hover {
@@ -134,7 +133,7 @@ li.active {
 
 .scroll-page {
   position: fixed;
-  top:25%;
+  top: 25%;
   right: 1%;
   width: 30px;
   height: 30px;
@@ -153,7 +152,7 @@ li.active {
   display: inline-block;
   -webkit-transform: translate(0, -50%);
   transform: translate(0, -50%);
-  color: #fff;
+  color: @w;
   font : normal 400 20px/1 'Josefin Sans', sans-serif;
   letter-spacing: .1em;
   text-decoration: none;
@@ -166,7 +165,7 @@ li.active {
 .glyphicon-menu-down {
   top: 15px;
   font-size: 20px;
-  color: white;
+  color: @w;
 }
 
 .thumbnail {
@@ -175,10 +174,10 @@ li.active {
 
 .local-search-container{
   width:600px;
-  height:@SearchContainerHeight;
-  margin:20px auto;
+  height: @SearchContainerHeight;
+  margin: 20px auto;
 }
 
 .search-button{
-  color:white;
+  color: @w;
 }

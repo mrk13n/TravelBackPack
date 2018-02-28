@@ -1,23 +1,19 @@
 .lending{
-  background-position: 10% 50%;
-  background-attachment: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
+  background: no-repeat fixed center;
   background-size: cover;
 }
 
 .new-user-hero{
   padding: 15px 10px;
-  height:600px;
+  height: 600px;
 }
 
 .left{
-  margin:0 auto;
-  margin-top:150px;
+  margin: 150px auto 0;
   text-align: center;
-  color:white;
-  text-shadow: 1px -1px 2px #000;
-  width:auto;
+  color: @w;
+  text-shadow: 1px -1px 2px @b;
+  width: auto;
 
 }
 
@@ -30,7 +26,7 @@
 }
 
 .left > h3{
-  color:white;
+  color: @w;
 }
 
 .greetings{
@@ -38,7 +34,7 @@
   font-size: 15px;
   color: #9B9B9B;
   text-transform: uppercase;
-  margin-bottom:30px;
+  margin-bottom: 30px;
 }
 
 .view-container{
@@ -58,7 +54,6 @@
 
 #weather-div {
   padding-top: 14px;
-  //margin-left: -80px;
 }
 
 #additional_info {
@@ -70,15 +65,15 @@
 /* ----------- Relevant Code Below ----- */
 
 .search-container{
-  width:600px;
-  height:@SearchContainerHeight;
-  margin:50px auto;
+  width: 600px;
+  height: @SearchContainerHeight;
+  margin: 50px auto;
 }
 
 .search-box{
-  width:80%;
-  height:@SearchContainerHeight;
-  background-color: white;
+  width: 80%;
+  height: @SearchContainerHeight;
+  background-color: @w;
   float:left;
   border-radius: 10px 0 0 10px;
 }
@@ -100,8 +95,8 @@
 }
 
 #searchBox{
-  wisth:100%;
-  height:100%;
+  width: 100%;
+  height: 100%;
   font-size: 25px;
   border:0;
   border-radius: 10px 0 0 10px;

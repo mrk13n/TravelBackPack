@@ -1,4 +1,9 @@
-$(document).ready(function() {
+$(function() {
+    $(window).load(function () {
+        setTimeout(function () {
+            $('.preloader').fadeOut('slow', function () {});
+        }, 1500);
+    });
     $("#team-scroll").click(function () {
         scrollTo();
     });
@@ -6,7 +11,7 @@ $(document).ready(function() {
     function scrollTo() {
         $('html, body').animate({scrollTop: $('.our-team').offset().top}, 'slow');
         return false;
-    };
+    }
 
     $('#staff').click(function () {
         $('.niceStaff').css('display', 'block');

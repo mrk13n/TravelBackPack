@@ -960,6 +960,12 @@ var $comments = $("#comments");
 var Backpack = getBackpack();
 
 $(function () {
+    $(window).load(function () {
+        // setTimeout(function () {
+        //     $('.preloader').fadeOut('slow', function () {});
+        //     $('body').css('overflow-y', 'visible');
+        // }, 1500);
+    });
     GetInfoCity.showInfo();
     icon_position = true;
     $( ".show-weather" ).click(function() {
@@ -1103,10 +1109,16 @@ function initializeComments(type) {
                         comments = additional_comments;
                         showComments(comments);
                     }
+                    setTimeout(function () {
+                        $('.preloader').fadeOut('slow', function () {});
+                        $('body').css('overflow-y', 'visible');
+                    }, 1500);
                 }
             });
 
             $node2.find('.btn-send').click(function () {
+                $('.preloader').css('opacity', '0.75');
+                $('.preloader').fadeIn('slow', function () {});
                 var today = new Date();
                 var dd = today.getDate();
                 var mm = today.getMonth()+1;
@@ -1140,6 +1152,16 @@ function initializeComments(type) {
                         $node2.slideToggle(400);
                         setTimeout(function f() {
                             addOneComment(one);
+                            $('.loader').fadeOut('slow', function () {});
+                            $('.success').fadeIn('slow', function () {});
+                            setTimeout(function () {
+                                $('.preloader').fadeOut('slow', function () {});
+                            }, 750);
+                            setTimeout(function () {
+                                $('.preloader').css('opacity', '1');
+                                $('.loader').fadeIn('slow', function () {});
+                                $('.success').fadeOut('slow', function () {});
+                            }, 1500);
                         }, 500);
                         $node2.find('.username').val('');
                         $node2.find('#comment').val('');

@@ -28,9 +28,12 @@ var $cities = $('#city-favourite-comments-container');
 var Backpack = getBackpack();
 
 $(function () {
-
+    $(window).load(function () {
+        setTimeout(function () {
+            $('.preloader').fadeOut('slow', function () {});
+        }, 1500);
+    });
     var pack = getBackpack();
-
     if (pack !== null) {
         if(pack.length === 0){
             document.getElementById("footer").style.marginTop = "100px";
