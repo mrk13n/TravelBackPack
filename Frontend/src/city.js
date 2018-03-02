@@ -168,8 +168,7 @@ function initializeComments(type) {
             });
 
             $node2.find('.btn-send').click(function () {
-                $('.preloader').css('opacity', '0.75');
-                $('.preloader').fadeIn('slow', function () {});
+                $('.preloader').css('opacity', '0.75').fadeIn('slow', function () {});
                 var today = new Date();
                 var dd = today.getDate();
                 var mm = today.getMonth()+1;
@@ -201,7 +200,7 @@ function initializeComments(type) {
                             comment: data
                         };
                         $node2.slideToggle(400);
-                        setTimeout(function f() {
+                        setTimeout(function () {
                             addOneComment(one);
                             $('.loader').fadeOut('slow', function () {});
                             $('.success').fadeIn('slow', function () {});
@@ -210,8 +209,8 @@ function initializeComments(type) {
                             }, 750);
                             setTimeout(function () {
                                 $('.preloader').css('opacity', '1');
-                                $('.loader').fadeIn('slow', function () {});
-                                $('.success').fadeOut('slow', function () {});
+                                $('.loader').show();
+                                $('.success').hide();
                             }, 1500);
                         }, 500);
                         $node2.find('.username').val('');
