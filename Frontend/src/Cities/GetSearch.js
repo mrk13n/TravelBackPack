@@ -140,11 +140,8 @@ function getComments(text) {
                                 additional_comments.push(one);
                             }
                             comment_list = additional_comments;
-<<<<<<< HEAD
-=======
                             console.log(comment_list);
                             $('.search-box').removeClass('has-error');
->>>>>>> a1eb1400850f615161ca21f428163895ada41549
                             showResults(comment_list);
                         }
                     }
