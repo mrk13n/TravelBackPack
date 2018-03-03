@@ -141,7 +141,7 @@ function getComments(text) {
                             console.log(comment_list);
                             final_result(comment_list);
                         } else {
-                            final_result(comment_list)
+                            final_result(comment_list);
                         }
                     }
                 });
