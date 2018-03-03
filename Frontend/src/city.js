@@ -82,6 +82,7 @@ $(function () {
     });
 
     $('#staff').click(function () {
+        $('body').css('overflow-y', 'hidden');
         $('.niceStaff').css('display', 'block');
         $('.niceStaff').animate({'bottom':'0'}, 500);
         setTimeout(function () {
@@ -89,6 +90,7 @@ $(function () {
         }, 1600);
         setTimeout(function () {
             $('.niceStaff').css('display', 'none');
+            $('body').css('overflow-y', 'visible');
         }, 2200);
     });
 });
@@ -160,11 +162,11 @@ function initializeComments(type) {
                         comments = additional_comments;
                         showComments(comments);
                     }
-                    setTimeout(function () {
-                        $('.preloader').fadeOut('slow', function () {});
-                        $('body').css('overflow-y', 'visible');
-                    }, 1500);
                 }
+                setTimeout(function () {
+                    $('.preloader').fadeOut('slow', function () {});
+                    $('body').css('overflow-y', 'visible');
+                }, 1500);
             });
 
             $node2.find('.btn-send').click(function () {

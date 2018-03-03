@@ -2,8 +2,6 @@ var GetCities = require('./Cities/GetCities');
 var getComments = require('./Cities/GetSearch');
 var text;
 
-var comment_list = [];
-
 $(function () {
     $(window).load(function () {
         setTimeout(function () {
@@ -17,14 +15,8 @@ $(function () {
         scrollTo();
     });
 
-    $(function() {
-        $('a[href*=#]').on('click', function(e) {
-            e.preventDefault();
-            $('html, body').animate({ scrollTop: $($(this).attr('href')).offset().top}, 500, 'linear');
-        });
-    });
-
     $('#staff').click(function () {
+        $('body').css('overflow-y', 'hidden');
         $('.niceStaff').css('display', 'block');
         $('.niceStaff').animate({'bottom':'0'}, 500);
         setTimeout(function () {
@@ -32,13 +24,14 @@ $(function () {
         }, 1600);
         setTimeout(function () {
             $('.niceStaff').css('display', 'none');
+            $('body').css('overflow-y', 'visible');
         }, 2200);
     });
 
     $('#searchBox').keyup(function (e) {
         text = $('input.form-control').val();
         if (e.keyCode === 13) {
-            comment_list = getComments.getComments(text);
+            getComments.getComments(text);
         }
     });
 
@@ -52,4 +45,3 @@ function scrollTo() {
     $('html, body').animate({ scrollTop: $('.greetings').offset().top }, 'slow');
     return false;
 }
-

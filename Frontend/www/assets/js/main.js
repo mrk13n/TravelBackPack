@@ -788,7 +788,7 @@ var Templates = require('../Teamplates');
 var trash = require('./AdditionalArrays').trash;
 var wrong_symbols = require('./AdditionalArrays').wrong_symbols;
 var stemmer = require('stemmer');
-var $comments = $('#comments');
+var $comments = $('.comments');
 
 function getComments(text) {
     API.getCitiesList(function (err, data) {
@@ -809,9 +809,8 @@ function getComments(text) {
             } else {
                 search_words = [];
             }
-            if (search_words[0] === '') search_words = [];
             if (search_words.length === 0) {
-                $('.search-box').addClass('has-error');
+                final_result(comment_list);
             }
             if (search_words.length === 1) {
                 for (i = 0; i < Cities.length; i++) {
@@ -840,7 +839,7 @@ function getComments(text) {
                     }
                 }
                 if (!find) {
-                    $('.search-box').addClass('has-error');
+                    final_result(comment_list);
                 }
             }
             if (search_words.length > 1) {
@@ -878,7 +877,6 @@ function getComments(text) {
                                 break;
                             }
                         }
-
                     }
                 }
                 city_search = {city: city_name.city};
@@ -923,12 +921,10 @@ function getComments(text) {
                                 additional_comments.push(one);
                             }
                             comment_list = additional_comments;
-<<<<<<< HEAD
-=======
                             console.log(comment_list);
-                            $('.search-box').removeClass('has-error');
->>>>>>> a1eb1400850f615161ca21f428163895ada41549
-                            showResults(comment_list);
+                            final_result(comment_list);
+                        } else {
+                            final_result(comment_list)
                         }
                     }
                 });
@@ -1006,13 +1002,11 @@ function keyWordsArray(text, cities) {
 }
 
 function showResults(list) {
-    $comments.html('');
     list.forEach(showOneComment);
-    scrollToResults();
 }
 
 function scrollToResults() {
-    $('html, body').animate({ scrollTop: $('.greetings').offset().top }, 'slow');
+    $('html, body').animate({ scrollTop: $('.found').offset().top }, 'slow');
     return false;
 }
 
@@ -1064,8 +1058,31 @@ function removeFromStorrage(back, i) {
     Storage.set('backpack', back);
 }
 
-exports.getComments = getComments;
+function final_result(list) {
+    $comments.html('');
+    if (list.length === 0) {
+        $('#for-comments').css('display', 'block');
+        scrollToResults();
+        $('.preloader').css('opacity', '0.75').fadeIn('slow', function () {});
+        $('.not_found').css('display', 'block');
+        setTimeout(function () {
+            $('.preloader').fadeOut('slow', function () {});
+            $('body').css('overflow-y', 'visible');
+        }, 1500);
+    } else {
+        $('#for-comments').css('display', 'block');
+        $('.not_found').css('display', 'none');
+        scrollToResults();
+        $('.preloader').css('opacity', '0.75').fadeIn('slow', function () {});
+        showResults(list);
+        setTimeout(function () {
+            $('.preloader').fadeOut('slow', function () {});
+            $('body').css('overflow-y', 'visible');
+        }, 1500);
+    }
+}
 
+exports.getComments = getComments;
 },{"../API":1,"../LocalStorage":5,"../Teamplates":6,"./AdditionalArrays":2,"stemmer":15}],5:[function(require,module,exports){
 var basil = require('basil.js');
 basil = new basil();
@@ -1082,7 +1099,7 @@ var ejs = require('ejs');
 
 
 exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
-exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\n    <div class=\"col-xs-2\">\n        <div class=\"thumbnail thumb_city\">\n            <img class=\"img-responsive user-photo\" src=\"assets/images/avatars/<%= comment.comment.avatar%>.png\">\n        </div>\n    </div>\n\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span><span class=\"favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>\"></span>\n            </div>\n            <div class=\"panel-body\">\n                <%= comment.comment.comment%>\n            </div>\n        </div>\n    </div>\n</div>");
+exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\n    <div class=\"col-xs-2\">\n        <div class=\"thumbnail thumb_city user-photo\">\n            <img class=\"img-responsive\" src=\"assets/images/avatars/<%= comment.comment.avatar%>.png\">\n        </div>\n    </div>\n\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span><span class=\"favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>\"></span>\n            </div>\n            <div class=\"panel-body\">\n                <%= comment.comment.comment%>\n            </div>\n        </div>\n    </div>\n</div>");
 exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\n    <div class=\"title-box\">\n        <p>experience</p>\n        <h1 class=\"city-name\"><%= city.city%></h1>\n        <p>like a local</p>\n    </div>\n    <div class=\"local-search-container\">\n        <div class=\"search-box\">\n            <input type=\"text\" class=\"form-control\" id=\"searchBox\" placeholder=\"\">\n        </div>\n        <div class=\"btn search-button\">\n            <p class=\"search-icon\">Search</p>\n        </div>\n    </div>\n</div>");
 exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\n    <div class=\"col-xs-2\"></div>\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <input type=\"text\" class=\"form-control username\" placeholder=\"Enter username\">\n            </div>\n            <div class=\"panel-body\">\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\"></textarea>\n                <button type=\"submit\" class=\"btn btn-send\">\n                    Send <span class=\"glyphicon glyphicon-send\"></span>\n                </button>\n            </div>\n        </div>\n    </div>\n</div>");
 exports.weatherBlock = ejs.compile(" <div class=\"weather\">\n                <div class=\"info\">\n                    <div class=\"temp\">\n                        <small>TEMPERATURE: </small><%= weather.main.temp %>°C\n                    </div>\n                    <div class=\"wind\">\n                        <small>WIND SPEED: </small> <%= weather.wind.speed %>m/s\n                    </div>\n                    <div class=\"description\">\n                        <%= weather.weather[0].description %>\n                    </div>\n                </div>\n                </div>\n");
@@ -1093,8 +1110,6 @@ exports.OneFavouriteComment = ejs.compile("<div class=\"panel panel-default\">\n
 var GetCities = require('./Cities/GetCities');
 var getComments = require('./Cities/GetSearch');
 var text;
-
-var comment_list = [];
 
 $(function () {
     $(window).load(function () {
@@ -1109,14 +1124,8 @@ $(function () {
         scrollTo();
     });
 
-    $(function() {
-        $('a[href*=#]').on('click', function(e) {
-            e.preventDefault();
-            $('html, body').animate({ scrollTop: $($(this).attr('href')).offset().top}, 500, 'linear');
-        });
-    });
-
     $('#staff').click(function () {
+        $('body').css('overflow-y', 'hidden');
         $('.niceStaff').css('display', 'block');
         $('.niceStaff').animate({'bottom':'0'}, 500);
         setTimeout(function () {
@@ -1124,13 +1133,14 @@ $(function () {
         }, 1600);
         setTimeout(function () {
             $('.niceStaff').css('display', 'none');
+            $('body').css('overflow-y', 'visible');
         }, 2200);
     });
 
     $('#searchBox').keyup(function (e) {
         text = $('input.form-control').val();
         if (e.keyCode === 13) {
-            comment_list = getComments.getComments(text);
+            getComments.getComments(text);
         }
     });
 
@@ -1144,8 +1154,6 @@ function scrollTo() {
     $('html, body').animate({ scrollTop: $('.greetings').offset().top }, 'slow');
     return false;
 }
-
-
 },{"./Cities/GetCities":3,"./Cities/GetSearch":4}],8:[function(require,module,exports){
 (function () {
 	// Basil
