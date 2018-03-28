@@ -26,9 +26,8 @@ function getComments(text) {
             } else {
                 search_words = [];
             }
-            if (search_words[0] === '') search_words = [];
             if (search_words.length === 0) {
-                $('.search-box').addClass('has-error');
+                final_result(comment_list);
             }
             if (search_words.length === 1) {
                 for (i = 0; i < Cities.length; i++) {
@@ -57,7 +56,7 @@ function getComments(text) {
                     }
                 }
                 if (!find) {
-                    $('.search-box').addClass('has-error');
+                    final_result(comment_list);
                 }
             }
             if (search_words.length > 1) {
@@ -95,7 +94,6 @@ function getComments(text) {
                                 break;
                             }
                         }
-
                     }
                 }
                 city_search = {city: city_name.city};
@@ -141,8 +139,9 @@ function getComments(text) {
                             }
                             comment_list = additional_comments;
                             console.log(comment_list);
-                            $('.search-box').removeClass('has-error');
-                            showResults(comment_list);
+                            final_result(comment_list);
+                        } else {
+                            final_result(comment_list);
                         }
                     }
                 });
@@ -220,13 +219,11 @@ function keyWordsArray(text, cities) {
 }
 
 function showResults(list) {
-    $comments.html('');
     list.forEach(showOneComment);
-    scrollToResults();
 }
 
 function scrollToResults() {
-    $('html, body').animate({ scrollTop: $('.greetings').offset().top }, 'slow');
+    $('html, body').animate({ scrollTop: $('.found').offset().top }, 'slow');
     return false;
 }
 
@@ -276,6 +273,30 @@ function saveComment(back) {
 function removeFromStorrage(back, i) {
     back.splice(i, 1);
     Storage.set('backpack', back);
+}
+
+function final_result(list) {
+    $comments.html('');
+    if (list.length === 0) {
+        $('#for-comments').css('display', 'block');
+        scrollToResults();
+        $('.preloader').css('opacity', '0.75').fadeIn('slow', function () {});
+        $('.not_found').css('display', 'block');
+        setTimeout(function () {
+            $('.preloader').fadeOut('slow', function () {});
+            $('body').css('overflow-y', 'visible');
+        }, 1500);
+    } else {
+        $('#for-comments').css('display', 'block');
+        $('.not_found').css('display', 'none');
+        scrollToResults();
+        $('.preloader').css('opacity', '0.75').fadeIn('slow', function () {});
+        showResults(list);
+        setTimeout(function () {
+            $('.preloader').fadeOut('slow', function () {});
+            $('body').css('overflow-y', 'visible');
+        }, 1500);
+    }
 }
 
 exports.getComments = getComments;

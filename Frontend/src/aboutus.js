@@ -15,6 +15,7 @@ $(function() {
     }
 
     $('#staff').click(function () {
+        $('body').css('overflow-y', 'hidden');
         $('.niceStaff').css('display', 'block');
         $('.niceStaff').animate({'bottom':'0'}, 500);
         setTimeout(function () {
@@ -22,6 +23,7 @@ $(function() {
         }, 1600);
         setTimeout(function () {
             $('.niceStaff').css('display', 'none');
+            $('body').css('overflow-y', 'visible');
         }, 2200);
     });
 });
