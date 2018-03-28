@@ -1,0 +1,19 @@
+<div class="comment col-md-6 clo-xs-12">
+    <div class="user-photo col-xs-2">
+        <div class="thumbnail thumb_city">
+            <img class="img-responsive user-photo" src="assets/images/avatars/<%= comment.comment.avatar%>.png">
+        </div>
+        <div class="thumbnail thumb_city">
+            <img class="img-responsive user-photo" src="assets/images/avatars/<%= comment.comment.avatar%>.png">
+        </div>
+    </div>
+    <div class="ad-body col-xs-10">
+        <div class="ad-title">
+            <strong><%= comment.comment.nickname%></strong> <span class="text-muted">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span><span class="favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>"></span>
+        </div>
+        <div class="ad-text-body">
+            <%= comment.comment.comment%>
+        </div>
+    </div>
+    <div class="media-bar col-xs-12"></div>
+</div>
