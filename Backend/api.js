@@ -10,6 +10,7 @@ exports.getCities = function(req, res) {
 exports.writeComment = function (req, res) {
     var nickname = req.body.nickname;
     var comment = req.body.comment;
+    var location = req.body.location;
     var city = req.body.city;
     var year = req.body.year;
     var day = req.body.day;
@@ -27,6 +28,7 @@ exports.writeComment = function (req, res) {
                 current_comment = new One_Comment({
                     nickname: nickname,
                     comment: comment,
+                    location: location,
                     year: year,
                     day: day,
                     month: month,
@@ -49,6 +51,7 @@ exports.writeComment = function (req, res) {
                 current_comment = new One_Comment({
                     nickname: nickname,
                     comment: comment,
+                    location: location,
                     year: year,
                     day: day,
                     month: month,

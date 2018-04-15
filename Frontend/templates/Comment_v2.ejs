@@ -1,19 +1,27 @@
 <div class="comment col-md-6 clo-xs-12">
-    <div class="user-photo col-xs-2">
-        <div class="thumbnail thumb_city">
+    <div class="comment-info-block row">
+        <div class="user-photo col-xs-2">
             <img class="img-responsive user-photo" src="assets/images/avatars/<%= comment.comment.avatar%>.png">
         </div>
-        <div class="thumbnail thumb_city">
-            <img class="img-responsive user-photo" src="assets/images/avatars/<%= comment.comment.avatar%>.png">
+        <div class="comment-body col-xs-6">
+            <div class="comment-place-name">
+                <strong>Central Park</strong>
+            </div>
+            <div class="comment-author-info">
+                <%= comment.comment.nickname%> <span class="text-muted">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span>
+            </div>
+        </div>
+        <div class="buttons-bar col-xs-4">
+            <img class="favourite-btn" src=" <% if (comment.favorite) { %> assets/images/icons/icons8-star-filled-96.png <% } else { %> assets/images/icons/icons8-add-to-favorites-96.png <% } %>">
         </div>
     </div>
-    <div class="ad-body col-xs-10">
-        <div class="ad-title">
-            <strong><%= comment.comment.nickname%></strong> <span class="text-muted">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span><span class="favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>"></span>
-        </div>
-        <div class="ad-text-body">
-            <%= comment.comment.comment%>
-        </div>
+    <div class="row"></div>
+    <div class="comment-text-body row">
+        <%= comment.comment.comment%>
     </div>
-    <div class="media-bar col-xs-12"></div>
+    <div class="media-bar row">
+        <img class="uploaded-img" src="https://maps.googleapis.com/maps/api/staticmap?center=<%= comment.comment.location%>&zoom=17&size=640x425&markers=color:red%7C<%= comment.comment.location%>&path=weight:3%7Ccolor:blue%7Cenc:{coaHnetiVjM??_SkM??~R&key=AIzaSyBLsX-VTDp7C82k5Jaw5HnPHxRcCuX9OMQ">
+        <img class="uploaded-img" src="assets/images/amsterdam.jpg">
+        <img class="uploaded-img" src="assets/images/amsterdam.jpg">
+    </div>
 </div>

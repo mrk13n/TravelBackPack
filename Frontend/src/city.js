@@ -9,6 +9,10 @@ var type;
 var text;
 var $comments = $("#comments");
 var Backpack = getBackpack();
+// Full size img variables
+var imageViewer = document.getElementById('fs-img-panel');
+var largeImg = document.getElementById("fs-img-block");
+var captionText = document.getElementById("caption");
 
 $(function () {
     $(window).load(function () {
@@ -19,8 +23,8 @@ $(function () {
     });
     GetInfoCity.showInfo();
     icon_position = true;
-    $( ".show-weather" ).click(function() {
-        $( "#weather-div" ).show( "slow" );
+    $( ".user-photo" ).click(function() {
+        this.append();
     });
     initializeComments('food');
     $("#comments-scroll").click(function() {
@@ -184,9 +188,11 @@ function initializeComments(type) {
                 }
                 var comment = $('#comment').val();
                 var nickname = $('.username').val();
+                var location = $('.location').val();
                 var send_comment = {
                     nickname: nickname,
                     comment: comment,
+                    location: location,
                     city: current_city.city,
                     year: yyyy,
                     day: dd,
@@ -194,6 +200,7 @@ function initializeComments(type) {
                     type: type,
                     avatar: avatar
                 };
+                console.log(send_comment.location);
                 if (comment.length !== 0 && nickname.length !== 0) {
                     API.writeComment(send_comment, function (err, data) {
                         var one = {
@@ -217,6 +224,7 @@ function initializeComments(type) {
                         }, 500);
                         $node2.find('.username').val('');
                         $node2.find('#comment').val('');
+                        $node2.find('.location').val('');
                         icon_position = true;
                         $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
                         $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
@@ -238,38 +246,35 @@ function addOneComment(comment) {
     $node.hide();
     $node.insertBefore('#form');
     $node.slideToggle(300);
-
-    $node.find ('.favorite').mouseover(function () {
-        if (!comment.favorite) {
-            $(this).removeClass('glyphicon glyphicon-star-empty');
-            $(this).addClass('glyphicon glyphicon-star');
-        }
-    });
-
-    $node.find ('.favorite').mouseout(function () {
-        if (!comment.favorite) {
-            $(this).removeClass('glyphicon glyphicon-star');
-            $(this).addClass('glyphicon glyphicon-star-empty');
-        }
-    });
-
-    $node.find('.favorite').click(function () {
+    $node.find('.favourite-btn').click(function () {
         if (comment.favorite) {
             for (var i = 0; i < Backpack.length; i++) {
                 if (comment.comment._id == Backpack[i].comment._id) {
                     removeFromStorrage(Backpack, i);
-                    $(this).removeClass('glyphicon glyphicon-star');
-                    $(this).addClass('glyphicon glyphicon-star-empty');
+                    $(this).src = "assets/images/icons/icons8-add-to-favorites-96.png";
                 }
             }
         } else {
             Backpack.push(comment);
             saveComment(Backpack);
-            $(this).removeClass('glyphicon glyphicon-star-empty');
-            $(this).addClass('glyphicon glyphicon-star');
+            console.log($(this).src);
+            $(this).src = "assets/images/icons/icons8-star-filled-96.png";
         }
         comment.favorite =!comment.favorite;
     });
+
+    //  Full size image viewer
+
+    $node.find('.uploaded-img').click(function () {
+        imageViewer.style.display = "block";
+        largeImg.src = this.src;
+        // captionText.innerHTML = this.alt;
+        var spanClose = document.getElementById('img-panel-close');
+        spanClose.onclick = function() {
+            imageViewer.style.display = "none";
+        }
+    })
+
 }
 
 function saveComment(back) {
@@ -299,3 +304,4 @@ function randomAvatar(){
     rand = Math.floor((Math.random() * 20) + 1);
     return rand;
 }
+
