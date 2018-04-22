@@ -18,7 +18,10 @@ var one_comment = new mongoose.Schema({
     day: {type: String},
     month: {type: String},
     type: {type: String},
-    avatar: {type: String}
+    avatar: {type: String},
+    count: {type: Number},
+    img_1:{type: String},
+    img_2:{type: String}
 });
 
 var comments = new mongoose.Schema({

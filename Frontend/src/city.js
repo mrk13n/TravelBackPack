@@ -189,6 +189,17 @@ function initializeComments(type) {
                 var comment = $('#comment').val();
                 var nickname = $('.username').val();
                 var location = $('.location').val();
+                // var img_1 = uploadedImgArray[0];
+                // var img_2;
+                // if (uploadedImgArray.size == 2){
+                //     img_2 = uploadedImgArray[1];
+                // }else{
+                //     img_2 = "";
+                // }
+                // uploadedImgArray = [];
+                var img_1 = "";
+                var img_2 = "";
+                var fav_count = 0;
                 var send_comment = {
                     nickname: nickname,
                     comment: comment,
@@ -198,9 +209,11 @@ function initializeComments(type) {
                     day: dd,
                     month: mm,
                     type: type,
-                    avatar: avatar
+                    avatar: avatar,
+                    count: fav_count,
+                    img_1: img_1,
+                    img_2: img_2
                 };
-                console.log(send_comment.location);
                 if (comment.length !== 0 && nickname.length !== 0) {
                     API.writeComment(send_comment, function (err, data) {
                         var one = {
@@ -251,14 +264,14 @@ function addOneComment(comment) {
             for (var i = 0; i < Backpack.length; i++) {
                 if (comment.comment._id == Backpack[i].comment._id) {
                     removeFromStorrage(Backpack, i);
-                    $(this).src = "assets/images/icons/icons8-add-to-favorites-96.png";
+                    this.src = "assets/images/icons/icons8-add-to-favorites-96.png";
+
                 }
             }
         } else {
             Backpack.push(comment);
             saveComment(Backpack);
-            console.log($(this).src);
-            $(this).src = "assets/images/icons/icons8-star-filled-96.png";
+            this.src = "assets/images/icons/icons8-star-filled-96.png";
         }
         comment.favorite =!comment.favorite;
     });
@@ -304,4 +317,3 @@ function randomAvatar(){
     rand = Math.floor((Math.random() * 20) + 1);
     return rand;
 }
-

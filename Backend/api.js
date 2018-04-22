@@ -17,6 +17,9 @@ exports.writeComment = function (req, res) {
     var month = req.body.month;
     var type = req.body.type;
     var avatar = req.body.avatar;
+    var count = req.body.count;
+    var img_1 = req.body.img_1;
+    var img_2 = req.body.img_2;
     var current_comment;
 
     Comments.findOne(
@@ -33,7 +36,10 @@ exports.writeComment = function (req, res) {
                     day: day,
                     month: month,
                     type: type,
-                    avatar: avatar
+                    avatar: avatar,
+                    count: count,
+                    img_1: img_1,
+                    img_2: img_2
                 });
                 var a = current_city.comments;
                 a.push(current_comment);
@@ -56,7 +62,10 @@ exports.writeComment = function (req, res) {
                     day: day,
                     month: month,
                     type: type,
-                    avatar: avatar
+                    avatar: avatar,
+                    count: count,
+                    img_1: img_1,
+                    img_2: img_2
                 });
 
                 var newCity = new Comments({

@@ -941,12 +941,12 @@ var ejs = require('ejs');
 exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\r\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\r\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\r\n    </div>\r\n</div>");
 exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\r\n    <div class=\"col-xs-2\">\r\n        <div class=\"thumbnail thumb_city user-photo\">\r\n            <img class=\"img-responsive\" src=\"assets/images/avatars/<%= comment.comment.avatar%>.png\">\r\n        </div>\r\n    </div>\r\n\r\n    <div class=\"col-xs-10\">\r\n        <div class=\"panel panel-default\">\r\n            <div class=\"panel-heading\">\r\n                <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span><span class=\"favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>\"></span>\r\n            </div>\r\n            <div class=\"panel-body\">\r\n                <%= comment.comment.comment%>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>");
 exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\r\n    <div class=\"title-box\">\r\n        <p>experience</p>\r\n        <h1 class=\"city-name\"><%= city.city%></h1>\r\n        <p>like a local</p>\r\n    </div>\r\n    <div class=\"local-search-container\">\r\n        <div class=\"search-box\">\r\n            <input type=\"text\" class=\"form-control\" id=\"searchBox\" placeholder=\"\">\r\n        </div>\r\n        <div class=\"btn search-button\">\r\n            <p class=\"search-icon\">Search</p>\r\n        </div>\r\n    </div>\r\n</div>");
-exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\r\n    <div class=\"col-xs-2\"></div>\r\n    <div class=\"col-xs-10\">\r\n        <div class=\"panel panel-default\">\r\n            <div class=\"panel-heading\">\r\n                <input type=\"text\" class=\"form-control username\" placeholder=\"Enter username\">\r\n            </div>\r\n            <div class=\"panel-heading\">\r\n                <input type=\"text\" class=\"form-control location\" placeholder=\"Enter location coordinates\">\r\n            </div>\r\n            <div class=\"panel-body\">\r\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\" maxlength=\"300\"></textarea>\r\n                <button type=\"submit\" class=\"btn btn-send\">\r\n                    Send <span class=\"glyphicon glyphicon-send\"></span>\r\n                </button>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>");
+exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\r\n    <div class=\"col-xs-2\"></div>\r\n    <div class=\"col-xs-10\">\r\n        <div class=\"panel panel-default\">\r\n            <div class=\"panel-heading\">\r\n                <input type=\"text\" class=\"form-control username\" placeholder=\"Enter username\">\r\n            </div>\r\n            <div class=\"panel-heading\">\r\n                <input type=\"text\" class=\"form-control location\" placeholder=\"Enter location coordinates\">\r\n            </div>\r\n            <div class=\"panel-body\">\r\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\" maxlength=\"300\"></textarea>\r\n                <form enctype=\"multipart/form-data\" action=\"/upload\" method=\"post\">\r\n                    <input type=\"file\" name=\"photo\" multiple />\r\n                <button type=\"submit\" class=\"btn btn-send\">\r\n                    Send <span class=\"glyphicon glyphicon-send\"></span>\r\n                </button>\r\n                </form>\r\n            </div>\r\n        </div>\r\n    </div>\r\n</div>");
 exports.weatherBlock = ejs.compile(" <div class=\"weather\">\r\n                <div class=\"info\">\r\n                    <div class=\"temp\">\r\n                        <small>TEMPERATURE: </small><%= weather.main.temp %>°C\r\n                    </div>\r\n                    <div class=\"wind\">\r\n                        <small>WIND SPEED: </small> <%= weather.wind.speed %>m/s\r\n                    </div>\r\n                    <div class=\"description\">\r\n                        <%= weather.weather[0].description %>\r\n                    </div>\r\n                </div>\r\n                </div>\r\n");
 exports.additionalInfo = ejs.compile("\r\n    <div class=\"weather\">\r\n        <div class=\"info\">\r\n            <div class=\"temp\">\r\n                <small>COUNTRY: </small><%= city.country %>\r\n            </div>\r\n            <div class=\"wind\">\r\n                <small>CURRENCY: </small> <%= city.currency %>\r\n            </div>\r\n            <div class=\"description\">\r\n                <small>POPULATION: </small><%= city.population %>\r\n            </div>\r\n        </div>\r\n    </div>");
 exports.FavouriteCityComments = ejs.compile("<div class=\"col-md-6\">\r\n    <div class=\"city-favourite-comments-panel\">\r\n        <div class=\"backpack-city-name\">\r\n            <h2><%= city.city%></h2>\r\n        </div>\r\n        <div class=\"backpack-comments\">\r\n        </div>\r\n    </div>\r\n</div>");
 exports.OneFavouriteComment = ejs.compile("<div class=\"panel panel-default\">\r\n    <div class=\"panel-heading\">\r\n        <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span><span class=\"favorite glyphicon glyphicon-star\"></span>\r\n    </div>\r\n    <div class=\"panel-body\">\r\n        <%= comment.comment.comment%>\r\n    </div>\r\n</div>");
-exports.Comment_v2 = ejs.compile("<div class=\"comment col-md-6 clo-xs-12\">\r\n    <div class=\"comment-info-block row\">\r\n        <div class=\"user-photo col-xs-2\">\r\n            <img class=\"img-responsive user-photo\" src=\"assets/images/avatars/<%= comment.comment.avatar%>.png\">\r\n        </div>\r\n        <div class=\"comment-body col-xs-6\">\r\n            <div class=\"comment-place-name\">\r\n                <strong>Central Park</strong>\r\n            </div>\r\n            <div class=\"comment-author-info\">\r\n                <%= comment.comment.nickname%> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span>\r\n            </div>\r\n        </div>\r\n        <div class=\"buttons-bar col-xs-4\">\r\n            <img class=\"favourite-btn\" src=\" <% if (comment.favorite) { %> assets/images/icons/icons8-star-filled-96.png <% } else { %> assets/images/icons/icons8-add-to-favorites-96.png <% } %>\">\r\n        </div>\r\n    </div>\r\n    <div class=\"row\"></div>\r\n    <div class=\"comment-text-body row\">\r\n        <%= comment.comment.comment%>\r\n    </div>\r\n    <div class=\"media-bar row\">\r\n        <img class=\"uploaded-img\" src=\"https://maps.googleapis.com/maps/api/staticmap?center=<%= comment.comment.location%>&zoom=17&size=640x425&markers=color:red%7C<%= comment.comment.location%>&path=weight:3%7Ccolor:blue%7Cenc:{coaHnetiVjM??_SkM??~R&key=AIzaSyBLsX-VTDp7C82k5Jaw5HnPHxRcCuX9OMQ\">\r\n        <img class=\"uploaded-img\" src=\"assets/images/amsterdam.jpg\">\r\n        <img class=\"uploaded-img\" src=\"assets/images/amsterdam.jpg\">\r\n    </div>\r\n</div>");
+exports.Comment_v2 = ejs.compile("<div class=\"comment col-md-6 clo-xs-12\">\r\n    <div class=\"comment-info-block row\">\r\n        <div class=\"user-photo col-xs-2\">\r\n            <img class=\"img-responsive user-photo\" src=\"assets/images/avatars/<%= comment.comment.avatar%>.png\">\r\n        </div>\r\n        <div class=\"comment-body col-xs-6\">\r\n            <div class=\"comment-place-name\">\r\n                <strong>Central Park</strong>\r\n            </div>\r\n            <div class=\"comment-author-info\">\r\n                <%= comment.comment.nickname%> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span>\r\n            </div>\r\n        </div>\r\n        <div class=\"buttons-bar col-xs-4\">\r\n            <div class=\"fav-count\"><%= comment.comment.count%></div>\r\n            <img class=\"favourite-btn\" src=\" <% if (comment.favorite) { %> assets/images/icons/icons8-star-filled-96.png <% } else { %> assets/images/icons/icons8-add-to-favorites-96.png <% } %>\">\r\n        </div>\r\n    </div>\r\n    <div class=\"row\"></div>\r\n    <div class=\"comment-text-body row\">\r\n        <%= comment.comment.comment%>\r\n    </div>\r\n    <div class=\"media-bar row\">\r\n        <img class=\"uploaded-img\" src=\"https://maps.googleapis.com/maps/api/staticmap?center=<%= comment.comment.location%>&zoom=17&size=640x425&markers=color:red%7C<%= comment.comment.location%>&path=weight:3%7Ccolor:blue%7Cenc:{coaHnetiVjM??_SkM??~R&key=AIzaSyBLsX-VTDp7C82k5Jaw5HnPHxRcCuX9OMQ\">\r\n        <img class=\"uploaded-img\" src=\"<% comment.comment.img_1  %>\">\r\n        <img class=\"uploaded-img\" src=\"<% comment.comment.img_2  %>\">\r\n    </div>\r\n</div>");
 },{"ejs":10}],7:[function(require,module,exports){
 var Storage = require('./LocalStorage');
 var Templates = require('./Teamplates');
@@ -1139,6 +1139,17 @@ function initializeComments(type) {
                 var comment = $('#comment').val();
                 var nickname = $('.username').val();
                 var location = $('.location').val();
+                // var img_1 = uploadedImgArray[0];
+                // var img_2;
+                // if (uploadedImgArray.size == 2){
+                //     img_2 = uploadedImgArray[1];
+                // }else{
+                //     img_2 = "";
+                // }
+                // uploadedImgArray = [];
+                var img_1 = "";
+                var img_2 = "";
+                var fav_count = 0;
                 var send_comment = {
                     nickname: nickname,
                     comment: comment,
@@ -1148,9 +1159,11 @@ function initializeComments(type) {
                     day: dd,
                     month: mm,
                     type: type,
-                    avatar: avatar
+                    avatar: avatar,
+                    count: fav_count,
+                    img_1: img_1,
+                    img_2: img_2
                 };
-                console.log(send_comment.location);
                 if (comment.length !== 0 && nickname.length !== 0) {
                     API.writeComment(send_comment, function (err, data) {
                         var one = {
@@ -1201,14 +1214,14 @@ function addOneComment(comment) {
             for (var i = 0; i < Backpack.length; i++) {
                 if (comment.comment._id == Backpack[i].comment._id) {
                     removeFromStorrage(Backpack, i);
-                    $(this).src = "assets/images/icons/icons8-add-to-favorites-96.png";
+                    this.src = "assets/images/icons/icons8-add-to-favorites-96.png";
+
                 }
             }
         } else {
             Backpack.push(comment);
             saveComment(Backpack);
-            console.log($(this).src);
-            $(this).src = "assets/images/icons/icons8-star-filled-96.png";
+            this.src = "assets/images/icons/icons8-star-filled-96.png";
         }
         comment.favorite =!comment.favorite;
     });
@@ -1254,8 +1267,6 @@ function randomAvatar(){
     rand = Math.floor((Math.random() * 20) + 1);
     return rand;
 }
-
-
 },{"./API":1,"./Cities/GetInfoCity":3,"./Cities/GetLocalSearch":4,"./LocalStorage":5,"./Teamplates":6}],8:[function(require,module,exports){
 (function () {
 	// Basil
@@ -1703,12 +1714,12 @@ var _DEFAULT_DELIMITER = '%';
 var _DEFAULT_LOCALS_NAME = 'locals';
 var _NAME = 'ejs';
 var _REGEX_STRING = '(<%%|%%>|<%=|<%-|<%_|<%#|<%|%>|-%>|_%>)';
-var _OPTS = ['delimiter', 'scope', 'context', 'debug', 'compileDebug',
+var _OPTS_PASSABLE_WITH_DATA = ['delimiter', 'scope', 'context', 'debug', 'compileDebug',
   'client', '_with', 'rmWhitespace', 'strict', 'filename'];
-// We don't allow 'cache' option to be passed in the data obj
-// for the normal `render` call, but this is where Express puts it
+// We don't allow 'cache' option to be passed in the data obj for
+// the normal `render` call, but this is where Express 2 & 3 put it
 // so we make an exception for `renderFile`
-var _OPTS_EXPRESS = _OPTS.concat('cache');
+var _OPTS_PASSABLE_WITH_DATA_EXPRESS = _OPTS_PASSABLE_WITH_DATA.concat('cache');
 var _BOM = /^\uFEFF/;
 
 /**
@@ -1741,6 +1752,16 @@ exports.fileLoader = fs.readFileSync;
  */
 
 exports.localsName = _DEFAULT_LOCALS_NAME;
+
+/**
+ * Promise implementation -- defaults to the native implementation if available
+ * This is mostly just for testability
+ *
+ * @type {Function}
+ * @public
+ */
+
+exports.promiseImpl = (new Function('return this;'))().Promise;
 
 /**
  * Get the path to the included file from the parent file path and the
@@ -1798,7 +1819,8 @@ function getIncludePath(path, options) {
       }
     }
     if (!includePath) {
-      throw new Error('Could not find include include file.');
+      throw new Error('Could not find the include file "' +
+          options.escapeFunction(path) + '"');
     }
   }
   return includePath;
@@ -1868,13 +1890,32 @@ function handleCache(options, template) {
 
 function tryHandleCache(options, data, cb) {
   var result;
-  try {
-    result = handleCache(options)(data);
+  if (!cb) {
+    if (typeof exports.promiseImpl == 'function') {
+      return new exports.promiseImpl(function (resolve, reject) {
+        try {
+          result = handleCache(options)(data);
+          resolve(result);
+        }
+        catch (err) {
+          reject(err);
+        }
+      });
+    }
+    else {
+      throw new Error('Please provide a callback function');
+    }
   }
-  catch (err) {
-    return cb(err);
+  else {
+    try {
+      result = handleCache(options)(data);
+    }
+    catch (err) {
+      return cb(err);
+    }
+
+    cb(null, result);
   }
-  return cb(null, result);
 }
 
 /**
@@ -2027,7 +2068,7 @@ exports.render = function (template, d, o) {
   // No options object -- if there are optiony names
   // in the data, copy them to options
   if (arguments.length == 2) {
-    utils.shallowCopyFromList(opts, data, _OPTS);
+    utils.shallowCopyFromList(opts, data, _OPTS_PASSABLE_WITH_DATA);
   }
 
   return handleCache(opts, template)(data);
@@ -2047,36 +2088,49 @@ exports.render = function (template, d, o) {
  */
 
 exports.renderFile = function () {
-  var filename = arguments[0];
-  var cb = arguments[arguments.length - 1];
+  var args = Array.prototype.slice.call(arguments);
+  var filename = args.shift();
+  var cb;
   var opts = {filename: filename};
   var data;
+  var viewOpts;
 
-  if (arguments.length > 2) {
-    data = arguments[1];
-
-    // No options object -- if there are optiony names
-    // in the data, copy them to options
-    if (arguments.length === 3) {
-      // Express 4
+  // Do we have a callback?
+  if (typeof arguments[arguments.length - 1] == 'function') {
+    cb = args.pop();
+  }
+  // Do we have data/opts?
+  if (args.length) {
+    // Should always have data obj
+    data = args.shift();
+    // Normal passed opts (data obj + opts obj)
+    if (args.length) {
+      // Use shallowCopy so we don't pollute passed in opts obj with new vals
+      utils.shallowCopy(opts, args.pop());
+    }
+    // Special casing for Express (settings + opts-in-data)
+    else {
+      // Express 3 and 4
       if (data.settings) {
-        if (data.settings['view options']) {
-          utils.shallowCopyFromList(opts, data.settings['view options'], _OPTS_EXPRESS);
-        }
+        // Pull a few things from known locations
         if (data.settings.views) {
           opts.views = data.settings.views;
         }
+        if (data.settings['view cache']) {
+          opts.cache = true;
+        }
+        // Undocumented after Express 2, but still usable, esp. for
+        // items that are unsafe to be passed along with data, like `root`
+        viewOpts = data.settings['view options'];
+        if (viewOpts) {
+          utils.shallowCopy(opts, viewOpts);
+        }
       }
-      // Express 3 and lower
-      else {
-        utils.shallowCopyFromList(opts, data, _OPTS_EXPRESS);
-      }
+      // Express 2 and lower, values set in app.locals, or people who just
+      // want to pass options in their data. NOTE: These values will override
+      // anything previously set in settings  or settings['view options']
+      utils.shallowCopyFromList(opts, data, _OPTS_PASSABLE_WITH_DATA_EXPRESS);
     }
-    else {
-      // Use shallowCopy so we don't pollute passed in opts obj with new vals
-      utils.shallowCopy(opts, arguments[2]);
-    }
-
     opts.filename = filename;
   }
   else {
@@ -2167,14 +2221,14 @@ Template.prototype = {
 
     if (opts.compileDebug) {
       src = 'var __line = 1' + '\n'
-          + '  , __lines = ' + JSON.stringify(this.templateText) + '\n'
-          + '  , __filename = ' + (opts.filename ?
-                JSON.stringify(opts.filename) : 'undefined') + ';' + '\n'
-          + 'try {' + '\n'
-          + this.source
-          + '} catch (e) {' + '\n'
-          + '  rethrow(e, __lines, __filename, __line, escapeFn);' + '\n'
-          + '}' + '\n';
+        + '  , __lines = ' + JSON.stringify(this.templateText) + '\n'
+        + '  , __filename = ' + (opts.filename ?
+        JSON.stringify(opts.filename) : 'undefined') + ';' + '\n'
+        + 'try {' + '\n'
+        + this.source
+        + '} catch (e) {' + '\n'
+        + '  rethrow(e, __lines, __filename, __line, escapeFn);' + '\n'
+        + '}' + '\n';
     }
     else {
       src = this.source;
@@ -2294,7 +2348,7 @@ Template.prototype = {
             }
             self.source += includeSrc;
             self.dependencies.push(exports.resolveInclude(include[1],
-                includeOpts.filename));
+              includeOpts.filename));
             return;
           }
         }
@@ -2403,9 +2457,9 @@ Template.prototype = {
       this.truncate = line.indexOf('-') === 0 || line.indexOf('_') === 0;
       break;
     default:
-        // In script mode, depends on type of tag
+      // In script mode, depends on type of tag
       if (this.mode) {
-          // If '//' is found without a line break, add a line break.
+        // If '//' is found without a line break, add a line break.
         switch (this.mode) {
         case Template.modes.EVAL:
         case Template.modes.ESCAPED:
@@ -2415,28 +2469,28 @@ Template.prototype = {
           }
         }
         switch (this.mode) {
-            // Just executing code
+        // Just executing code
         case Template.modes.EVAL:
           this.source += '    ; ' + line + '\n';
           break;
-            // Exec, esc, and output
+          // Exec, esc, and output
         case Template.modes.ESCAPED:
           this.source += '    ; __append(escapeFn(' + stripSemi(line) + '))' + '\n';
           break;
-            // Exec and output
+          // Exec and output
         case Template.modes.RAW:
           this.source += '    ; __append(' + stripSemi(line) + ')' + '\n';
           break;
         case Template.modes.COMMENT:
-              // Do nothing
+          // Do nothing
           break;
-            // Literal <%% mode, append as raw output
+          // Literal <%% mode, append as raw output
         case Template.modes.LITERAL:
           this._addOutput(line);
           break;
         }
       }
-        // In string mode, just add the output
+      // In string mode, just add the output
       else {
         this._addOutput(line);
       }
@@ -2568,7 +2622,7 @@ var _ENCODE_HTML_RULES = {
   '"': '&#34;',
   "'": '&#39;'
 };
-var _MATCH_HTML = /[&<>\'"]/g;
+var _MATCH_HTML = /[&<>'"]/g;
 
 function encode_char(c) {
   return _ENCODE_HTML_RULES[c] || c;
@@ -2612,7 +2666,7 @@ exports.escapeXML = function (markup) {
   return markup == undefined
     ? ''
     : String(markup)
-        .replace(_MATCH_HTML, encode_char);
+      .replace(_MATCH_HTML, encode_char);
 };
 exports.escapeXML.toString = function () {
   return Function.prototype.toString.call(this) + ';\n' + escapeFuncStr;
@@ -2682,33 +2736,29 @@ exports.cache = {
 
 },{}],12:[function(require,module,exports){
 module.exports={
-  "_args": [
-    [
-      "ejs@2.5.7",
-      "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack"
-    ]
-  ],
-  "_from": "ejs@2.5.7",
-  "_id": "ejs@2.5.7",
+  "_from": "ejs@2.5.9",
+  "_id": "ejs@2.5.9",
   "_inBundle": false,
-  "_integrity": "sha1-zIcsFoiArjxxiXYv1f/ACJbJUYo=",
+  "_integrity": "sha512-GJCAeDBKfREgkBtgrYSf9hQy9kTb3helv0zGdzqhM7iAkW8FA/ZF97VQDbwFiwIT8MQLLOe5VlPZOEvZAqtUAQ==",
   "_location": "/ejs",
   "_phantomChildren": {},
   "_requested": {
     "type": "version",
     "registry": true,
-    "raw": "ejs@2.5.7",
+    "raw": "ejs@2.5.9",
     "name": "ejs",
     "escapedName": "ejs",
-    "rawSpec": "2.5.7",
+    "rawSpec": "2.5.9",
     "saveSpec": null,
-    "fetchSpec": "2.5.7"
+    "fetchSpec": "2.5.9"
   },
   "_requiredBy": [
+    "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.7.tgz",
-  "_spec": "2.5.7",
+  "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.9.tgz",
+  "_shasum": "7ba254582a560d267437109a68354112475b0ce5",
+  "_spec": "ejs@2.5.9",
   "_where": "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack",
   "author": {
     "name": "Matthew Eernisse",
@@ -2718,6 +2768,7 @@ module.exports={
   "bugs": {
     "url": "https://github.com/mde/ejs/issues"
   },
+  "bundleDependencies": false,
   "contributors": [
     {
       "name": "Timothy Gu",
@@ -2726,17 +2777,18 @@ module.exports={
     }
   ],
   "dependencies": {},
+  "deprecated": false,
   "description": "Embedded JavaScript templates",
   "devDependencies": {
-    "browserify": "^13.0.1",
-    "eslint": "^3.0.0",
+    "browserify": "^13.1.1",
+    "eslint": "^4.14.0",
     "git-directory-deploy": "^1.5.1",
     "istanbul": "~0.4.3",
-    "jake": "^8.0.0",
+    "jake": "^8.0.16",
     "jsdoc": "^3.4.0",
     "lru-cache": "^4.0.1",
-    "mocha": "^3.0.2",
-    "uglify-js": "^2.6.2"
+    "mocha": "^5.0.5",
+    "uglify-js": "^3.3.16"
   },
   "engines": {
     "node": ">=0.10.0"
@@ -2761,7 +2813,7 @@ module.exports={
     "lint": "eslint \"**/*.js\" Jakefile",
     "test": "jake test"
   },
-  "version": "2.5.7"
+  "version": "2.5.9"
 }
 
 },{}],13:[function(require,module,exports){
