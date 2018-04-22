@@ -31,12 +31,16 @@ exports.checkLogin = function (req, res) {
 exports.writeComment = function (req, res) {
     var nickname = req.body.nickname;
     var comment = req.body.comment;
+    var location = req.body.location;
     var city = req.body.city;
     var year = req.body.year;
     var day = req.body.day;
     var month = req.body.month;
     var type = req.body.type;
     var avatar = req.body.avatar;
+    var count = req.body.count;
+    var img_1 = req.body.img_1;
+    var img_2 = req.body.img_2;
     var current_comment;
 
     Comments.findOne(
@@ -48,11 +52,15 @@ exports.writeComment = function (req, res) {
                 current_comment = new One_Comment({
                     nickname: nickname,
                     comment: comment,
+                    location: location,
                     year: year,
                     day: day,
                     month: month,
                     type: type,
-                    avatar: avatar
+                    avatar: avatar,
+                    count: count,
+                    img_1: img_1,
+                    img_2: img_2
                 });
                 var a = current_city.comments;
                 a.push(current_comment);
@@ -70,11 +78,15 @@ exports.writeComment = function (req, res) {
                 current_comment = new One_Comment({
                     nickname: nickname,
                     comment: comment,
+                    location: location,
                     year: year,
                     day: day,
                     month: month,
                     type: type,
-                    avatar: avatar
+                    avatar: avatar,
+                    count: count,
+                    img_1: img_1,
+                    img_2: img_2
                 });
 
                 var newCity = new Comments({

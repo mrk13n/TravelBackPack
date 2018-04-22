@@ -13,11 +13,15 @@ db.once('open', function callback () {
 var one_comment = new mongoose.Schema({
     nickname: {type: String},
     comment: {type: String},
+    location:{type:String},
     year: {type: String},
     day: {type: String},
     month: {type: String},
     type: {type: String},
-    avatar: {type: String}
+    avatar: {type: String},
+    count: {type: Number},
+    img_1:{type: String},
+    img_2:{type: String}
 });
 
 var comments = new mongoose.Schema({

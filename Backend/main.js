@@ -1,8 +1,28 @@
 var express = require('express');
 var path = require('path');
 var morgan = require('morgan');
+var multer = require('multer');
 var bodyParser = require('body-parser');
+<<<<<<< HEAD
 var session = require('express-session');
+=======
+var uploadedImgArray = [];
+var imgURI;
+
+var storage = multer.diskStorage({
+    destination: function(req, file, callback) {
+        callback(null, "Frontend/www/assets/images/uploaded_images");
+    },
+    filename: function(req, file, callback) {
+        imgURI = file.fieldname + "_" + Date.now() + "_" + file.originalname;
+        uploadedImgArray.push(imgURI);
+        console.log(uploadedImgArray);
+        callback(null, imgURI);
+    }
+});
+
+var upload = multer({storage: storage});
+>>>>>>> 3279cbf7e2829362f5ab82c9f56219f93906224b
 
 function configureEndpoints(app) {
     var pages = require('./pages');
@@ -11,11 +31,18 @@ function configureEndpoints(app) {
     app.get('/api/get-cities/', api.getCities);
     app.post('/api/get-comments/', api.getComment);
     app.post('/api/write-comments/', api.writeComment);
+<<<<<<< HEAD
     app.post('/api/login/', api.login);
     app.post('/api/registration/', api.registration);
     app.get('/api/logout/', api.logout);
     app.get('/api/check-login/', api.checkLogin);
 
+=======
+    app.post('/upload', upload.array('photo',2) , function(req, res) {
+        console.log(req.body);
+        res.redirect('back');
+    });
+>>>>>>> 3279cbf7e2829362f5ab82c9f56219f93906224b
     app.get('/', pages.mainPage);
     app.get('/city.html', pages.cityPage);
     app.get('/backpack.html',pages.backpackPage);

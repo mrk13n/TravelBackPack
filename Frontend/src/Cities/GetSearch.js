@@ -228,39 +228,23 @@ function scrollToResults() {
 }
 
 function showOneComment(comment) {
-    var html_code = Templates.Comment_OneItem({comment: comment});
+    var html_code = Templates.Comment_v2({comment: comment});
     var $node = $(html_code);
     var Backpack = getBackpack();
     $comments.append($node);
 
-    $node.find ('.favorite').mouseover(function () {
-        if (!comment.favorite) {
-            $(this).removeClass('glyphicon glyphicon-star-empty');
-            $(this).addClass('glyphicon glyphicon-star');
-        }
-    });
-
-    $node.find ('.favorite').mouseout(function () {
-        if (!comment.favorite) {
-            $(this).removeClass('glyphicon glyphicon-star');
-            $(this).addClass('glyphicon glyphicon-star-empty');
-        }
-    });
-
-    $node.find('.favorite').click(function () {
+    $node.find('.favourite-btn').click(function () {
         if (comment.favorite) {
             for (var i = 0; i < Backpack.length; i++) {
                 if (comment.comment._id == Backpack[i].comment._id) {
                     removeFromStorrage(Backpack, i);
-                    $(this).removeClass('glyphicon glyphicon-star');
-                    $(this).addClass('glyphicon glyphicon-star-empty');
+                    $(this).context.src = "assets/images/icons/icons8-add-to-favorites-96.png";
                 }
             }
         } else {
             Backpack.push(comment);
             saveComment(Backpack);
-            $(this).removeClass('glyphicon glyphicon-star-empty');
-            $(this).addClass('glyphicon glyphicon-star');
+            $(this).context.src = "assets/images/icons/icons8-star-filled-96.png";
         }
         comment.favorite =!comment.favorite;
     });

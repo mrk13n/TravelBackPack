@@ -10,3 +10,4 @@ exports.weatherBlock = ejs.compile(fs.readFileSync('./Frontend/templates/weather
 exports.additionalInfo = ejs.compile(fs.readFileSync('./Frontend/templates/additionalInfo.ejs', "utf8"));
 exports.FavouriteCityComments = ejs.compile(fs.readFileSync('./Frontend/templates/FavouriteCityComments.ejs', "utf8"));
 exports.OneFavouriteComment = ejs.compile(fs.readFileSync('./Frontend/templates/OneFavouriteComment.ejs', "utf8"));
+exports.Comment_v2 = ejs.compile(fs.readFileSync('./Frontend/templates/Comment_v2.ejs', "utf8"));

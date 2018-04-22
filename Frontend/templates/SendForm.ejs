@@ -5,11 +5,17 @@
             <div class="panel-heading">
                 <input type="text" class="form-control username" placeholder="Enter username">
             </div>
+            <div class="panel-heading">
+                <input type="text" class="form-control location" placeholder="Enter location coordinates">
+            </div>
             <div class="panel-body">
-                <textarea class="form-control" rows="5" id="comment"></textarea>
+                <textarea class="form-control" rows="5" id="comment" maxlength="300"></textarea>
+                <form enctype="multipart/form-data" action="/upload" method="post">
+                    <input type="file" name="photo" multiple />
                 <button type="submit" class="btn btn-send">
                     Send <span class="glyphicon glyphicon-send"></span>
                 </button>
+                </form>
             </div>
         </div>
     </div>
