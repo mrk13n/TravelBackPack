@@ -25,8 +25,16 @@ var comments = new mongoose.Schema({
     comments: [one_comment]
 });
 
+var userShema = new mongoose.Schema({
+    username: {type: String, unique: true},
+    email: {type: String},
+    password: {type: String}
+});
+
 var Comments = mongoose.model('comments', comments);
 var One_Comment = mongoose.model('one_comment', one_comment);
+var Users = mongoose.model('users', userShema);
 
 exports.Comments = Comments;
 exports.One_Comment = One_Comment;
+exports.Users = Users;

@@ -1,6 +1,8 @@
+var API_URL = "http://localhost:4040";
+
 function backendGet(url, callback) {
     $.ajax({
-        url: url,
+        url: API_URL + url,
         type: 'GET',
         success: function(data){
             callback(null, data);
@@ -13,7 +15,7 @@ function backendGet(url, callback) {
 
 function backendPost(url, data, callback) {
     $.ajax({
-        url: url,
+        url: API_URL + url,
         type: 'POST',
         contentType : 'application/json',
         data: JSON.stringify(data),
@@ -27,13 +29,29 @@ function backendPost(url, data, callback) {
 }
 
 exports.getCitiesList = function(callback) {
-    backendGet("/api/get-cities/", callback);
+    backendGet('/api/get-cities/', callback);
 };
 
 exports.getComments = function (city, callback) {
-  backendPost("/api/get-comments/", city, callback);
+  backendPost('/api/get-comments/', city, callback);
 };
 
 exports.writeComment = function (comment, callback) {
-  backendPost("/api/write-comments/", comment, callback);
+  backendPost('/api/write-comments/', comment, callback);
+};
+
+exports.login = function (user, callback) {
+  backendPost('/api/login/', user, callback);
+};
+
+exports.registration = function (user, callback) {
+  backendPost('api/registration/', user, callback);
+};
+
+exports.logout = function (callback) {
+    backendGet('/api/logout/', callback);
+};
+
+exports.checkLogin = function (callback) {
+  backendGet('/api/check-login/', callback);
 };

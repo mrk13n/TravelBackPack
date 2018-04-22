@@ -131,7 +131,7 @@ function initializeComments(type) {
                     break;
                 }
             }
-            current_city = {city: city.city};
+            current_city = {icon: city.icon, city: city.city};
             API.getComments(current_city, function (err, data) {
                 if (!err) {
                     if (!data.emptyForm) {
@@ -153,6 +153,7 @@ function initializeComments(type) {
                                 }
                             }
                             one = {
+                                icon: current_city.icon,
                                 city: current_city.city,
                                 favorite: fav,
                                 comment: comments[i]
@@ -194,7 +195,10 @@ function initializeComments(type) {
                     type: type,
                     avatar: avatar
                 };
+                console.log(comment.length);
+                console.log(nickname.length);
                 if (comment.length !== 0 && nickname.length !== 0) {
+                    console.log('yes');
                     API.writeComment(send_comment, function (err, data) {
                         var one = {
                             city: current_city.city,

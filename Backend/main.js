@@ -2,6 +2,7 @@ var express = require('express');
 var path = require('path');
 var morgan = require('morgan');
 var bodyParser = require('body-parser');
+var session = require('express-session');
 
 function configureEndpoints(app) {
     var pages = require('./pages');
@@ -10,6 +11,10 @@ function configureEndpoints(app) {
     app.get('/api/get-cities/', api.getCities);
     app.post('/api/get-comments/', api.getComment);
     app.post('/api/write-comments/', api.writeComment);
+    app.post('/api/login/', api.login);
+    app.post('/api/registration/', api.registration);
+    app.get('/api/logout/', api.logout);
+    app.get('/api/check-login/', api.checkLogin);
 
     app.get('/', pages.mainPage);
     app.get('/city.html', pages.cityPage);
@@ -29,6 +34,10 @@ function startServer(port) {
 
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(bodyParser.json());
+
+    app.use(session({
+        secret: "DreamTeam"
+    }));
 
     configureEndpoints(app);
 

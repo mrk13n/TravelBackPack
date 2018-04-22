@@ -102,7 +102,7 @@ h2{
 }
 
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 8px;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -124,4 +124,77 @@ h2{
   to {
     transform: translate(-50%, -50%) rotate(360deg);
   }
+}
+
+.overlay {
+  background: @b;
+  position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: 1;
+  opacity: 0.5;
+}
+
+.visible {
+  background: #fff;
+  position: fixed;
+  top: 25%;
+  left: 25%;
+  border-radius: 30px;
+  overflow: hidden;
+  z-index: 2;
+  width: 50%;
+}
+
+.visible-logout {
+  background: #fff;
+  position: fixed;
+  top: 35%;
+  left: 35%;
+  border-radius: 30px;
+  overflow: hidden;
+  z-index: 2;
+  width: 30%;
+}
+
+.exit {
+  font-size: 20px;
+  color: @g;
+}
+
+.end, .not-end {
+  float: right;
+}
+
+#log-menu, #registration, #exit-menu {
+  display: none;
+}
+
+.inner-container {
+  max-width: 1000px;
+  margin: auto;
+  padding: 30px;
+}
+
+#helpNewPassword, #helpNewLogin, #helpLogin, #helpPassword {
+  display: none;
+}
+
+.glyphicon-remove {
+  float: right;
+  margin-top: -15px;
+  font-size: 11px;
+  color: @g;
+  cursor: pointer;
+}
+
+.glyphicon-remove:hover {
+  color: @mainColor;
+}
+
+.btn-default:hover {
+  color: @g;
+  background-color: @mainColor;
 }

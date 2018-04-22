@@ -1,7 +1,9 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+var API_URL = "http://localhost:4040";
+
 function backendGet(url, callback) {
     $.ajax({
-        url: url,
+        url: API_URL + url,
         type: 'GET',
         success: function(data){
             callback(null, data);
@@ -14,7 +16,7 @@ function backendGet(url, callback) {
 
 function backendPost(url, data, callback) {
     $.ajax({
-        url: url,
+        url: API_URL + url,
         type: 'POST',
         contentType : 'application/json',
         data: JSON.stringify(data),
@@ -28,15 +30,31 @@ function backendPost(url, data, callback) {
 }
 
 exports.getCitiesList = function(callback) {
-    backendGet("/api/get-cities/", callback);
+    backendGet('/api/get-cities/', callback);
 };
 
 exports.getComments = function (city, callback) {
-  backendPost("/api/get-comments/", city, callback);
+  backendPost('/api/get-comments/', city, callback);
 };
 
 exports.writeComment = function (comment, callback) {
-  backendPost("/api/write-comments/", comment, callback);
+  backendPost('/api/write-comments/', comment, callback);
+};
+
+exports.login = function (user, callback) {
+  backendPost('/api/login/', user, callback);
+};
+
+exports.registration = function (user, callback) {
+  backendPost('api/registration/', user, callback);
+};
+
+exports.logout = function (callback) {
+    backendGet('/api/logout/', callback);
+};
+
+exports.checkLogin = function (callback) {
+  backendGet('/api/check-login/', callback);
 };
 },{}],2:[function(require,module,exports){
 var trash = [
@@ -780,7 +798,7 @@ function initialiseCities() {
     });
 }
 exports.initialiseCities = initialiseCities;
-},{"../API":1,"../LocalStorage":5,"../Teamplates":6}],4:[function(require,module,exports){
+},{"../API":1,"../LocalStorage":5,"../Teamplates":7}],4:[function(require,module,exports){
 var Cities;
 var API = require('../API');
 var Storage = require('../LocalStorage');
@@ -1083,7 +1101,7 @@ function final_result(list) {
 }
 
 exports.getComments = getComments;
-},{"../API":1,"../LocalStorage":5,"../Teamplates":6,"./AdditionalArrays":2,"stemmer":15}],5:[function(require,module,exports){
+},{"../API":1,"../LocalStorage":5,"../Teamplates":7,"./AdditionalArrays":2,"stemmer":16}],5:[function(require,module,exports){
 var basil = require('basil.js');
 basil = new basil();
 
@@ -1093,7 +1111,190 @@ exports.get = function (key) {
 exports.set = function (key, value) {
     return basil.set(key, value);
 };
-},{"basil.js":8}],6:[function(require,module,exports){
+},{"basil.js":9}],6:[function(require,module,exports){
+var API = require('./API');
+var $login = $('#inputLogin');
+var $pass = $('#inputPassword');
+var $newlogin = $('#inputNewLogin');
+var $newemail = $('#inputNewEmail');
+var $newpass = $('#inputNewPassword');
+var username;
+var email;
+var password;
+var user;
+var valid;
+
+function login(page) {
+    username = $login.val();
+    password = $pass.val();
+    if(validLogin(username, password)) {
+        user = {
+          username: username,
+          password: password
+        };
+        API.login(user, function (err, data) {
+            if (!err) {
+                if (data.success) {
+                    $('.for-login.login-form.form-group').removeClass('has-error');
+                    $('.for-login.password-form.form-group').removeClass('has-error');
+                    $('#helpLogin').css('display', 'none');
+                    $('#helpPassword').css('display', 'none');
+                    switch (page) {
+                        case 'home':
+                            document.location.href = '/';
+                            break;
+                        case 'city':
+                            document.location.href = '/city.html';
+                            break;
+                        case 'backpack':
+                            document.location.href = '/backpack.html';
+                            break;
+                        case 'about':
+                            document.location.href = '/about.html';
+                            break;
+                    }
+                }
+                if (data.incorrectPassword) {
+                    $('.for-login.login-form.form-group').removeClass('has-error');
+                    $('.for-login.password-form.form-group').addClass('has-error');
+                    $('#helpLogin').css('display', 'none');
+                    $('#helpPassword').css('display', 'block');
+                }
+                if (data.notFound) {
+                    $('.for-login.login-form.form-group').addClass('has-error');
+                    $('.for-login.password-form.form-group').addClass('has-error');
+                    $('#helpLogin').css('display', 'block');
+                    $('#helpPassword').css('display', 'none');
+                }
+            }
+        });
+    }
+}
+
+function registration(page) {
+    username = $newlogin.val();
+    email = $newemail.val();
+    password = $newpass.val();
+    user = {
+      username: username,
+      email: email,
+      password: password
+    };
+    if (validRegister(username, email, password)) {
+        API.registration(user, function (err, data) {
+            if (!err) {
+                if (data.newUser) {
+                    $('.for-registration.login-form.form-group').removeClass('has-error');
+                    $('.for-registration.email-form.form-group').removeClass('has-error');
+                    $('.for-registration.password-form.form-group').removeClass('has-error');
+                    $('#helpNewPassword').css('display', 'none');
+                    $('#helpNewLogin').css('display', 'none');
+                    switch (page) {
+                        case 'home':
+                            document.location.href = '/';
+                            break;
+                        case 'city':
+                            document.location.href = '/city.html';
+                            break;
+                        case 'backpack':
+                            document.location.href = '/backpack.html';
+                            break;
+                        case 'about':
+                            document.location.href = '/about.html';
+                            break;
+                    }
+                }
+                if (data.isExist) {
+                    $('.for-registration.login-form.form-group').addClass('has-error');
+                    $('.for-registration.email-form.form-group').removeClass('has-error');
+                    $('.for-registration.password-form.form-group').removeClass('has-error');
+                    $('#helpNewPassword').css('display', 'none');
+                    $('#helpNewLogin').css('display', 'block');
+                }
+            }
+        });
+    }
+}
+
+function logout(page) {
+    API.logout(function (err, data) {
+        if (!err) {
+            if (data.end) {
+                switch (page) {
+                    case 'home':
+                        document.location.href = '/';
+                        break;
+                    case 'city':
+                        document.location.href = '/city.html';
+                        break;
+                    case 'backpack':
+                        document.location.href = '/backpack.html';
+                        break;
+                    case 'about':
+                        document.location.href = '/about.html';
+                        break;
+                }
+            }
+        }
+    });
+}
+
+function validLogin(username, password) {
+    valid = true;
+    if (username.length === 0) {
+        $('.for-login.login-form.form-group').addClass('has-error');
+        $('#helpPassword').css('display', 'none');
+        $('#helpLogin').css('display', 'none');
+        valid = false;
+    } else {
+        $('.for-login.login-form.form-group').removeClass('has-error');
+    }
+    if (password.length === 0) {
+        $('.for-login.password-form.form-group').addClass('has-error');
+        $('#helpPassword').css('display', 'none');
+        $('#helpLogin').css('display', 'none');
+        valid = false;
+    } else {
+        $('.for-login.password-form.form-group').removeClass('has-error');
+    }
+    return valid;
+}
+
+function validRegister(username, email, password) {
+    valid = true;
+    if (username.length === 0) {
+        $('.for-registration.login-form.form-group').addClass('has-error');
+        $('#helpNewLogin').css('display', 'none');
+        valid = false;
+    } else {
+        $('.for-registration.login-form.form-group').removeClass('has-error');
+        $('#helpNewLogin').css('display', 'none');
+    }
+    if (password.length < 6) {
+        $('.for-registration.password-form.form-group').addClass('has-error');
+        $('#helpNewLogin').css('display', 'none');
+        $('#helpNewPassword').css('display', 'block');
+        valid = false;
+    } else {
+        $('.for-registration.password-form.form-group').removeClass('has-error');
+        $('#helpNewLogin').css('display', 'none');
+        $('#helpNewPassword').css('display', 'none');
+    }
+    if (email.length === 0) {
+        $('.for-registration.email-form.form-group').addClass('has-error');
+        $('#helpNewLogin').css('display', 'none');
+        valid = false;
+    } else {
+        $('.for-registration.email-form.form-group').removeClass('has-error');
+        $('#helpNewLogin').css('display', 'none');
+    }
+    return valid;
+}
+
+exports.login = login;
+exports.registration = registration;
+exports.logout = logout;
+},{"./API":1}],7:[function(require,module,exports){
 
 var ejs = require('ejs');
 
@@ -1104,49 +1305,112 @@ exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"b
 exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\n    <div class=\"col-xs-2\"></div>\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <input type=\"text\" class=\"form-control username\" placeholder=\"Enter username\">\n            </div>\n            <div class=\"panel-body\">\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\"></textarea>\n                <button type=\"submit\" class=\"btn btn-send\">\n                    Send <span class=\"glyphicon glyphicon-send\"></span>\n                </button>\n            </div>\n        </div>\n    </div>\n</div>");
 exports.weatherBlock = ejs.compile(" <div class=\"weather\">\n                <div class=\"info\">\n                    <div class=\"temp\">\n                        <small>TEMPERATURE: </small><%= weather.main.temp %>°C\n                    </div>\n                    <div class=\"wind\">\n                        <small>WIND SPEED: </small> <%= weather.wind.speed %>m/s\n                    </div>\n                    <div class=\"description\">\n                        <%= weather.weather[0].description %>\n                    </div>\n                </div>\n                </div>\n");
 exports.additionalInfo = ejs.compile("\n    <div class=\"weather\">\n        <div class=\"info\">\n            <div class=\"temp\">\n                <small>COUNTRY: </small><%= city.country %>\n            </div>\n            <div class=\"wind\">\n                <small>CURRENCY: </small> <%= city.currency %>\n            </div>\n            <div class=\"description\">\n                <small>POPULATION: </small><%= city.population %>\n            </div>\n        </div>\n    </div>");
-exports.FavouriteCityComments = ejs.compile("<div class=\"col-md-6\">\n    <div class=\"city-favourite-comments-panel\">\n        <div class=\"backpack-city-name\">\n            <h2><%= city.city%></h2>\n        </div>\n        <div class=\"backpack-comments\">\n        </div>\n    </div>\n</div>");
+exports.FavouriteCityComments = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"animated thumbnail city-card\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
 exports.OneFavouriteComment = ejs.compile("<div class=\"panel panel-default\">\n    <div class=\"panel-heading\">\n        <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span><span class=\"favorite glyphicon glyphicon-star\"></span>\n    </div>\n    <div class=\"panel-body\">\n        <%= comment.comment.comment%>\n    </div>\n</div>");
-},{"ejs":10}],7:[function(require,module,exports){
+exports.One_Autocomplete_Item = ejs.compile("<div class=\"col-xs-12 one_item\">\n    <p class=\"value_of_item\"><%= name%></p>\n</div>");
+},{"ejs":11}],8:[function(require,module,exports){
+var API = require('./API');
+var LogReg = require('./LogReg');
 var GetCities = require('./Cities/GetCities');
 var getComments = require('./Cities/GetSearch');
+var Templates = require('./Teamplates');
 var text;
+var cities;
+var page = 'home';
+var $autocomplete = $('.autocomplete');
+var autocomplete_list = [];
 
 $(function () {
-    $(window).load(function () {
-        setTimeout(function () {
-            $('.preloader').fadeOut('slow', function () {});
-            $('body').css('overflow-y', 'visible');
-        }, 1500);
-    });
-    GetCities.initialiseCities();
+    API.checkLogin(function (err, data) {
+        if (!err) {
+            if (data.login) {
+                $('.logined').css('display', 'block');
+                $('.name').html(data.user);
+            } else {
+                $('.glyphicon-user').css('display', 'block');
+            }
+            setTimeout(function () {
+                $('.preloader').fadeOut('slow', function () {});
+                $('body').css('overflow-y', 'visible');
+            }, 1500);
+            GetCities.initialiseCities();
 
-    $("#city-scroll").click(function(){
-        scrollTo();
-    });
+            $("#city-scroll").click(function(){
+                scrollTo();
+            });
 
-    $('#staff').click(function () {
-        $('body').css('overflow-y', 'hidden');
-        $('.niceStaff').css('display', 'block');
-        $('.niceStaff').animate({'bottom':'0'}, 500);
-        setTimeout(function () {
-            $('.niceStaff').animate({'bottom':'-200px'}, 500);
-        }, 1600);
-        setTimeout(function () {
-            $('.niceStaff').css('display', 'none');
-            $('body').css('overflow-y', 'visible');
-        }, 2200);
-    });
+            $('.log').click(function () {
+                LogReg.login(page);
+            });
 
-    $('#searchBox').keyup(function (e) {
-        text = $('input.form-control').val();
-        if (e.keyCode === 13) {
-            getComments.getComments(text);
+            $('.reg').click(function () {
+                LogReg.registration(page);
+            });
+
+            $('.end').click(function () {
+                LogReg.logout(page);
+            });
+
+            $('#staff').click(function () {
+                $('body').css('overflow-y', 'hidden');
+                $('.niceStaff').css('display', 'block');
+                $('.niceStaff').animate({'bottom':'0'}, 500);
+                setTimeout(function () {
+                    $('.niceStaff').animate({'bottom':'-200px'}, 500);
+                }, 1600);
+                setTimeout(function () {
+                    $('.niceStaff').css('display', 'none');
+                    $('body').css('overflow-y', 'visible');
+                }, 2200);
+            });
+
+            API.getCitiesList(function (err, data) {
+                if (!err) {
+                    cities = data;
+                    $('#searchBox').keyup(function (e) {
+                        text = $('input.form-control').val();
+                        if (text.length > 0) {
+                            autocomplete_list = [];
+                            var length = text.length;
+                            for (var i = 0; i < cities.length; i++) {
+                                var name ='';
+                                var city_name = cities[i].city.toLowerCase();
+                                text = text.toLowerCase();
+                                for (var k = 0; k < length; k++) {
+                                    name += city_name[k];
+                                }
+                                if (text === name) {
+                                    var contain = false;
+                                    for (var j = 0; j < autocomplete_list.length; j++) {
+                                        if (autocomplete_list[j] === cities[i].city) {
+                                            contain = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!contain) {
+                                        autocomplete_list.push(cities[i].city);
+                                    }
+                                }
+                            }
+                            console.log(autocomplete_list);
+                            initializeAutocomplete(autocomplete_list);
+                        }
+                        if (text.length === 0) {
+                            autocomplete_list = [];
+                            initializeAutocomplete(autocomplete_list);
+                        }
+                        if (e.keyCode === 13) {
+                            getComments.getComments(text);
+                        }
+                    });
+
+                    $('.search-button').click(function () {
+                        text = $('input.form-control').val();
+                        getComments.getComments(text);
+                    });
+                }
+            });
         }
-    });
-
-    $('.search-button').click(function () {
-        text = $('input.form-control').val();
-        getComments.getComments(text);
     });
 });
 
@@ -1154,7 +1418,32 @@ function scrollTo() {
     $('html, body').animate({ scrollTop: $('.greetings').offset().top }, 'slow');
     return false;
 }
-},{"./Cities/GetCities":3,"./Cities/GetSearch":4}],8:[function(require,module,exports){
+
+function initializeAutocomplete(list) {
+    showAutocomplete(list)
+}
+
+function showAutocomplete(list) {
+    $autocomplete.html("");
+
+    function showOneItem(item) {
+        var html_code = Templates.One_Autocomplete_Item({name: item});
+
+        var $node = $(html_code);
+
+        $node.find('.value_of_item').click(function () {
+            var a = $(this).text();
+            $('input.form-control').val(a);
+            autocomplete_list = [];
+            initializeAutocomplete(autocomplete_list);
+        });
+
+        $autocomplete.append($node);
+    }
+
+    list.forEach(showOneItem);
+}
+},{"./API":1,"./Cities/GetCities":3,"./Cities/GetSearch":4,"./LogReg":6,"./Teamplates":7}],9:[function(require,module,exports){
 (function () {
 	// Basil
 	var Basil = function (options) {
@@ -1542,9 +1831,9 @@ function scrollTo() {
 
 })();
 
-},{}],9:[function(require,module,exports){
-
 },{}],10:[function(require,module,exports){
+
+},{}],11:[function(require,module,exports){
 /*
  * EJS Embedded JavaScript templates
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
@@ -2412,7 +2701,7 @@ if (typeof window != 'undefined') {
   window.ejs = exports;
 }
 
-},{"../package.json":12,"./utils":11,"fs":9,"path":13}],11:[function(require,module,exports){
+},{"../package.json":13,"./utils":12,"fs":10,"path":14}],12:[function(require,module,exports){
 /*
  * EJS Embedded JavaScript templates
  * Copyright 2112 Matthew Eernisse (mde@fleegix.org)
@@ -2578,7 +2867,7 @@ exports.cache = {
   }
 };
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 module.exports={
   "_args": [
     [
@@ -2662,7 +2951,7 @@ module.exports={
   "version": "2.5.7"
 }
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 (function (process){
 // Copyright Joyent, Inc. and other Node contributors.
 //
@@ -2890,7 +3179,7 @@ var substr = 'ab'.substr(-1) === 'b'
 ;
 
 }).call(this,require('_process'))
-},{"_process":14}],14:[function(require,module,exports){
+},{"_process":15}],15:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -3076,7 +3365,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 module.exports = stemmer;
@@ -3262,4 +3551,4 @@ function stemmer(value) {
   return value;
 }
 
-},{}]},{},[7]);
+},{}]},{},[8]);

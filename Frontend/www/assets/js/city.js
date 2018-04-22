@@ -1,7 +1,9 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+var API_URL = "http://localhost:4040";
+
 function backendGet(url, callback) {
     $.ajax({
-        url: url,
+        url: API_URL + url,
         type: 'GET',
         success: function(data){
             callback(null, data);
@@ -14,7 +16,7 @@ function backendGet(url, callback) {
 
 function backendPost(url, data, callback) {
     $.ajax({
-        url: url,
+        url: API_URL + url,
         type: 'POST',
         contentType : 'application/json',
         data: JSON.stringify(data),
@@ -28,15 +30,31 @@ function backendPost(url, data, callback) {
 }
 
 exports.getCitiesList = function(callback) {
-    backendGet("/api/get-cities/", callback);
+    backendGet('/api/get-cities/', callback);
 };
 
 exports.getComments = function (city, callback) {
-  backendPost("/api/get-comments/", city, callback);
+  backendPost('/api/get-comments/', city, callback);
 };
 
 exports.writeComment = function (comment, callback) {
-  backendPost("/api/write-comments/", comment, callback);
+  backendPost('/api/write-comments/', comment, callback);
+};
+
+exports.login = function (user, callback) {
+  backendPost('/api/login/', user, callback);
+};
+
+exports.registration = function (user, callback) {
+  backendPost('api/registration/', user, callback);
+};
+
+exports.logout = function (callback) {
+    backendGet('/api/logout/', callback);
+};
+
+exports.checkLogin = function (callback) {
+  backendGet('/api/check-login/', callback);
 };
 },{}],2:[function(require,module,exports){
 var trash = [
@@ -944,8 +962,9 @@ exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"b
 exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\n    <div class=\"col-xs-2\"></div>\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <input type=\"text\" class=\"form-control username\" placeholder=\"Enter username\">\n            </div>\n            <div class=\"panel-body\">\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\"></textarea>\n                <button type=\"submit\" class=\"btn btn-send\">\n                    Send <span class=\"glyphicon glyphicon-send\"></span>\n                </button>\n            </div>\n        </div>\n    </div>\n</div>");
 exports.weatherBlock = ejs.compile(" <div class=\"weather\">\n                <div class=\"info\">\n                    <div class=\"temp\">\n                        <small>TEMPERATURE: </small><%= weather.main.temp %>°C\n                    </div>\n                    <div class=\"wind\">\n                        <small>WIND SPEED: </small> <%= weather.wind.speed %>m/s\n                    </div>\n                    <div class=\"description\">\n                        <%= weather.weather[0].description %>\n                    </div>\n                </div>\n                </div>\n");
 exports.additionalInfo = ejs.compile("\n    <div class=\"weather\">\n        <div class=\"info\">\n            <div class=\"temp\">\n                <small>COUNTRY: </small><%= city.country %>\n            </div>\n            <div class=\"wind\">\n                <small>CURRENCY: </small> <%= city.currency %>\n            </div>\n            <div class=\"description\">\n                <small>POPULATION: </small><%= city.population %>\n            </div>\n        </div>\n    </div>");
-exports.FavouriteCityComments = ejs.compile("<div class=\"col-md-6\">\n    <div class=\"city-favourite-comments-panel\">\n        <div class=\"backpack-city-name\">\n            <h2><%= city.city%></h2>\n        </div>\n        <div class=\"backpack-comments\">\n        </div>\n    </div>\n</div>");
+exports.FavouriteCityComments = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"animated thumbnail city-card\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
 exports.OneFavouriteComment = ejs.compile("<div class=\"panel panel-default\">\n    <div class=\"panel-heading\">\n        <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span><span class=\"favorite glyphicon glyphicon-star\"></span>\n    </div>\n    <div class=\"panel-body\">\n        <%= comment.comment.comment%>\n    </div>\n</div>");
+exports.One_Autocomplete_Item = ejs.compile("<div class=\"col-xs-12 one_item\">\n    <p class=\"value_of_item\"><%= name%></p>\n</div>");
 },{"ejs":10}],7:[function(require,module,exports){
 var Storage = require('./LocalStorage');
 var Templates = require('./Teamplates');
@@ -1080,7 +1099,7 @@ function initializeComments(type) {
                     break;
                 }
             }
-            current_city = {city: city.city};
+            current_city = {icon: city.icon, city: city.city};
             API.getComments(current_city, function (err, data) {
                 if (!err) {
                     if (!data.emptyForm) {
@@ -1102,6 +1121,7 @@ function initializeComments(type) {
                                 }
                             }
                             one = {
+                                icon: current_city.icon,
                                 city: current_city.city,
                                 favorite: fav,
                                 comment: comments[i]
@@ -1143,7 +1163,10 @@ function initializeComments(type) {
                     type: type,
                     avatar: avatar
                 };
+                console.log(comment.length);
+                console.log(nickname.length);
                 if (comment.length !== 0 && nickname.length !== 0) {
+                    console.log('yes');
                     API.writeComment(send_comment, function (err, data) {
                         var one = {
                             city: current_city.city,
