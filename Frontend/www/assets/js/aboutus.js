@@ -46,7 +46,7 @@ exports.login = function (user, callback) {
 };
 
 exports.registration = function (user, callback) {
-  backendPost('api/registration/', user, callback);
+  backendPost('/api/registration/', user, callback);
 };
 
 exports.logout = function (callback) {

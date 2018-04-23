@@ -1,15 +1,14 @@
 <div class="col-md-6 col-xs-12" id="form">
-    <div class="col-xs-2"></div>
-    <div class="col-xs-10">
+    <div class="col-xs-10 full-width">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <input type="text" class="form-control username" placeholder="Enter username">
+                <span class="nickname"></span>
             </div>
             <div class="panel-heading">
                 <input type="text" class="form-control location" placeholder="Enter location coordinates">
             </div>
             <div class="panel-body">
-                <textarea class="form-control" rows="5" id="comment" maxlength="300"></textarea>
+                <textarea class="form-control" rows="5" id="comment" maxlength="500"></textarea>
                 <form enctype="multipart/form-data" action="/upload" method="post">
                     <input type="file" name="photo" multiple />
                 <button type="submit" class="btn btn-send">

@@ -1,6 +1,8 @@
 var API = require('./API');
 var LogReg = require('./LogReg');
 var GetCities = require('./Cities/GetCities');
+var getComments = require('./Cities/GetSearch');
+var text;
 var page = 'home';
 
 $(function () {
@@ -32,6 +34,18 @@ $(function () {
 
             $('.end').click(function () {
                 LogReg.logout(page);
+            });
+
+            $('.search-button').click(function () {
+                text = $('.search-text').val();
+                getComments.getComments(text);
+            });
+
+            $('#searchBox').keyup(function (e) {
+                text = $('.search-text').val();
+                if (e.keyCode === 13) {
+                    getComments.getComments(text);
+                }
             });
 
             $('#staff').click(function () {

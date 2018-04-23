@@ -22,12 +22,8 @@
     "events": "^1.1.1",
     "export": "^0.1.337",
     "exports": "0.0.1",
-<<<<<<< HEAD
-    "express": "^4.16.2",
-    "express-session": "^1.15.6",
-=======
     "express": "^4.16.3",
->>>>>>> 3279cbf7e2829362f5ab82c9f56219f93906224b
+    "express-session": "^1.15.6",
     "fs": "0.0.1-security",
     "get": "^1.4.0",
     "grunt": "^0.4.5",

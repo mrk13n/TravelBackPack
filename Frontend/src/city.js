@@ -3,6 +3,8 @@ var Templates = require('./Teamplates');
 var API = require('./API');
 var GetInfoCity = require('./Cities/GetInfoCity');
 var getLocalComments = require('./Cities/GetLocalSearch');
+var LogReg = require('./LogReg');
+var page = 'city';
 var Cities;
 var icon_position;
 var type;
@@ -15,87 +17,114 @@ var largeImg = document.getElementById("fs-img-block");
 var captionText = document.getElementById("caption");
 
 $(function () {
-    $(window).load(function () {
-        // setTimeout(function () {
-        //     $('.preloader').fadeOut('slow', function () {});
-        //     $('body').css('overflow-y', 'visible');
-        // }, 1500);
-    });
-    GetInfoCity.showInfo();
-    icon_position = true;
-    $( ".user-photo" ).click(function() {
-        this.append();
-    });
-    initializeComments('food');
-    $("#comments-scroll").click(function() {
-        scrollTo();
-    });
+    API.checkLogin(function (err, data) {
+       if (!err) {
+           if (data.login) {
+               $('.logined').css('display', 'block');
+               $('.name').html(data.user);
+           } else {
+               $('.glyphicon-user').css('display', 'block');
+           }
+           setTimeout(function () {
+               $('.preloader').fadeOut('slow', function () {});
+               $('body').css('overflow-y', 'visible');
+           }, 1500);
 
-    $(".scroll-page").click(function () {
-        scrollDown();
-    });
+           $('.log').click(function () {
+               LogReg.login(page);
+           });
 
-    $("#filter-food").click(function () {
-        allNotActive();
-        $("#filter-food").addClass("active");
-        type = 'food';
-        initializeComments(type);
-        $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
-        $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
-    });
+           $('.reg').click(function () {
+               LogReg.registration(page);
+           });
 
-    $("#filter-house").click(function () {
-        allNotActive();
-        $("#filter-house").addClass("active");
-        type = 'house';
-        initializeComments(type);
-        $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
-        $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
-    });
+           $('.end').click(function () {
+               LogReg.logout(page);
+           });
 
-    $("#filter-hitchhiking").click(function () {
-        allNotActive();
-        $("#filter-hitchhiking").addClass("active");
-        type = 'hitchhiking';
-        initializeComments(type);
-        $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
-        $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
-    });
+           GetInfoCity.showInfo();
+           icon_position = true;
+           $( ".user-photo" ).click(function() {
+               this.append();
+           });
+           initializeComments('food', data.user);
+           $("#comments-scroll").click(function() {
+               scrollTo();
+           });
 
-    $("#filter-abandoned").click(function () {
-        allNotActive();
-        $("#filter-abandoned").addClass("active");
-        type = 'abandoned';
-        initializeComments(type);
-        $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
-        $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
-    });
+           $(".scroll-page").click(function () {
+               scrollDown();
+           });
 
-    $('.btn-add').click(function () {
-        scrollDown();
-        $('#form').slideToggle(400);
-        if (icon_position) {
-            $('#right').removeClass('glyphicon glyphicon-chevron-right img-circle');
-            $('#right').addClass('glyphicon glyphicon-chevron-up img-circle');
-            icon_position = !icon_position;
-        } else {
-            $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
-            $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
-            icon_position = !icon_position;
-        }
-    });
+           $("#filter-food").click(function () {
+               allNotActive();
+               $("#filter-food").addClass("active");
+               type = 'food';
+               initializeComments(type, data.user);
+               $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
+               $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
+           });
 
-    $('#staff').click(function () {
-        $('body').css('overflow-y', 'hidden');
-        $('.niceStaff').css('display', 'block');
-        $('.niceStaff').animate({'bottom':'0'}, 500);
-        setTimeout(function () {
-            $('.niceStaff').animate({'bottom':'-200px'}, 500);
-        }, 1600);
-        setTimeout(function () {
-            $('.niceStaff').css('display', 'none');
-            $('body').css('overflow-y', 'visible');
-        }, 2200);
+           $("#filter-house").click(function () {
+               allNotActive();
+               $("#filter-house").addClass("active");
+               type = 'house';
+               initializeComments(type, data.user);
+               $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
+               $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
+           });
+
+           $("#filter-hitchhiking").click(function () {
+               allNotActive();
+               $("#filter-hitchhiking").addClass("active");
+               type = 'hitchhiking';
+               initializeComments(type, data.user);
+               $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
+               $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
+           });
+
+           $("#filter-abandoned").click(function () {
+               allNotActive();
+               $("#filter-abandoned").addClass("active");
+               type = 'abandoned';
+               initializeComments(type, data.user);
+               $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
+               $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
+           });
+
+
+           if (data.login) {
+               $('.btn-add').click(function () {
+                   scrollDown();
+                   $('#form').slideToggle(400);
+                   if (icon_position) {
+                       $('#right').removeClass('glyphicon glyphicon-chevron-right img-circle');
+                       $('#right').addClass('glyphicon glyphicon-chevron-up img-circle');
+                       icon_position = !icon_position;
+                   } else {
+                       $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
+                       $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
+                       icon_position = !icon_position;
+                   }
+               });
+           } else {
+               $('.btn-add').css('cursor', 'not-allowed');
+               //$('.btn-add').css('pointer-events', 'none');
+           }
+
+           $('#staff').click(function () {
+               $('body').css('overflow-y', 'hidden');
+               $('.niceStaff').css('display', 'block');
+               $('.niceStaff').animate({'bottom':'0'}, 500);
+               setTimeout(function () {
+                   $('.niceStaff').animate({'bottom':'-200px'}, 500);
+               }, 1600);
+               setTimeout(function () {
+                   $('.niceStaff').css('display', 'none');
+                   $('body').css('overflow-y', 'visible');
+               }, 2200);
+           });
+       }
     });
 });
 
@@ -116,10 +145,11 @@ function scrollDown() {
     return false;
 }
 
-function initializeComments(type) {
+function initializeComments(type, username) {
     $comments.html('');
     var html_code2 = Templates.SendForm();
     var $node2 = $(html_code2);
+    $node2.find('.nickname').html(username);
     var comments = [];
     var id = Storage.get('id');
     var city;
@@ -188,16 +218,8 @@ function initializeComments(type) {
                     mm = '0'+mm;
                 }
                 var comment = $('#comment').val();
-                var nickname = $('.username').val();
+                var nickname = username;
                 var location = $('.location').val();
-                // var img_1 = uploadedImgArray[0];
-                // var img_2;
-                // if (uploadedImgArray.size == 2){
-                //     img_2 = uploadedImgArray[1];
-                // }else{
-                //     img_2 = "";
-                // }
-                // uploadedImgArray = [];
                 var img_1 = "";
                 var img_2 = "";
                 var fav_count = 0;
@@ -215,10 +237,7 @@ function initializeComments(type) {
                     img_1: img_1,
                     img_2: img_2
                 };
-                console.log(comment.length);
-                console.log(nickname.length);
-                if (comment.length !== 0 && nickname.length !== 0) {
-                    console.log('yes');
+                if (comment.length !== 0) {
                     API.writeComment(send_comment, function (err, data) {
                         var one = {
                             city: current_city.city,
@@ -239,13 +258,14 @@ function initializeComments(type) {
                                 $('.success').hide();
                             }, 1500);
                         }, 500);
-                        $node2.find('.username').val('');
                         $node2.find('#comment').val('');
                         $node2.find('.location').val('');
                         icon_position = true;
                         $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
                         $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
                     });
+                } else {
+                    //Empty comment
                 }
             });
         }

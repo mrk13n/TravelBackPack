@@ -3,9 +3,7 @@ var path = require('path');
 var morgan = require('morgan');
 var multer = require('multer');
 var bodyParser = require('body-parser');
-<<<<<<< HEAD
 var session = require('express-session');
-=======
 var uploadedImgArray = [];
 var imgURI;
 
@@ -22,7 +20,6 @@ var storage = multer.diskStorage({
 });
 
 var upload = multer({storage: storage});
->>>>>>> 3279cbf7e2829362f5ab82c9f56219f93906224b
 
 function configureEndpoints(app) {
     var pages = require('./pages');
@@ -31,18 +28,16 @@ function configureEndpoints(app) {
     app.get('/api/get-cities/', api.getCities);
     app.post('/api/get-comments/', api.getComment);
     app.post('/api/write-comments/', api.writeComment);
-<<<<<<< HEAD
     app.post('/api/login/', api.login);
     app.post('/api/registration/', api.registration);
     app.get('/api/logout/', api.logout);
     app.get('/api/check-login/', api.checkLogin);
 
-=======
     app.post('/upload', upload.array('photo',2) , function(req, res) {
         console.log(req.body);
         res.redirect('back');
     });
->>>>>>> 3279cbf7e2829362f5ab82c9f56219f93906224b
+
     app.get('/', pages.mainPage);
     app.get('/city.html', pages.cityPage);
     app.get('/backpack.html',pages.backpackPage);

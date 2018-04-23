@@ -213,3 +213,7 @@ exports.logout = function (req, res) {
       });
   });
 };
+
+exports.upload = function (req, res) {
+
+};
