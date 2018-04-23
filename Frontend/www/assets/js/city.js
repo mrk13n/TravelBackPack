@@ -33,6 +33,10 @@ exports.getCitiesList = function(callback) {
     backendGet('/api/get-cities/', callback);
 };
 
+// exports.upload = function(callback){
+//     backendPost('/api/upload/',callback)
+// };
+
 exports.getComments = function (city, callback) {
   backendPost('/api/get-comments/', city, callback);
 };
@@ -1142,7 +1146,7 @@ var ejs = require('ejs');
 exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
 exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\n    <div class=\"col-xs-2\">\n        <div class=\"thumbnail thumb_city user-photo\">\n            <img class=\"img-responsive\" src=\"assets/images/avatars/<%= comment.comment.avatar%>.png\">\n        </div>\n    </div>\n\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span><span class=\"favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>\"></span>\n            </div>\n            <div class=\"panel-body\">\n                <%= comment.comment.comment%>\n            </div>\n        </div>\n    </div>\n</div>");
 exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\n    <div class=\"title-box\">\n        <p>experience</p>\n        <h1 class=\"city-name\"><%= city.city%></h1>\n        <p>like a local</p>\n    </div>\n    <div class=\"local-search-container\">\n        <div class=\"search-box\">\n            <input type=\"text\" class=\"form-control\" id=\"searchBox\" placeholder=\"\">\n        </div>\n        <div class=\"btn search-button\">\n            <p class=\"search-icon\">Search</p>\n        </div>\n    </div>\n</div>");
-exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\n    <div class=\"col-xs-10 full-width\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <span class=\"nickname\"></span>\n            </div>\n            <div class=\"panel-heading\">\n                <input type=\"text\" class=\"form-control location\" placeholder=\"Enter location coordinates\">\n            </div>\n            <div class=\"panel-body\">\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\" maxlength=\"500\"></textarea>\n                <form enctype=\"multipart/form-data\" action=\"/upload\" method=\"post\">\n                    <input type=\"file\" name=\"photo\" multiple />\n                <button type=\"submit\" class=\"btn btn-send\">\n                    Send <span class=\"glyphicon glyphicon-send\"></span>\n                </button>\n                </form>\n            </div>\n        </div>\n    </div>\n</div>");
+exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\n    <div class=\"col-xs-10 full-width\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <span class=\"nickname\"></span>\n            </div>\n            <div class=\"panel-heading\">\n                <input type=\"text\" class=\"form-control location\" placeholder=\"Enter location coordinates\">\n            </div>\n            <div class=\"panel-body\">\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\" maxlength=\"500\"></textarea>\n                <form enctype=\"multipart/form-data\" action=\"/upload\" method=\"post\">\n                    <input type=\"file\" name=\"photo\" multiple />\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\" maxlength=\"300\"></textarea>\n                <!--<form enctype=\"multipart/form-data\" action=\"/upload\" method=\"post\">-->\n                    <!--<input type=\"file\" name=\"photo\" multiple />-->\n                <button type=\"submit\" class=\"btn btn-send\">\n                    Send <span class=\"glyphicon glyphicon-send\"></span>\n                </button>\n                <!--</form>-->\n            </div>\n        </div>\n    </div>\n</div>");
 exports.weatherBlock = ejs.compile(" <div class=\"weather\">\n                <div class=\"info\">\n                    <div class=\"temp\">\n                        <small>TEMPERATURE: </small><%= weather.main.temp %>°C\n                    </div>\n                    <div class=\"wind\">\n                        <small>WIND SPEED: </small> <%= weather.wind.speed %>m/s\n                    </div>\n                    <div class=\"description\">\n                        <%= weather.weather[0].description %>\n                    </div>\n                </div>\n                </div>\n");
 exports.additionalInfo = ejs.compile("\n    <div class=\"weather\">\n        <div class=\"info\">\n            <div class=\"temp\">\n                <small>COUNTRY: </small><%= city.country %>\n            </div>\n            <div class=\"wind\">\n                <small>CURRENCY: </small> <%= city.currency %>\n            </div>\n            <div class=\"description\">\n                <small>POPULATION: </small><%= city.population %>\n            </div>\n        </div>\n    </div>");
 exports.FavouriteCityComments = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"animated thumbnail city-card\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
@@ -1166,6 +1170,7 @@ var Backpack = getBackpack();
 var imageViewer = document.getElementById('fs-img-panel');
 var largeImg = document.getElementById("fs-img-block");
 var captionText = document.getElementById("caption");
+var uploadedImgArray = [];
 
 $(function () {
     API.checkLogin(function (err, data) {
@@ -1389,6 +1394,7 @@ function initializeComments(type, username) {
                     img_2: img_2
                 };
                 if (comment.length !== 0) {
+                    console.log('yes');
                     API.writeComment(send_comment, function (err, data) {
                         var one = {
                             city: current_city.city,

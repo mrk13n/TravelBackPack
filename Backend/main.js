@@ -20,6 +20,19 @@ var storage = multer.diskStorage({
 });
 
 var upload = multer({storage: storage});
+// var multer = require('multer');
+// var imgURI;
+// var storage = multer.diskStorage({
+//     destination: function(req, file, callback) {
+//         callback(null, "Frontend/www/assets/images/uploaded_images");
+//     },
+//     filename: function(req, file, callback) {
+//         imgURI = file.fieldname + "_" + Date.now() + "_" + file.originalname;
+//
+//         callback(null, imgURI);
+//     }
+// });
+// var uploadConfig = multer({storage: storage}).array('photo',2);
 
 function configureEndpoints(app) {
     var pages = require('./pages');
@@ -38,6 +51,7 @@ function configureEndpoints(app) {
         res.redirect('back');
     });
 
+    // app.post('/api/upload/', uploadConfig , api.upload);
     app.get('/', pages.mainPage);
     app.get('/city.html', pages.cityPage);
     app.get('/backpack.html',pages.backpackPage);

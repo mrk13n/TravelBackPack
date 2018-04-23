@@ -33,6 +33,10 @@ exports.getCitiesList = function(callback) {
     backendGet('/api/get-cities/', callback);
 };
 
+// exports.upload = function(callback){
+//     backendPost('/api/upload/',callback)
+// };
+
 exports.getComments = function (city, callback) {
   backendPost('/api/get-comments/', city, callback);
 };

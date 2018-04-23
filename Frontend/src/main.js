@@ -3,6 +3,10 @@ var LogReg = require('./LogReg');
 var GetCities = require('./Cities/GetCities');
 var getComments = require('./Cities/GetSearch');
 var text;
+var Templates = require('./Teamplates');
+var Storage = require('./LocalStorage');
+var text;
+var comment_list = [];
 var page = 'home';
 
 $(function () {
@@ -19,7 +23,14 @@ $(function () {
                 $('body').css('overflow-y', 'visible');
             }, 1500);
             GetCities.initialiseCities();
-
+            $('#searchBox').keyup(function (e) {
+                text = $('input.form-control').val();
+                if (e.keyCode === 13) {
+                    getComments.getComments(text);
+                    comment_list = getComments.getComments(text);
+                    console.log(comment_list);
+                }
+            });
             $("#city-scroll").click(function(){
                 scrollTo();
             });

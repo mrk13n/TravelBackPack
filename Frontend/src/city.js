@@ -15,6 +15,7 @@ var Backpack = getBackpack();
 var imageViewer = document.getElementById('fs-img-panel');
 var largeImg = document.getElementById("fs-img-block");
 var captionText = document.getElementById("caption");
+var uploadedImgArray = [];
 
 $(function () {
     API.checkLogin(function (err, data) {
@@ -238,6 +239,7 @@ function initializeComments(type, username) {
                     img_2: img_2
                 };
                 if (comment.length !== 0) {
+                    console.log('yes');
                     API.writeComment(send_comment, function (err, data) {
                         var one = {
                             city: current_city.city,
