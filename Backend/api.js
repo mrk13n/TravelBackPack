@@ -5,11 +5,16 @@ var Comments = db.Comments;
 var One_Comment = db.One_Comment;
 var Users = db.Users;
 
+
 function sha1(string) {
     var sha1 = crypto.createHash('sha1');
     sha1.update(string);
     return sha1.digest('base64');
 }
+
+// exports.upload = function (req, res) {
+//   res.send(req.body.files)
+// };
 
 exports.getCities = function(req, res) {
     res.send(Cities);

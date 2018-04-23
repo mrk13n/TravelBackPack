@@ -33,6 +33,10 @@ exports.getCitiesList = function(callback) {
     backendGet('/api/get-cities/', callback);
 };
 
+// exports.upload = function(callback){
+//     backendPost('/api/upload/',callback)
+// };
+
 exports.getComments = function (city, callback) {
   backendPost('/api/get-comments/', city, callback);
 };
@@ -46,7 +50,7 @@ exports.login = function (user, callback) {
 };
 
 exports.registration = function (user, callback) {
-  backendPost('api/registration/', user, callback);
+  backendPost('/api/registration/', user, callback);
 };
 
 exports.logout = function (callback) {

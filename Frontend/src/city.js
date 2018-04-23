@@ -13,6 +13,7 @@ var Backpack = getBackpack();
 var imageViewer = document.getElementById('fs-img-panel');
 var largeImg = document.getElementById("fs-img-block");
 var captionText = document.getElementById("caption");
+var uploadedImgArray = [];
 
 $(function () {
     $(window).load(function () {
@@ -190,14 +191,6 @@ function initializeComments(type) {
                 var comment = $('#comment').val();
                 var nickname = $('.username').val();
                 var location = $('.location').val();
-                // var img_1 = uploadedImgArray[0];
-                // var img_2;
-                // if (uploadedImgArray.size == 2){
-                //     img_2 = uploadedImgArray[1];
-                // }else{
-                //     img_2 = "";
-                // }
-                // uploadedImgArray = [];
                 var img_1 = "";
                 var img_2 = "";
                 var fav_count = 0;
@@ -217,7 +210,7 @@ function initializeComments(type) {
                 };
                 console.log(comment.length);
                 console.log(nickname.length);
-                if (comment.length !== 0 && nickname.length !== 0) {
+                if (comment.length !== 0) {
                     console.log('yes');
                     API.writeComment(send_comment, function (err, data) {
                         var one = {
