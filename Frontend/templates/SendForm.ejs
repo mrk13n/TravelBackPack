@@ -8,16 +8,14 @@
                 <input type="text" class="form-control location" placeholder="Enter location coordinates">
             </div>
             <div class="panel-body">
-                <textarea class="form-control" rows="5" id="comment" maxlength="500"></textarea>
-                <form enctype="multipart/form-data" action="/upload" method="post">
-                    <input type="file" name="photo" multiple />
-                <textarea class="form-control" rows="5" id="comment" maxlength="300"></textarea>
-                <!--<form enctype="multipart/form-data" action="/upload" method="post">-->
-                    <!--<input type="file" name="photo" multiple />-->
-                <button type="submit" class="btn btn-send">
-                    Send <span class="glyphicon glyphicon-send"></span>
-                </button>
-                <!--</form>-->
+                <textarea class="form-control" rows="5" id="comment" maxlength="400"></textarea>
+                <form enctype="multipart/form-data">
+                    <input id="img-1" type="file" name="photo" accept=".png, .jpg, jpeg" multiple />
+                    <input id="img-2" type="file" name="photo" accept=".png, .jpg, jpeg" multiple />
+                    <span class="btn btn-send">
+                        Send <span class="glyphicon glyphicon-send"></span>
+                    </span>
+                </form>
             </div>
         </div>
     </div>

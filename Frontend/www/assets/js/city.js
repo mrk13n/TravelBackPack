@@ -33,10 +33,6 @@ exports.getCitiesList = function(callback) {
     backendGet('/api/get-cities/', callback);
 };
 
-// exports.upload = function(callback){
-//     backendPost('/api/upload/',callback)
-// };
-
 exports.getComments = function (city, callback) {
   backendPost('/api/get-comments/', city, callback);
 };
@@ -59,6 +55,14 @@ exports.logout = function (callback) {
 
 exports.checkLogin = function (callback) {
   backendGet('/api/check-login/', callback);
+};
+
+exports.getBackpack = function (callback) {
+    backendGet('/api/get-backpack/', callback);
+};
+
+exports.setBackpack = function (backpack, callback) {
+    backendPost('/api/set-backpack/', backpack, callback);
 };
 },{}],2:[function(require,module,exports){
 var trash = [
@@ -966,6 +970,7 @@ var username;
 var email;
 var password;
 var user;
+var avatar;
 var valid;
 
 function login(page) {
@@ -1019,10 +1024,12 @@ function registration(page) {
     username = $newlogin.val();
     email = $newemail.val();
     password = $newpass.val();
+    avatar = randomAvatar();
     user = {
-      username: username,
-      email: email,
-      password: password
+        username: username,
+        email: email,
+        password: password,
+        avatar: avatar
     };
     if (validRegister(username, email, password)) {
         API.registration(user, function (err, data) {
@@ -1135,6 +1142,12 @@ function validRegister(username, email, password) {
     return valid;
 }
 
+function randomAvatar(){
+    var rand;
+    rand = Math.floor((Math.random() * 20) + 1);
+    return rand;
+}
+
 exports.login = login;
 exports.registration = registration;
 exports.logout = logout;
@@ -1146,12 +1159,12 @@ var ejs = require('ejs');
 exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
 exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\n    <div class=\"col-xs-2\">\n        <div class=\"thumbnail thumb_city user-photo\">\n            <img class=\"img-responsive\" src=\"assets/images/avatars/<%= comment.comment.avatar%>.png\">\n        </div>\n    </div>\n\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span><span class=\"favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>\"></span>\n            </div>\n            <div class=\"panel-body\">\n                <%= comment.comment.comment%>\n            </div>\n        </div>\n    </div>\n</div>");
 exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\n    <div class=\"title-box\">\n        <p>experience</p>\n        <h1 class=\"city-name\"><%= city.city%></h1>\n        <p>like a local</p>\n    </div>\n    <div class=\"local-search-container\">\n        <div class=\"search-box\">\n            <input type=\"text\" class=\"form-control\" id=\"searchBox\" placeholder=\"\">\n        </div>\n        <div class=\"btn search-button\">\n            <p class=\"search-icon\">Search</p>\n        </div>\n    </div>\n</div>");
-exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\n    <div class=\"col-xs-10 full-width\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <span class=\"nickname\"></span>\n            </div>\n            <div class=\"panel-heading\">\n                <input type=\"text\" class=\"form-control location\" placeholder=\"Enter location coordinates\">\n            </div>\n            <div class=\"panel-body\">\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\" maxlength=\"500\"></textarea>\n                <form enctype=\"multipart/form-data\" action=\"/upload\" method=\"post\">\n                    <input type=\"file\" name=\"photo\" multiple />\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\" maxlength=\"300\"></textarea>\n                <!--<form enctype=\"multipart/form-data\" action=\"/upload\" method=\"post\">-->\n                    <!--<input type=\"file\" name=\"photo\" multiple />-->\n                <button type=\"submit\" class=\"btn btn-send\">\n                    Send <span class=\"glyphicon glyphicon-send\"></span>\n                </button>\n                <!--</form>-->\n            </div>\n        </div>\n    </div>\n</div>");
+exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\n    <div class=\"col-xs-10 full-width\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <span class=\"nickname\"></span>\n            </div>\n            <div class=\"panel-heading\">\n                <input type=\"text\" class=\"form-control location\" placeholder=\"Enter location coordinates\">\n            </div>\n            <div class=\"panel-body\">\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\" maxlength=\"400\"></textarea>\n                <form enctype=\"multipart/form-data\">\n                    <input id=\"img-1\" type=\"file\" name=\"photo\" accept=\".png, .jpg, jpeg\" multiple />\n                    <input id=\"img-2\" type=\"file\" name=\"photo\" accept=\".png, .jpg, jpeg\" multiple />\n                    <span class=\"btn btn-send\">\n                        Send <span class=\"glyphicon glyphicon-send\"></span>\n                    </span>\n                </form>\n            </div>\n        </div>\n    </div>\n</div>");
 exports.weatherBlock = ejs.compile(" <div class=\"weather\">\n                <div class=\"info\">\n                    <div class=\"temp\">\n                        <small>TEMPERATURE: </small><%= weather.main.temp %>°C\n                    </div>\n                    <div class=\"wind\">\n                        <small>WIND SPEED: </small> <%= weather.wind.speed %>m/s\n                    </div>\n                    <div class=\"description\">\n                        <%= weather.weather[0].description %>\n                    </div>\n                </div>\n                </div>\n");
 exports.additionalInfo = ejs.compile("\n    <div class=\"weather\">\n        <div class=\"info\">\n            <div class=\"temp\">\n                <small>COUNTRY: </small><%= city.country %>\n            </div>\n            <div class=\"wind\">\n                <small>CURRENCY: </small> <%= city.currency %>\n            </div>\n            <div class=\"description\">\n                <small>POPULATION: </small><%= city.population %>\n            </div>\n        </div>\n    </div>");
 exports.FavouriteCityComments = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"animated thumbnail city-card\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
 exports.OneFavouriteComment = ejs.compile("<div class=\"panel panel-default\">\n    <div class=\"panel-heading\">\n        <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span><span class=\"favorite glyphicon glyphicon-star\"></span>\n    </div>\n    <div class=\"panel-body\">\n        <%= comment.comment.comment%>\n    </div>\n</div>");
-exports.Comment_v2 = ejs.compile("<div class=\"comment col-md-6 clo-xs-12\">\n    <div class=\"comment-info-block row\">\n        <div class=\"user-photo col-xs-2\">\n            <img class=\"img-responsive user-photo\" src=\"assets/images/avatars/<%= comment.comment.avatar%>.png\">\n        </div>\n        <div class=\"comment-body col-xs-6\">\n            <div class=\"comment-place-name\">\n                <strong>Central Park</strong>\n            </div>\n            <div class=\"comment-author-info\">\n                <%= comment.comment.nickname%> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span>\n            </div>\n        </div>\n        <div class=\"buttons-bar col-xs-4\">\n            <div class=\"fav-count\"><%= comment.comment.count%></div>\n            <img class=\"favourite-btn\" src=\" <% if (comment.favorite) { %> assets/images/icons/icons8-star-filled-96.png <% } else { %> assets/images/icons/icons8-add-to-favorites-96.png <% } %>\">\n        </div>\n    </div>\n    <div class=\"row\"></div>\n    <div class=\"comment-text-body row\">\n        <%= comment.comment.comment%>\n    </div>\n    <div class=\"media-bar row\">\n        <img class=\"uploaded-img\" src=\"https://maps.googleapis.com/maps/api/staticmap?center=<%= comment.comment.location%>&zoom=17&size=640x425&markers=color:red%7C<%= comment.comment.location%>&path=weight:3%7Ccolor:blue%7Cenc:{coaHnetiVjM??_SkM??~R&key=AIzaSyBLsX-VTDp7C82k5Jaw5HnPHxRcCuX9OMQ\">\n        <img class=\"uploaded-img\" src=\"<% comment.comment.img_1  %>\">\n        <img class=\"uploaded-img\" src=\"<% comment.comment.img_2  %>\">\n    </div>\n</div>");
+exports.Comment_v2 = ejs.compile("<div class=\"comment col-md-6 clo-xs-12\">\n    <div class=\"comment-info-block row\">\n        <div class=\"user-photo col-xs-2\">\n            <img class=\"img-responsive user-photo\" src=\"assets/images/avatars/<%= comment.comment.avatar%>.png\">\n        </div>\n        <div class=\"comment-body col-xs-6\">\n            <div class=\"comment-place-name\">\n                <strong>Central Park</strong>\n            </div>\n            <div class=\"comment-author-info\">\n                <%= comment.comment.nickname%> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span>\n            </div>\n        </div>\n        <div class=\"buttons-bar col-xs-4\">\n            <div class=\"fav-count\"><%= comment.comment.count%></div>\n            <img class=\"favourite-btn\" src=\" <% if (comment.favorite) { %> assets/images/icons/icons8-star-filled-96.png <% } else { %> assets/images/icons/icons8-add-to-favorites-96.png <% } %>\">\n        </div>\n    </div>\n    <div class=\"row\"></div>\n    <div class=\"comment-text-body row\">\n        <%= comment.comment.comment%>\n    </div>\n    <div class=\"media-bar row\">\n        <!--<img class=\"uploaded-img\" src=\"https://maps.googleapis.com/maps/api/staticmap?center=<%= comment.comment.location%>&zoom=17&size=640x425&markers=color:red%7C<%= comment.comment.location%>&path=weight:3%7Ccolor:blue%7Cenc:{coaHnetiVjM??_SkM??~R&key=AIzaSyBLsX-VTDp7C82k5Jaw5HnPHxRcCuX9OMQ\">-->\n        <img class=\"uploaded-img\" src=\"<%= comment.comment.img_1%>\">\n        <img class=\"uploaded-img\" src=\"<%= comment.comment.img_2%>\">\n    </div>\n</div>");
 },{"ejs":11}],8:[function(require,module,exports){
 var Storage = require('./LocalStorage');
 var Templates = require('./Teamplates');
@@ -1164,13 +1177,15 @@ var Cities;
 var icon_position;
 var type;
 var text;
+var files;
+var img1 = '';
+var img2 = '';
 var $comments = $("#comments");
-var Backpack = getBackpack();
+var Backpack = [];
 // Full size img variables
 var imageViewer = document.getElementById('fs-img-panel');
 var largeImg = document.getElementById("fs-img-block");
 var captionText = document.getElementById("caption");
-var uploadedImgArray = [];
 
 $(function () {
     API.checkLogin(function (err, data) {
@@ -1181,10 +1196,6 @@ $(function () {
            } else {
                $('.glyphicon-user').css('display', 'block');
            }
-           setTimeout(function () {
-               $('.preloader').fadeOut('slow', function () {});
-               $('body').css('overflow-y', 'visible');
-           }, 1500);
 
            $('.log').click(function () {
                LogReg.login(page);
@@ -1213,6 +1224,7 @@ $(function () {
            });
 
            $("#filter-food").click(function () {
+               $('.preloader').fadeIn('slow', function () {});
                allNotActive();
                $("#filter-food").addClass("active");
                type = 'food';
@@ -1222,6 +1234,7 @@ $(function () {
            });
 
            $("#filter-house").click(function () {
+               $('.preloader').fadeIn('slow', function () {});
                allNotActive();
                $("#filter-house").addClass("active");
                type = 'house';
@@ -1231,6 +1244,7 @@ $(function () {
            });
 
            $("#filter-hitchhiking").click(function () {
+               $('.preloader').fadeIn('slow', function () {});
                allNotActive();
                $("#filter-hitchhiking").addClass("active");
                type = 'hitchhiking';
@@ -1240,6 +1254,7 @@ $(function () {
            });
 
            $("#filter-abandoned").click(function () {
+               $('.preloader').fadeIn('slow', function () {});
                allNotActive();
                $("#filter-abandoned").addClass("active");
                type = 'abandoned';
@@ -1280,6 +1295,9 @@ $(function () {
                    $('body').css('overflow-y', 'visible');
                }, 2200);
            });
+
+           $('#img-1').on('change', readFile1);
+           $('#img-2').on('change', readFile2);
        }
     });
 });
@@ -1331,42 +1349,50 @@ function initializeComments(type, username) {
                             }
                         }
                         var additional_comments = [];
-                        for (i = 0; i < comments.length; i++) {
-                            var one;
-                            var fav = false;
-                            Backpack = getBackpack();
-                            if (Backpack !== null) {
-                                for (var j = 0; j < Backpack.length; j++) {
-                                    if (comments[i]._id == Backpack[j].comment._id) {
-                                        fav = true;
+                        API.getBackpack(function (err, data) {
+                            if (!err) {
+                                Backpack = data.backpack;
+                                for (i = 0; i < comments.length; i++) {
+                                    var one;
+                                    var fav = false;
+                                    if (Backpack !== null) {
+                                        for (var j = 0; j < Backpack.length; j++) {
+                                            if (comments[i]._id == Backpack[j].comment._id) {
+                                                fav = true;
+                                            }
+                                        }
                                     }
+                                    one = {
+                                        icon: current_city.icon,
+                                        city: current_city.city,
+                                        favorite: fav,
+                                        comment: comments[i]
+                                    };
+                                    additional_comments.push(one);
                                 }
+                                comments = additional_comments;
+                                showComments(comments);
+                                setTimeout(function () {
+                                    $('.preloader').fadeOut('slow', function () {});
+                                    $('body').css('overflow-y', 'visible');
+                                }, 1500);
                             }
-                            one = {
-                                icon: current_city.icon,
-                                city: current_city.city,
-                                favorite: fav,
-                                comment: comments[i]
-                            };
-                            additional_comments.push(one);
-                        }
-                        comments = additional_comments;
+                        });
+                    } else {
+                        comments = [];
                         showComments(comments);
+                        setTimeout(function () {
+                            $('.preloader').fadeOut('slow', function () {});
+                            $('body').css('overflow-y', 'visible');
+                        }, 1500);
                     }
                 }
-                setTimeout(function () {
-                    $('.preloader').fadeOut('slow', function () {});
-                    $('body').css('overflow-y', 'visible');
-                }, 1500);
             });
-
             $node2.find('.btn-send').click(function () {
-                $('.preloader').css('opacity', '0.75').fadeIn('slow', function () {});
                 var today = new Date();
                 var dd = today.getDate();
                 var mm = today.getMonth()+1;
                 var yyyy = today.getFullYear();
-                var avatar = randomAvatar();
                 if(dd<10) {
                     dd = '0'+dd;
                 }
@@ -1376,8 +1402,8 @@ function initializeComments(type, username) {
                 var comment = $('#comment').val();
                 var nickname = username;
                 var location = $('.location').val();
-                var img_1 = "";
-                var img_2 = "";
+                var img_1 = img1;
+                var img_2 = img2;
                 var fav_count = 0;
                 var send_comment = {
                     nickname: nickname,
@@ -1388,15 +1414,15 @@ function initializeComments(type, username) {
                     day: dd,
                     month: mm,
                     type: type,
-                    avatar: avatar,
                     count: fav_count,
                     img_1: img_1,
                     img_2: img_2
                 };
                 if (comment.length !== 0) {
-                    console.log('yes');
+                    $('.preloader').css('opacity', '0.75').fadeIn('slow', function () {});
                     API.writeComment(send_comment, function (err, data) {
                         var one = {
+                            icon: current_city.icon,
                             city: current_city.city,
                             favorite: false,
                             comment: data
@@ -1417,6 +1443,10 @@ function initializeComments(type, username) {
                         }, 500);
                         $node2.find('#comment').val('');
                         $node2.find('.location').val('');
+                        $node2.find('#img-1').val('');
+                        $node2.find('#img-2').val('');
+                        img1 = '';
+                        img2 = '';
                         icon_position = true;
                         $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
                         $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
@@ -1434,69 +1464,92 @@ function showComments(list) {
 }
 
 function addOneComment(comment) {
-    var html_code = Templates.Comment_v2({comment: comment});
-    var $node = $(html_code);
-    Backpack = getBackpack();
-    $node.hide();
-    $node.insertBefore('#form');
-    $node.slideToggle(300);
-    $node.find('.favourite-btn').click(function () {
-        if (comment.favorite) {
-            for (var i = 0; i < Backpack.length; i++) {
-                if (comment.comment._id == Backpack[i].comment._id) {
-                    removeFromStorrage(Backpack, i);
-                    this.src = "assets/images/icons/icons8-add-to-favorites-96.png";
+    API.getBackpack(function (err, data) {
+        if (!err) {
+            var html_code = Templates.Comment_v2({comment: comment});
+            var $node = $(html_code);
+            Backpack = data.backpack;
+            var backpack;
+            $node.hide();
+            $node.insertBefore('#form');
+            $node.slideToggle(300);
+            if (data.auth) {
+                $node.find('.favourite-btn').click(function () {
+                    if (comment.favorite) {
+                        for (var i = 0; i < Backpack.length; i++) {
+                            if (comment.comment._id == Backpack[i].comment._id) {
+                                comment.favorite =!comment.favorite;
+                                Backpack.splice(i, 1);
+                                backpack = {
+                                    backpack: Backpack,
+                                    city: comment.city
+                                };
+                                API.setBackpack(backpack, function (err, data) {
+                                    if (!err) {
+                                        if (data.success) {
 
-                }
+                                        }
+                                    }
+                                });
+                                this.src = "assets/images/icons/icons8-add-to-favorites-96.png";
+                            }
+                        }
+                    } else {
+                        comment.favorite =!comment.favorite;
+                        Backpack.push(comment);
+                        backpack = {
+                            backpack: Backpack,
+                            city: comment.city,
+                            add: true
+                        };
+                        API.setBackpack(backpack, function (err, data) {
+                            if (!err) {
+                                if (data.success) {
+
+                                }
+                            }
+                        });
+                        this.src = "assets/images/icons/icons8-star-filled-96.png";
+                    }
+                });
+            } else {
+                $node.find('.favourite-btn').css('cursor', 'not-allowed');
             }
-        } else {
-            Backpack.push(comment);
-            saveComment(Backpack);
-            this.src = "assets/images/icons/icons8-star-filled-96.png";
+
+            //  Full size image viewer
+            $node.find('.uploaded-img').click(function () {
+                imageViewer.style.display = "block";
+                $('body').css('overflow-y', 'hidden');
+                largeImg.src = this.src;
+                // captionText.innerHTML = this.alt;
+                var spanClose = document.getElementById('img-panel-close');
+                spanClose.onclick = function() {
+                    imageViewer.style.display = "none";
+                    $('body').css('overflow-y', 'visible');
+                }
+            });
         }
-        comment.favorite =!comment.favorite;
     });
-
-    //  Full size image viewer
-
-    $node.find('.uploaded-img').click(function () {
-        imageViewer.style.display = "block";
-        largeImg.src = this.src;
-        // captionText.innerHTML = this.alt;
-        var spanClose = document.getElementById('img-panel-close');
-        spanClose.onclick = function() {
-            imageViewer.style.display = "none";
-        }
-    })
-
 }
 
-function saveComment(back) {
-    Storage.set('backpack', back);
-}
-
-function clearBackPack(back) {
-    back = [];
-    Storage.set('backpack', back);
-}
-
-function getBackpack() {
-    var back = Storage.get('backpack');
-    if (back === null) {
-        back = [];
+function readFile1() {
+    if (this.files && this.files[0]) {
+        var fr = new FileReader();
+        fr.addEventListener('load', function (ev) {
+            img1 = ev.target.result;
+        });
+        fr.readAsDataURL(this.files[0]);
     }
-    return back;
 }
 
-function removeFromStorrage(back, i) {
-    back.splice(i, 1);
-    Storage.set('backpack', back);
-}
-
-function randomAvatar(){
-    var rand;
-    rand = Math.floor((Math.random() * 20) + 1);
-    return rand;
+function readFile2() {
+    if (this.files && this.files[0]) {
+        var fr = new FileReader();
+        fr.addEventListener('load', function (ev) {
+            img2 = ev.target.result;
+        });
+        fr.readAsDataURL(this.files[0]);
+    }
 }
 },{"./API":1,"./Cities/GetInfoCity":3,"./Cities/GetLocalSearch":4,"./LocalStorage":5,"./LogReg":6,"./Teamplates":7}],9:[function(require,module,exports){
 (function () {

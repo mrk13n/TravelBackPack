@@ -33,10 +33,6 @@ exports.getCitiesList = function(callback) {
     backendGet('/api/get-cities/', callback);
 };
 
-// exports.upload = function(callback){
-//     backendPost('/api/upload/',callback)
-// };
-
 exports.getComments = function (city, callback) {
   backendPost('/api/get-comments/', city, callback);
 };
@@ -60,6 +56,14 @@ exports.logout = function (callback) {
 exports.checkLogin = function (callback) {
   backendGet('/api/check-login/', callback);
 };
+
+exports.getBackpack = function (callback) {
+    backendGet('/api/get-backpack/', callback);
+};
+
+exports.setBackpack = function (backpack, callback) {
+    backendPost('/api/set-backpack/', backpack, callback);
+};
 },{}],2:[function(require,module,exports){
 var API = require('./API');
 var $login = $('#inputLogin');
@@ -71,6 +75,7 @@ var username;
 var email;
 var password;
 var user;
+var avatar;
 var valid;
 
 function login(page) {
@@ -124,10 +129,12 @@ function registration(page) {
     username = $newlogin.val();
     email = $newemail.val();
     password = $newpass.val();
+    avatar = randomAvatar();
     user = {
-      username: username,
-      email: email,
-      password: password
+        username: username,
+        email: email,
+        password: password,
+        avatar: avatar
     };
     if (validRegister(username, email, password)) {
         API.registration(user, function (err, data) {
@@ -238,6 +245,12 @@ function validRegister(username, email, password) {
         $('#helpNewLogin').css('display', 'none');
     }
     return valid;
+}
+
+function randomAvatar(){
+    var rand;
+    rand = Math.floor((Math.random() * 20) + 1);
+    return rand;
 }
 
 exports.login = login;

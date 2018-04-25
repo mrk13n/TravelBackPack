@@ -33,10 +33,6 @@ exports.getCitiesList = function(callback) {
     backendGet('/api/get-cities/', callback);
 };
 
-// exports.upload = function(callback){
-//     backendPost('/api/upload/',callback)
-// };
-
 exports.getComments = function (city, callback) {
   backendPost('/api/get-comments/', city, callback);
 };
@@ -59,6 +55,14 @@ exports.logout = function (callback) {
 
 exports.checkLogin = function (callback) {
   backendGet('/api/check-login/', callback);
+};
+
+exports.getBackpack = function (callback) {
+    backendGet('/api/get-backpack/', callback);
+};
+
+exports.setBackpack = function (backpack, callback) {
+    backendPost('/api/set-backpack/', backpack, callback);
 };
 },{}],2:[function(require,module,exports){
 var trash = [
@@ -1110,6 +1114,7 @@ var username;
 var email;
 var password;
 var user;
+var avatar;
 var valid;
 
 function login(page) {
@@ -1163,10 +1168,12 @@ function registration(page) {
     username = $newlogin.val();
     email = $newemail.val();
     password = $newpass.val();
+    avatar = randomAvatar();
     user = {
-      username: username,
-      email: email,
-      password: password
+        username: username,
+        email: email,
+        password: password,
+        avatar: avatar
     };
     if (validRegister(username, email, password)) {
         API.registration(user, function (err, data) {
@@ -1279,6 +1286,12 @@ function validRegister(username, email, password) {
     return valid;
 }
 
+function randomAvatar(){
+    var rand;
+    rand = Math.floor((Math.random() * 20) + 1);
+    return rand;
+}
+
 exports.login = login;
 exports.registration = registration;
 exports.logout = logout;
@@ -1290,12 +1303,12 @@ var ejs = require('ejs');
 exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
 exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\n    <div class=\"col-xs-2\">\n        <div class=\"thumbnail thumb_city user-photo\">\n            <img class=\"img-responsive\" src=\"assets/images/avatars/<%= comment.comment.avatar%>.png\">\n        </div>\n    </div>\n\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span><span class=\"favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>\"></span>\n            </div>\n            <div class=\"panel-body\">\n                <%= comment.comment.comment%>\n            </div>\n        </div>\n    </div>\n</div>");
 exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\n    <div class=\"title-box\">\n        <p>experience</p>\n        <h1 class=\"city-name\"><%= city.city%></h1>\n        <p>like a local</p>\n    </div>\n    <div class=\"local-search-container\">\n        <div class=\"search-box\">\n            <input type=\"text\" class=\"form-control\" id=\"searchBox\" placeholder=\"\">\n        </div>\n        <div class=\"btn search-button\">\n            <p class=\"search-icon\">Search</p>\n        </div>\n    </div>\n</div>");
-exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\n    <div class=\"col-xs-10 full-width\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <span class=\"nickname\"></span>\n            </div>\n            <div class=\"panel-heading\">\n                <input type=\"text\" class=\"form-control location\" placeholder=\"Enter location coordinates\">\n            </div>\n            <div class=\"panel-body\">\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\" maxlength=\"500\"></textarea>\n                <form enctype=\"multipart/form-data\" action=\"/upload\" method=\"post\">\n                    <input type=\"file\" name=\"photo\" multiple />\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\" maxlength=\"300\"></textarea>\n                <!--<form enctype=\"multipart/form-data\" action=\"/upload\" method=\"post\">-->\n                    <!--<input type=\"file\" name=\"photo\" multiple />-->\n                <button type=\"submit\" class=\"btn btn-send\">\n                    Send <span class=\"glyphicon glyphicon-send\"></span>\n                </button>\n                <!--</form>-->\n            </div>\n        </div>\n    </div>\n</div>");
+exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\n    <div class=\"col-xs-10 full-width\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <span class=\"nickname\"></span>\n            </div>\n            <div class=\"panel-heading\">\n                <input type=\"text\" class=\"form-control location\" placeholder=\"Enter location coordinates\">\n            </div>\n            <div class=\"panel-body\">\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\" maxlength=\"400\"></textarea>\n                <form enctype=\"multipart/form-data\">\n                    <input id=\"img-1\" type=\"file\" name=\"photo\" accept=\".png, .jpg, jpeg\" multiple />\n                    <input id=\"img-2\" type=\"file\" name=\"photo\" accept=\".png, .jpg, jpeg\" multiple />\n                    <span class=\"btn btn-send\">\n                        Send <span class=\"glyphicon glyphicon-send\"></span>\n                    </span>\n                </form>\n            </div>\n        </div>\n    </div>\n</div>");
 exports.weatherBlock = ejs.compile(" <div class=\"weather\">\n                <div class=\"info\">\n                    <div class=\"temp\">\n                        <small>TEMPERATURE: </small><%= weather.main.temp %>°C\n                    </div>\n                    <div class=\"wind\">\n                        <small>WIND SPEED: </small> <%= weather.wind.speed %>m/s\n                    </div>\n                    <div class=\"description\">\n                        <%= weather.weather[0].description %>\n                    </div>\n                </div>\n                </div>\n");
 exports.additionalInfo = ejs.compile("\n    <div class=\"weather\">\n        <div class=\"info\">\n            <div class=\"temp\">\n                <small>COUNTRY: </small><%= city.country %>\n            </div>\n            <div class=\"wind\">\n                <small>CURRENCY: </small> <%= city.currency %>\n            </div>\n            <div class=\"description\">\n                <small>POPULATION: </small><%= city.population %>\n            </div>\n        </div>\n    </div>");
 exports.FavouriteCityComments = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"animated thumbnail city-card\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
 exports.OneFavouriteComment = ejs.compile("<div class=\"panel panel-default\">\n    <div class=\"panel-heading\">\n        <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span><span class=\"favorite glyphicon glyphicon-star\"></span>\n    </div>\n    <div class=\"panel-body\">\n        <%= comment.comment.comment%>\n    </div>\n</div>");
-exports.Comment_v2 = ejs.compile("<div class=\"comment col-md-6 clo-xs-12\">\n    <div class=\"comment-info-block row\">\n        <div class=\"user-photo col-xs-2\">\n            <img class=\"img-responsive user-photo\" src=\"assets/images/avatars/<%= comment.comment.avatar%>.png\">\n        </div>\n        <div class=\"comment-body col-xs-6\">\n            <div class=\"comment-place-name\">\n                <strong>Central Park</strong>\n            </div>\n            <div class=\"comment-author-info\">\n                <%= comment.comment.nickname%> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span>\n            </div>\n        </div>\n        <div class=\"buttons-bar col-xs-4\">\n            <div class=\"fav-count\"><%= comment.comment.count%></div>\n            <img class=\"favourite-btn\" src=\" <% if (comment.favorite) { %> assets/images/icons/icons8-star-filled-96.png <% } else { %> assets/images/icons/icons8-add-to-favorites-96.png <% } %>\">\n        </div>\n    </div>\n    <div class=\"row\"></div>\n    <div class=\"comment-text-body row\">\n        <%= comment.comment.comment%>\n    </div>\n    <div class=\"media-bar row\">\n        <img class=\"uploaded-img\" src=\"https://maps.googleapis.com/maps/api/staticmap?center=<%= comment.comment.location%>&zoom=17&size=640x425&markers=color:red%7C<%= comment.comment.location%>&path=weight:3%7Ccolor:blue%7Cenc:{coaHnetiVjM??_SkM??~R&key=AIzaSyBLsX-VTDp7C82k5Jaw5HnPHxRcCuX9OMQ\">\n        <img class=\"uploaded-img\" src=\"<% comment.comment.img_1  %>\">\n        <img class=\"uploaded-img\" src=\"<% comment.comment.img_2  %>\">\n    </div>\n</div>");
+exports.Comment_v2 = ejs.compile("<div class=\"comment col-md-6 clo-xs-12\">\n    <div class=\"comment-info-block row\">\n        <div class=\"user-photo col-xs-2\">\n            <img class=\"img-responsive user-photo\" src=\"assets/images/avatars/<%= comment.comment.avatar%>.png\">\n        </div>\n        <div class=\"comment-body col-xs-6\">\n            <div class=\"comment-place-name\">\n                <strong>Central Park</strong>\n            </div>\n            <div class=\"comment-author-info\">\n                <%= comment.comment.nickname%> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span>\n            </div>\n        </div>\n        <div class=\"buttons-bar col-xs-4\">\n            <div class=\"fav-count\"><%= comment.comment.count%></div>\n            <img class=\"favourite-btn\" src=\" <% if (comment.favorite) { %> assets/images/icons/icons8-star-filled-96.png <% } else { %> assets/images/icons/icons8-add-to-favorites-96.png <% } %>\">\n        </div>\n    </div>\n    <div class=\"row\"></div>\n    <div class=\"comment-text-body row\">\n        <%= comment.comment.comment%>\n    </div>\n    <div class=\"media-bar row\">\n        <!--<img class=\"uploaded-img\" src=\"https://maps.googleapis.com/maps/api/staticmap?center=<%= comment.comment.location%>&zoom=17&size=640x425&markers=color:red%7C<%= comment.comment.location%>&path=weight:3%7Ccolor:blue%7Cenc:{coaHnetiVjM??_SkM??~R&key=AIzaSyBLsX-VTDp7C82k5Jaw5HnPHxRcCuX9OMQ\">-->\n        <img class=\"uploaded-img\" src=\"<%= comment.comment.img_1%>\">\n        <img class=\"uploaded-img\" src=\"<%= comment.comment.img_2%>\">\n    </div>\n</div>");
 },{"ejs":11}],8:[function(require,module,exports){
 var API = require('./API');
 var LogReg = require('./LogReg');
