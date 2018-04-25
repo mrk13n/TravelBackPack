@@ -1,6 +1,8 @@
+var API_URL = 'http://localhost:4040';
+
 function backendGet(url, callback) {
     $.ajax({
-        url: url,
+        url: API_URL + url,
         type: 'GET',
         success: function(data){
             callback(null, data);
@@ -13,7 +15,7 @@ function backendGet(url, callback) {
 
 function backendPost(url, data, callback) {
     $.ajax({
-        url: url,
+        url: API_URL + url,
         type: 'POST',
         contentType : 'application/json',
         data: JSON.stringify(data),
