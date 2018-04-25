@@ -5,7 +5,7 @@
         </div>
         <div class="comment-body col-xs-6">
             <div class="comment-place-name">
-                <strong>Central Park</strong>
+                <strong><%= comment.comment.location_name%></strong>
             </div>
             <div class="comment-author-info">
                 <%= comment.comment.nickname%> <span class="text-muted">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span>
@@ -21,7 +21,7 @@
         <%= comment.comment.comment%>
     </div>
     <div class="media-bar row">
-        <img class="uploaded-img" src="https://maps.googleapis.com/maps/api/staticmap?center=<%= comment.comment.location%>&zoom=17&size=640x425&markers=color:red%7C<%= comment.comment.location%>&path=weight:3%7Ccolor:blue%7Cenc:{coaHnetiVjM??_SkM??~R&key=AIzaSyBLsX-VTDp7C82k5Jaw5HnPHxRcCuX9OMQ">
+        <img class="uploaded-img" alt ="<%= comment.comment.location_name%>" src="https://maps.googleapis.com/maps/api/staticmap?center=<%= comment.comment.location%>&zoom=17&size=640x425&markers=color:red%7C<%= comment.comment.location%>&path=weight:3%7Ccolor:blue%7Cenc:{coaHnetiVjM??_SkM??~R&key=AIzaSyBLsX-VTDp7C82k5Jaw5HnPHxRcCuX9OMQ">
         <img class="uploaded-img" src="<% comment.comment.img_1  %>">
         <img class="uploaded-img" src="<% comment.comment.img_2  %>">
     </div>

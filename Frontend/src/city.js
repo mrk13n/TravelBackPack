@@ -14,7 +14,7 @@ var Backpack = getBackpack();
 // Full size img variables
 var imageViewer = document.getElementById('fs-img-panel');
 var largeImg = document.getElementById("fs-img-block");
-var captionText = document.getElementById("caption");
+var captionText = document.getElementById("fs-img-caption");
 var uploadedImgArray = [];
 
 $(function () {
@@ -221,12 +221,14 @@ function initializeComments(type, username) {
                 var comment = $('#comment').val();
                 var nickname = username;
                 var location = $('.location').val();
+                var locationName = $('.location-name').val();
                 var img_1 = "";
                 var img_2 = "";
                 var fav_count = 0;
                 var send_comment = {
                     nickname: nickname,
                     comment: comment,
+                    location_name: locationName,
                     location: location,
                     city: current_city.city,
                     year: yyyy,
@@ -280,6 +282,7 @@ function showComments(list) {
 
 function addOneComment(comment) {
     var html_code = Templates.Comment_v2({comment: comment});
+    var count = 0;
     var $node = $(html_code);
     Backpack = getBackpack();
     $node.hide();
@@ -289,12 +292,15 @@ function addOneComment(comment) {
         if (comment.favorite) {
             for (var i = 0; i < Backpack.length; i++) {
                 if (comment.comment._id == Backpack[i].comment._id) {
+
                     removeFromStorrage(Backpack, i);
                     this.src = "assets/images/icons/icons8-add-to-favorites-96.png";
-
                 }
             }
         } else {
+            count = comment.count;
+            count += 1;
+            comment.count = count;
             Backpack.push(comment);
             saveComment(Backpack);
             this.src = "assets/images/icons/icons8-star-filled-96.png";
@@ -307,7 +313,7 @@ function addOneComment(comment) {
     $node.find('.uploaded-img').click(function () {
         imageViewer.style.display = "block";
         largeImg.src = this.src;
-        // captionText.innerHTML = this.alt;
+        captionText.innerHTML = this.alt;
         var spanClose = document.getElementById('img-panel-close');
         spanClose.onclick = function() {
             imageViewer.style.display = "none";
