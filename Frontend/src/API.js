@@ -30,10 +30,6 @@ exports.getCitiesList = function(callback) {
     backendGet('/api/get-cities/', callback);
 };
 
-// exports.upload = function(callback){
-//     backendPost('/api/upload/',callback)
-// };
-
 exports.getComments = function (city, callback) {
   backendPost('/api/get-comments/', city, callback);
 };
@@ -56,4 +52,12 @@ exports.logout = function (callback) {
 
 exports.checkLogin = function (callback) {
   backendGet('/api/check-login/', callback);
+};
+
+exports.getBackpack = function (callback) {
+    backendGet('/api/get-backpack/', callback);
+};
+
+exports.setBackpack = function (backpack, callback) {
+    backendPost('/api/set-backpack/', backpack, callback);
 };

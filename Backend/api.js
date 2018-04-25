@@ -12,25 +12,25 @@ function sha1(string) {
     return sha1.digest('base64');
 }
 
-// exports.upload = function (req, res) {
-//   res.send(req.body.files)
-// };
-
 exports.getCities = function(req, res) {
     res.send(Cities);
 };
 
 exports.checkLogin = function (req, res) {
-  var auth = false;
-  var username;
-  if (req.session.username) {
-      auth = true;
-      username = req.session.username;
-  }
-  res.send({
-      login: auth,
-      user: username
-  });
+    //ВИдалення усіх користувачів
+    // Users.remove(function (err, users) {
+    //     console.log("users removed")
+    // });
+    var auth = false;
+    var username;
+    if (req.session.username) {
+        auth = true;
+        username = req.session.username;
+    }
+    res.send({
+        login: auth,
+        user: username
+    })
 };
 
 exports.writeComment = function (req, res) {
@@ -43,7 +43,7 @@ exports.writeComment = function (req, res) {
     var day = req.body.day;
     var month = req.body.month;
     var type = req.body.type;
-    var avatar = req.body.avatar;
+    var avatar = req.session.avatar;
     var count = req.body.count;
     var img_1 = req.body.img_1;
     var img_2 = req.body.img_2;
@@ -120,9 +120,9 @@ exports.getComment = function (req, res) {
         {
             city: city
         },
-        function (err, curent_city) {
-            if (curent_city) {
-                comments = curent_city.comments;
+        function (err, current_city) {
+            if (current_city) {
+                comments = current_city.comments;
                 res.send(comments);
             } else {
                 res.send({
@@ -141,7 +141,7 @@ exports.getComment = function (req, res) {
 exports.login = function (req, res) {
   var username = req.body.username;
   var password = req.body.password;
-  password = sha1(password + username);
+  password = sha1(password);
 
   Users.findOne(
       {
@@ -151,8 +151,8 @@ exports.login = function (req, res) {
           if (user) {
               var checkPassword = password === user.password;
               if (checkPassword) {
-                  req.session.username = username;
-                  req.session.password = password;
+                  req.session.username = user.username;
+                  req.session.avatar = user.avatar;
                   res.send({
                       success: true
                   });
@@ -168,18 +168,15 @@ exports.login = function (req, res) {
           }
       }
   );
-
-  //Видалення усіх користувачів
-  // Users.remove(function (err, users) {
-  //     console.log("users removed")
-  // });
 };
 
 exports.registration = function (req, res) {
     var username = req.body.username;
     var email = req.body.email;
     var password = req.body.password;
-    password = sha1(password + username);
+    var avatar = req.body.avatar;
+    var backpack = [];
+    password = sha1(password);
 
     Users.findOne(
         {
@@ -192,11 +189,13 @@ exports.registration = function (req, res) {
                 });
             } else {
                 req.session.username = username;
-                req.session.password = password;
+                req.session.avatar = avatar;
                 var newUser = new Users({
                     username: username,
                     email: email,
-                    password: password
+                    password: password,
+                    avatar: avatar,
+                    backpack: backpack
                 });
 
                 newUser.save(function (err) {
@@ -222,6 +221,107 @@ exports.logout = function (req, res) {
   });
 };
 
-exports.upload = function (req, res) {
+exports.getBackpack = function (req, res) {
+    var username = req.session.username;
+    var backpack = [];
+    if (!username) {
+        res.send({
+            auth: false,
+            backpack: backpack
+        });
+    } else {
+        Users.findOne(
+            {
+                username: username
+            },
+            function (err, user) {
+                if (user) {
+                    backpack = user.backpack;
+                    res.send({
+                        auth: true,
+                        backpack: backpack
+                    });
+                }
+            }
+        );
+    }
+};
 
+exports.setBackpack = function (req, res) {
+    var username = req.session.username;
+    var backpack = req.body.backpack;
+    var add = req.body.add;
+    var city = req.body.city;
+    var comments = [];
+    var liked_comment;
+    var liked_users = [];
+    var liked;
+    Users.findOne(
+        {
+            username: username
+        },
+        function (err, user) {
+            if (user) {
+                if (add) {
+                    Comments.findOne(
+                        {
+                            city: city
+                        },
+                        function (err, current_city) {
+                            if (current_city) {
+                                comments = current_city.comments;
+                                liked_comment = backpack[backpack.length-1].comment;
+                                for (var i = 0; i < comments.length; i++) {
+                                    if (comments[i]._id == liked_comment._id) {
+                                        liked_users = comments[i].users_liked;
+                                        liked = comments[i].count;
+                                        var find = false;
+                                        for (var j = 0; j < liked_users.length; j++) {
+                                            if (liked_users[j] === username) {
+                                                find = true;
+                                                break;
+                                            }
+                                        }
+                                        var new_comments = comments;
+                                        if (!find) {
+                                            liked_users.push(username);
+                                            liked++;
+                                            for (var k = 0; k < new_comments.length; k++) {
+                                                if (new_comments[k]._id == liked_comment._id) {
+                                                    new_comments[k].users_liked = liked_users;
+                                                    new_comments[k].count = liked;
+                                                    Comments.update(
+                                                        {
+                                                            city: city
+                                                        },
+                                                        {
+                                                            comments: new_comments
+                                                        },
+                                                        function () {}
+                                                    );
+                                                }
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    );
+                }
+                Users.update(
+                    {
+                        username: username
+                    },
+                    {
+                        backpack: backpack
+                    },
+                    function () {}
+                );
+                res.send({
+                    success: true
+                });
+            }
+        }
+    );
 };

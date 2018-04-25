@@ -21,8 +21,9 @@ var one_comment = new mongoose.Schema({
     type: {type: String},
     avatar: {type: String},
     count: {type: Number},
-    img_1:{type: String},
-    img_2:{type: String}
+    img_1: {type: String},
+    img_2: {type: String},
+    users_liked: []
 });
 
 var comments = new mongoose.Schema({
@@ -33,7 +34,9 @@ var comments = new mongoose.Schema({
 var userShema = new mongoose.Schema({
     username: {type: String, unique: true},
     email: {type: String},
-    password: {type: String}
+    password: {type: String},
+    avatar: {type: String},
+    backpack: []
 });
 
 var Comments = mongoose.model('comments', comments);

@@ -9,13 +9,20 @@ var Cities;
 var icon_position;
 var type;
 var text;
+var files;
+var img1 = '';
+var img2 = '';
 var $comments = $("#comments");
-var Backpack = getBackpack();
+var Backpack = [];
 // Full size img variables
 var imageViewer = document.getElementById('fs-img-panel');
 var largeImg = document.getElementById("fs-img-block");
+<<<<<<< HEAD
 var captionText = document.getElementById("fs-img-caption");
 var uploadedImgArray = [];
+=======
+var captionText = document.getElementById("caption");
+>>>>>>> 6e5f7a471c6633a701e7c7abac05f08b1be9ee7e
 
 $(function () {
     API.checkLogin(function (err, data) {
@@ -26,10 +33,6 @@ $(function () {
            } else {
                $('.glyphicon-user').css('display', 'block');
            }
-           setTimeout(function () {
-               $('.preloader').fadeOut('slow', function () {});
-               $('body').css('overflow-y', 'visible');
-           }, 1500);
 
            $('.log').click(function () {
                LogReg.login(page);
@@ -58,6 +61,7 @@ $(function () {
            });
 
            $("#filter-food").click(function () {
+               $('.preloader').fadeIn('slow', function () {});
                allNotActive();
                $("#filter-food").addClass("active");
                type = 'food';
@@ -67,6 +71,7 @@ $(function () {
            });
 
            $("#filter-house").click(function () {
+               $('.preloader').fadeIn('slow', function () {});
                allNotActive();
                $("#filter-house").addClass("active");
                type = 'house';
@@ -76,6 +81,7 @@ $(function () {
            });
 
            $("#filter-hitchhiking").click(function () {
+               $('.preloader').fadeIn('slow', function () {});
                allNotActive();
                $("#filter-hitchhiking").addClass("active");
                type = 'hitchhiking';
@@ -85,6 +91,7 @@ $(function () {
            });
 
            $("#filter-abandoned").click(function () {
+               $('.preloader').fadeIn('slow', function () {});
                allNotActive();
                $("#filter-abandoned").addClass("active");
                type = 'abandoned';
@@ -125,6 +132,9 @@ $(function () {
                    $('body').css('overflow-y', 'visible');
                }, 2200);
            });
+
+           $('#img-1').on('change', readFile1);
+           $('#img-2').on('change', readFile2);
        }
     });
 });
@@ -176,42 +186,50 @@ function initializeComments(type, username) {
                             }
                         }
                         var additional_comments = [];
-                        for (i = 0; i < comments.length; i++) {
-                            var one;
-                            var fav = false;
-                            Backpack = getBackpack();
-                            if (Backpack !== null) {
-                                for (var j = 0; j < Backpack.length; j++) {
-                                    if (comments[i]._id == Backpack[j].comment._id) {
-                                        fav = true;
+                        API.getBackpack(function (err, data) {
+                            if (!err) {
+                                Backpack = data.backpack;
+                                for (i = 0; i < comments.length; i++) {
+                                    var one;
+                                    var fav = false;
+                                    if (Backpack !== null) {
+                                        for (var j = 0; j < Backpack.length; j++) {
+                                            if (comments[i]._id == Backpack[j].comment._id) {
+                                                fav = true;
+                                            }
+                                        }
                                     }
+                                    one = {
+                                        icon: current_city.icon,
+                                        city: current_city.city,
+                                        favorite: fav,
+                                        comment: comments[i]
+                                    };
+                                    additional_comments.push(one);
                                 }
+                                comments = additional_comments;
+                                showComments(comments);
+                                setTimeout(function () {
+                                    $('.preloader').fadeOut('slow', function () {});
+                                    $('body').css('overflow-y', 'visible');
+                                }, 1500);
                             }
-                            one = {
-                                icon: current_city.icon,
-                                city: current_city.city,
-                                favorite: fav,
-                                comment: comments[i]
-                            };
-                            additional_comments.push(one);
-                        }
-                        comments = additional_comments;
+                        });
+                    } else {
+                        comments = [];
                         showComments(comments);
+                        setTimeout(function () {
+                            $('.preloader').fadeOut('slow', function () {});
+                            $('body').css('overflow-y', 'visible');
+                        }, 1500);
                     }
                 }
-                setTimeout(function () {
-                    $('.preloader').fadeOut('slow', function () {});
-                    $('body').css('overflow-y', 'visible');
-                }, 1500);
             });
-
             $node2.find('.btn-send').click(function () {
-                $('.preloader').css('opacity', '0.75').fadeIn('slow', function () {});
                 var today = new Date();
                 var dd = today.getDate();
                 var mm = today.getMonth()+1;
                 var yyyy = today.getFullYear();
-                var avatar = randomAvatar();
                 if(dd<10) {
                     dd = '0'+dd;
                 }
@@ -221,9 +239,14 @@ function initializeComments(type, username) {
                 var comment = $('#comment').val();
                 var nickname = username;
                 var location = $('.location').val();
+<<<<<<< HEAD
                 var locationName = $('.location-name').val();
                 var img_1 = "";
                 var img_2 = "";
+=======
+                var img_1 = img1;
+                var img_2 = img2;
+>>>>>>> 6e5f7a471c6633a701e7c7abac05f08b1be9ee7e
                 var fav_count = 0;
                 var send_comment = {
                     nickname: nickname,
@@ -235,15 +258,15 @@ function initializeComments(type, username) {
                     day: dd,
                     month: mm,
                     type: type,
-                    avatar: avatar,
                     count: fav_count,
                     img_1: img_1,
                     img_2: img_2
                 };
                 if (comment.length !== 0) {
-                    console.log('yes');
+                    $('.preloader').css('opacity', '0.75').fadeIn('slow', function () {});
                     API.writeComment(send_comment, function (err, data) {
                         var one = {
+                            icon: current_city.icon,
                             city: current_city.city,
                             favorite: false,
                             comment: data
@@ -264,6 +287,10 @@ function initializeComments(type, username) {
                         }, 500);
                         $node2.find('#comment').val('');
                         $node2.find('.location').val('');
+                        $node2.find('#img-1').val('');
+                        $node2.find('#img-2').val('');
+                        img1 = '';
+                        img2 = '';
                         icon_position = true;
                         $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
                         $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
@@ -281,6 +308,7 @@ function showComments(list) {
 }
 
 function addOneComment(comment) {
+<<<<<<< HEAD
     var html_code = Templates.Comment_v2({comment: comment});
     var count = 0;
     var $node = $(html_code);
@@ -307,9 +335,61 @@ function addOneComment(comment) {
         }
         comment.favorite =!comment.favorite;
     });
+=======
+    API.getBackpack(function (err, data) {
+        if (!err) {
+            var html_code = Templates.Comment_v2({comment: comment});
+            var $node = $(html_code);
+            Backpack = data.backpack;
+            var backpack;
+            $node.hide();
+            $node.insertBefore('#form');
+            $node.slideToggle(300);
+            if (data.auth) {
+                $node.find('.favourite-btn').click(function () {
+                    if (comment.favorite) {
+                        for (var i = 0; i < Backpack.length; i++) {
+                            if (comment.comment._id == Backpack[i].comment._id) {
+                                comment.favorite =!comment.favorite;
+                                Backpack.splice(i, 1);
+                                backpack = {
+                                    backpack: Backpack,
+                                    city: comment.city
+                                };
+                                API.setBackpack(backpack, function (err, data) {
+                                    if (!err) {
+                                        if (data.success) {
 
-    //  Full size image viewer
+                                        }
+                                    }
+                                });
+                                this.src = "assets/images/icons/icons8-add-to-favorites-96.png";
+                            }
+                        }
+                    } else {
+                        comment.favorite =!comment.favorite;
+                        Backpack.push(comment);
+                        backpack = {
+                            backpack: Backpack,
+                            city: comment.city,
+                            add: true
+                        };
+                        API.setBackpack(backpack, function (err, data) {
+                            if (!err) {
+                                if (data.success) {
+>>>>>>> 6e5f7a471c6633a701e7c7abac05f08b1be9ee7e
 
+                                }
+                            }
+                        });
+                        this.src = "assets/images/icons/icons8-star-filled-96.png";
+                    }
+                });
+            } else {
+                $node.find('.favourite-btn').css('cursor', 'not-allowed');
+            }
+
+<<<<<<< HEAD
     $node.find('.uploaded-img').click(function () {
         imageViewer.style.display = "block";
         largeImg.src = this.src;
@@ -317,35 +397,40 @@ function addOneComment(comment) {
         var spanClose = document.getElementById('img-panel-close');
         spanClose.onclick = function() {
             imageViewer.style.display = "none";
+=======
+            //  Full size image viewer
+            $node.find('.uploaded-img').click(function () {
+                imageViewer.style.display = "block";
+                $('body').css('overflow-y', 'hidden');
+                largeImg.src = this.src;
+                // captionText.innerHTML = this.alt;
+                var spanClose = document.getElementById('img-panel-close');
+                spanClose.onclick = function() {
+                    imageViewer.style.display = "none";
+                    $('body').css('overflow-y', 'visible');
+                }
+            });
+>>>>>>> 6e5f7a471c6633a701e7c7abac05f08b1be9ee7e
         }
-    })
-
+    });
 }
 
-function saveComment(back) {
-    Storage.set('backpack', back);
-}
-
-function clearBackPack(back) {
-    back = [];
-    Storage.set('backpack', back);
-}
-
-function getBackpack() {
-    var back = Storage.get('backpack');
-    if (back === null) {
-        back = [];
+function readFile1() {
+    if (this.files && this.files[0]) {
+        var fr = new FileReader();
+        fr.addEventListener('load', function (ev) {
+            img1 = ev.target.result;
+        });
+        fr.readAsDataURL(this.files[0]);
     }
-    return back;
 }
 
-function removeFromStorrage(back, i) {
-    back.splice(i, 1);
-    Storage.set('backpack', back);
-}
-
-function randomAvatar(){
-    var rand;
-    rand = Math.floor((Math.random() * 20) + 1);
-    return rand;
+function readFile2() {
+    if (this.files && this.files[0]) {
+        var fr = new FileReader();
+        fr.addEventListener('load', function (ev) {
+            img2 = ev.target.result;
+        });
+        fr.readAsDataURL(this.files[0]);
+    }
 }
