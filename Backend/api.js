@@ -18,9 +18,9 @@ exports.getCities = function(req, res) {
 
 exports.checkLogin = function (req, res) {
     //ВИдалення усіх користувачів
-    // Users.remove(function (err, users) {
-    //     console.log("users removed")
-    // });
+    //  Users.remove(function (err, users) {
+    //      console.log("users removed")
+    //  });
     var auth = false;
     var username;
     if (req.session.username) {
@@ -36,6 +36,7 @@ exports.checkLogin = function (req, res) {
 exports.writeComment = function (req, res) {
     var nickname = req.body.nickname;
     var comment = req.body.comment;
+    var location_name = req.body.location_name;
     var location = req.body.location;
     var city = req.body.city;
     var year = req.body.year;
@@ -57,6 +58,7 @@ exports.writeComment = function (req, res) {
                 current_comment = new One_Comment({
                     nickname: nickname,
                     comment: comment,
+                    location_name: location_name,
                     location: location,
                     year: year,
                     day: day,
@@ -83,6 +85,7 @@ exports.writeComment = function (req, res) {
                 current_comment = new One_Comment({
                     nickname: nickname,
                     comment: comment,
+                    location_name:location_name,
                     location: location,
                     year: year,
                     day: day,
@@ -130,9 +133,9 @@ exports.getComment = function (req, res) {
     );
 
     //Видалення усіх коментарів
-    // Comments.remove(function (err, comments) {
-    //     console.log("comments removed")
-    // });
+    //  Comments.remove(function (err, comments) {
+    //      console.log("comments removed")
+    //  });
 };
 
 exports.login = function (req, res) {

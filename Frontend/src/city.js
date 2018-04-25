@@ -17,7 +17,7 @@ var Backpack = [];
 // Full size img variables
 var imageViewer = document.getElementById('fs-img-panel');
 var largeImg = document.getElementById("fs-img-block");
-var captionText = document.getElementById("caption");
+var captionText = document.getElementById("fs-img-caption");
 
 $(function () {
     API.checkLogin(function (err, data) {
@@ -56,7 +56,7 @@ $(function () {
            });
 
            $("#filter-food").click(function () {
-               $('.preloader').fadeIn('slow', function () {});
+               //$('.preloader').fadeIn('slow', function () {});
                allNotActive();
                $("#filter-food").addClass("active");
                type = 'food';
@@ -66,7 +66,7 @@ $(function () {
            });
 
            $("#filter-house").click(function () {
-               $('.preloader').fadeIn('slow', function () {});
+               //$('.preloader').fadeIn('slow', function () {});
                allNotActive();
                $("#filter-house").addClass("active");
                type = 'house';
@@ -76,7 +76,7 @@ $(function () {
            });
 
            $("#filter-hitchhiking").click(function () {
-               $('.preloader').fadeIn('slow', function () {});
+               //$('.preloader').fadeIn('slow', function () {});
                allNotActive();
                $("#filter-hitchhiking").addClass("active");
                type = 'hitchhiking';
@@ -86,7 +86,7 @@ $(function () {
            });
 
            $("#filter-abandoned").click(function () {
-               $('.preloader').fadeIn('slow', function () {});
+              // $('.preloader').fadeIn('slow', function () {});
                allNotActive();
                $("#filter-abandoned").addClass("active");
                type = 'abandoned';
@@ -233,6 +233,7 @@ function initializeComments(type, username) {
                 }
                 var comment = $('#comment').val();
                 var nickname = username;
+                var location_name = $('.location-name').val();
                 var location = $('.location').val();
                 var img_1 = img1;
                 var img_2 = img2;
@@ -240,6 +241,7 @@ function initializeComments(type, username) {
                 var send_comment = {
                     nickname: nickname,
                     comment: comment,
+                    location_name: location_name,
                     location: location,
                     city: current_city.city,
                     year: yyyy,
@@ -274,6 +276,7 @@ function initializeComments(type, username) {
                             }, 1500);
                         }, 500);
                         $node2.find('#comment').val('');
+                        $node2.find('.location-name').val('');
                         $node2.find('.location').val('');
                         $node2.find('#img-1').val('');
                         $node2.find('#img-2').val('');
@@ -353,7 +356,7 @@ function addOneComment(comment) {
                 imageViewer.style.display = "block";
                 $('body').css('overflow-y', 'hidden');
                 largeImg.src = this.src;
-                // captionText.innerHTML = this.alt;
+                captionText.innerHTML = this.alt;
                 var spanClose = document.getElementById('img-panel-close');
                 spanClose.onclick = function() {
                     imageViewer.style.display = "none";

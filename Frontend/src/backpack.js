@@ -81,10 +81,10 @@ function showCities(list) {
 
         $cities.append($node);
 
-        $node.find(".city-card").click(function() {
+        $node.find(".city-backpack-card").click(function() {
             $(this).addClass('zoomOut');
             $('.preloader').css('opacity', '0.75').fadeIn('slow', function () {});
-            $('.city-card').css('visibility', 'hidden');
+            $('.city-backpack-card').css('visibility', 'hidden');
             setTimeout(function () {
                 initializeComments(city);
                 $cities.addClass('animated fadeInDown');
@@ -106,6 +106,7 @@ function showCities(list) {
 }
 
 function getCities(back) {
+    console.log(back);
     var cities = [];
     if (back !== null) {
         for (var i = 0; i < back.length; i++) {
@@ -148,7 +149,7 @@ function initializeComments(city) {
     }
     if (comments.length !== 0) {
         for (var i = 0; i < comments.length; i++) {
-            var html_code2 = Templates.Comment_OneItem({comment: comments[i]});
+            var html_code2 = Templates.Comment_v2({comment: comments[i]});
             var $node2 = $(html_code2);
             $cities.append($node2);
             var k = i;

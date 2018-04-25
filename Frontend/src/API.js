@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 var API_URL = 'http://localhost:4040';
+=======
+var API_URL = "http://localhost:4040";
+>>>>>>> 079cb561200026c323d76a2bb32189c692f447bf
 
 function backendGet(url, callback) {
     $.ajax({
