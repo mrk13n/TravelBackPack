@@ -3023,30 +3023,29 @@ exports.cache = {
 
 },{}],13:[function(require,module,exports){
 module.exports={
-  "_from": "ejs@2.5.9",
+  "_from": "ejs@^2.5.9",
   "_id": "ejs@2.5.9",
   "_inBundle": false,
   "_integrity": "sha512-GJCAeDBKfREgkBtgrYSf9hQy9kTb3helv0zGdzqhM7iAkW8FA/ZF97VQDbwFiwIT8MQLLOe5VlPZOEvZAqtUAQ==",
   "_location": "/ejs",
   "_phantomChildren": {},
   "_requested": {
-    "type": "version",
+    "type": "range",
     "registry": true,
-    "raw": "ejs@2.5.9",
+    "raw": "ejs@^2.5.9",
     "name": "ejs",
     "escapedName": "ejs",
-    "rawSpec": "2.5.9",
+    "rawSpec": "^2.5.9",
     "saveSpec": null,
-    "fetchSpec": "2.5.9"
+    "fetchSpec": "^2.5.9"
   },
   "_requiredBy": [
-    "#USER",
     "/"
   ],
   "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.9.tgz",
   "_shasum": "7ba254582a560d267437109a68354112475b0ce5",
-  "_spec": "ejs@2.5.9",
-  "_where": "C:\\Users\\lemvl\\Documents\\GitHub\\TravelBackPack",
+  "_spec": "ejs@^2.5.9",
+  "_where": "/home/mrk13/Documents/GitHub/TravelBackPack",
   "author": {
     "name": "Matthew Eernisse",
     "email": "mde@fleegix.org",
