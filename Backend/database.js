@@ -13,7 +13,7 @@ db.once('open', function callback () {
 var one_comment = new mongoose.Schema({
     nickname: {type: String},
     comment: {type: String},
-    location_name: {type: String},
+    location_name:{type:String},
     location:{type:String},
     year: {type: String},
     day: {type: String},

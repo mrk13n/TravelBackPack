@@ -17,12 +17,7 @@ var Backpack = [];
 // Full size img variables
 var imageViewer = document.getElementById('fs-img-panel');
 var largeImg = document.getElementById("fs-img-block");
-<<<<<<< HEAD
 var captionText = document.getElementById("fs-img-caption");
-var uploadedImgArray = [];
-=======
-var captionText = document.getElementById("caption");
->>>>>>> 6e5f7a471c6633a701e7c7abac05f08b1be9ee7e
 
 $(function () {
     API.checkLogin(function (err, data) {
@@ -61,7 +56,7 @@ $(function () {
            });
 
            $("#filter-food").click(function () {
-               $('.preloader').fadeIn('slow', function () {});
+               //$('.preloader').fadeIn('slow', function () {});
                allNotActive();
                $("#filter-food").addClass("active");
                type = 'food';
@@ -71,7 +66,7 @@ $(function () {
            });
 
            $("#filter-house").click(function () {
-               $('.preloader').fadeIn('slow', function () {});
+               //$('.preloader').fadeIn('slow', function () {});
                allNotActive();
                $("#filter-house").addClass("active");
                type = 'house';
@@ -81,7 +76,7 @@ $(function () {
            });
 
            $("#filter-hitchhiking").click(function () {
-               $('.preloader').fadeIn('slow', function () {});
+               //$('.preloader').fadeIn('slow', function () {});
                allNotActive();
                $("#filter-hitchhiking").addClass("active");
                type = 'hitchhiking';
@@ -91,7 +86,7 @@ $(function () {
            });
 
            $("#filter-abandoned").click(function () {
-               $('.preloader').fadeIn('slow', function () {});
+              // $('.preloader').fadeIn('slow', function () {});
                allNotActive();
                $("#filter-abandoned").addClass("active");
                type = 'abandoned';
@@ -238,20 +233,15 @@ function initializeComments(type, username) {
                 }
                 var comment = $('#comment').val();
                 var nickname = username;
+                var location_name = $('.location-name').val();
                 var location = $('.location').val();
-<<<<<<< HEAD
-                var locationName = $('.location-name').val();
-                var img_1 = "";
-                var img_2 = "";
-=======
                 var img_1 = img1;
                 var img_2 = img2;
->>>>>>> 6e5f7a471c6633a701e7c7abac05f08b1be9ee7e
                 var fav_count = 0;
                 var send_comment = {
                     nickname: nickname,
                     comment: comment,
-                    location_name: locationName,
+                    location_name: location_name,
                     location: location,
                     city: current_city.city,
                     year: yyyy,
@@ -286,6 +276,7 @@ function initializeComments(type, username) {
                             }, 1500);
                         }, 500);
                         $node2.find('#comment').val('');
+                        $node2.find('.location-name').val('');
                         $node2.find('.location').val('');
                         $node2.find('#img-1').val('');
                         $node2.find('#img-2').val('');
@@ -308,34 +299,6 @@ function showComments(list) {
 }
 
 function addOneComment(comment) {
-<<<<<<< HEAD
-    var html_code = Templates.Comment_v2({comment: comment});
-    var count = 0;
-    var $node = $(html_code);
-    Backpack = getBackpack();
-    $node.hide();
-    $node.insertBefore('#form');
-    $node.slideToggle(300);
-    $node.find('.favourite-btn').click(function () {
-        if (comment.favorite) {
-            for (var i = 0; i < Backpack.length; i++) {
-                if (comment.comment._id == Backpack[i].comment._id) {
-
-                    removeFromStorrage(Backpack, i);
-                    this.src = "assets/images/icons/icons8-add-to-favorites-96.png";
-                }
-            }
-        } else {
-            count = comment.count;
-            count += 1;
-            comment.count = count;
-            Backpack.push(comment);
-            saveComment(Backpack);
-            this.src = "assets/images/icons/icons8-star-filled-96.png";
-        }
-        comment.favorite =!comment.favorite;
-    });
-=======
     API.getBackpack(function (err, data) {
         if (!err) {
             var html_code = Templates.Comment_v2({comment: comment});
@@ -377,7 +340,6 @@ function addOneComment(comment) {
                         API.setBackpack(backpack, function (err, data) {
                             if (!err) {
                                 if (data.success) {
->>>>>>> 6e5f7a471c6633a701e7c7abac05f08b1be9ee7e
 
                                 }
                             }
@@ -389,28 +351,18 @@ function addOneComment(comment) {
                 $node.find('.favourite-btn').css('cursor', 'not-allowed');
             }
 
-<<<<<<< HEAD
-    $node.find('.uploaded-img').click(function () {
-        imageViewer.style.display = "block";
-        largeImg.src = this.src;
-        captionText.innerHTML = this.alt;
-        var spanClose = document.getElementById('img-panel-close');
-        spanClose.onclick = function() {
-            imageViewer.style.display = "none";
-=======
             //  Full size image viewer
             $node.find('.uploaded-img').click(function () {
                 imageViewer.style.display = "block";
                 $('body').css('overflow-y', 'hidden');
                 largeImg.src = this.src;
-                // captionText.innerHTML = this.alt;
+                captionText.innerHTML = this.alt;
                 var spanClose = document.getElementById('img-panel-close');
                 spanClose.onclick = function() {
                     imageViewer.style.display = "none";
                     $('body').css('overflow-y', 'visible');
                 }
             });
->>>>>>> 6e5f7a471c6633a701e7c7abac05f08b1be9ee7e
         }
     });
 }

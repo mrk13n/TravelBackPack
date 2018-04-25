@@ -264,22 +264,22 @@ function final_result(list) {
     if (list.length === 0) {
         $('#for-comments').css('display', 'block');
         scrollToResults();
-        $('.preloader').css('opacity', '0.75').fadeIn('slow', function () {});
+        //$('.preloader').css('opacity', '0.75').fadeIn('slow', function () {});
         $('.not_found').css('display', 'block');
-        setTimeout(function () {
-            $('.preloader').fadeOut('slow', function () {});
-            $('body').css('overflow-y', 'visible');
-        }, 1500);
+        // setTimeout(function () {
+        //     $('.preloader').fadeOut('slow', function () {});
+        //     $('body').css('overflow-y', 'visible');
+        // }, 1500);
     } else {
         $('#for-comments').css('display', 'block');
         $('.not_found').css('display', 'none');
         scrollToResults();
-        $('.preloader').css('opacity', '0.75').fadeIn('slow', function () {});
+       // $('.preloader').css('opacity', '0.75').fadeIn('slow', function () {});
         showResults(list);
-        setTimeout(function () {
-            $('.preloader').fadeOut('slow', function () {});
-            $('body').css('overflow-y', 'visible');
-        }, 1500);
+        // setTimeout(function () {
+        //     $('.preloader').fadeOut('slow', function () {});
+        //     $('body').css('overflow-y', 'visible');
+        // }, 1500);
     }
 }
 
