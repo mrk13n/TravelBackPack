@@ -312,9 +312,15 @@ $(function () {
                 API.getBackpack(function (err, data) {
                    if (!err) {
                        Backpack = data.backpack;
-                       initializeFavorites(Backpack);
+                       if (Backpack.length !== 0) {
+                           initializeFavorites(Backpack);
+                       } else {
+                           //Empty backpack
+                       }
                    }
                 });
+            } else {
+                //Not login
             }
 
             $("#favourites-scroll").click(function(){
@@ -374,6 +380,7 @@ function showCities(list, Backpack) {
             $('.preloader').css('opacity', '0.75').fadeIn('slow', function () {});
             $('.city-backpack-card').css('visibility', 'hidden');
             setTimeout(function () {
+                //Кнопка появилась
                 initializeComments(city, Backpack);
                 $cities.addClass('animated fadeInDown');
                 $('.loader').fadeOut('slow', function () {});
@@ -421,6 +428,7 @@ function getCities(back) {
 function initializeComments(city, Backpack) {
     var comments = [];
     $cities.html("");
+    //Назад і кнопка зникає
     for (var i = 0; i < Backpack.length; i++) {
         if (city.city === Backpack[i].city) {
             comments.push(Backpack[i]);
@@ -449,7 +457,6 @@ function initializeComments(city, Backpack) {
                                 }
                             }
                         });
-                        this.src = "assets/images/icons/icons8-add-to-favorites-96.png";
                     }
                 }
             });

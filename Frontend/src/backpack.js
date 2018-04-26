@@ -174,7 +174,6 @@ function initializeComments(city, Backpack) {
                                 }
                             }
                         });
-                        this.src = "assets/images/icons/icons8-add-to-favorites-96.png";
                     }
                 }
             });
