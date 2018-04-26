@@ -301,7 +301,7 @@ function showComments(list) {
 function addOneComment(comment) {
     API.getBackpack(function (err, data) {
         if (!err) {
-            var html_code = Templates.Comment_v2({comment: comment});
+            var html_code = Templates.Comment_OneItem({comment: comment});
             var $node = $(html_code);
             Backpack = data.backpack;
             var backpack;

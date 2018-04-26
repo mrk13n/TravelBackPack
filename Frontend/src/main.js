@@ -18,10 +18,12 @@ $(function () {
             } else {
                 $('.glyphicon-user').css('display', 'block');
             }
-            setTimeout(function () {
-                $('.preloader').fadeOut('slow', function () {});
-                $('body').css('overflow-y', 'visible');
-            }, 1500);
+            $(window).load(function () {
+                setTimeout(function () {
+                    $('.preloader').fadeOut('slow', function () {});
+                    $('body').css('overflow-y', 'visible');
+                }, 1500);
+            });
             GetCities.initialiseCities();
             $('#searchBox').keyup(function (e) {
                 text = $('input.form-control').val();

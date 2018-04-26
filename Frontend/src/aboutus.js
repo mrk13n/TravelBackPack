@@ -12,10 +12,13 @@ $(function() {
                 $('.glyphicon-user').css('display', 'block');
             }
 
-            setTimeout(function () {
-                $('.preloader').fadeOut('slow', function () {});
-                $('body').css('overflow-y', 'visible');
-            }, 1500);
+            $(window).load(function () {
+                setTimeout(function () {
+                    $('.preloader').fadeOut('slow', function () {});
+                    $('body').css('overflow-y', 'visible');
+                }, 1500);
+            });
+
             $("#team-scroll").click(function () {
                 scrollTo();
             });
