@@ -329,7 +329,7 @@ function showComments(list) {
 function addOneComment(comment) {
     API.getBackpack(function (err, data) {
         if (!err) {
-            var html_code = Templates.Comment_v2({comment: comment});
+            var html_code = Templates.Comment_OneItem({comment: comment});
             var $node = $(html_code);
             Backpack = data.backpack;
             var backpack;
@@ -348,13 +348,7 @@ function addOneComment(comment) {
                                     backpack: Backpack,
                                     city: comment.city
                                 };
-                                API.setBackpack(backpack, function (err, data) {
-                                    if (!err) {
-                                        if (data.success) {
-
-                                        }
-                                    }
-                                });
+                                API.setBackpack(backpack, function (err, data) {});
                                 this.src = "assets/images/icons/icons8-add-to-favorites-96.png";
                             }
                         }
@@ -366,13 +360,7 @@ function addOneComment(comment) {
                             city: comment.city,
                             add: true
                         };
-                        API.setBackpack(backpack, function (err, data) {
-                            if (!err) {
-                                if (data.success) {
-
-                                }
-                            }
-                        });
+                        API.setBackpack(backpack, function (err, data) {});
                         this.src = "assets/images/icons/icons8-star-filled-96.png";
                     }
                 });
