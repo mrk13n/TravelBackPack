@@ -4,7 +4,10 @@ var API = require('./API');
 var LogReg = require('./LogReg');
 var page = 'backpack';
 var $cities = $('#city-favourite-comments-container');
-var Backpack = getBackpack();
+var Backpack;
+var imageViewer = document.getElementById('fs-img-panel');
+var largeImg = document.getElementById("fs-img-block");
+var captionText = document.getElementById("fs-img-caption");
 
 $(function () {
     API.checkLogin(function (err, data) {
@@ -15,16 +18,26 @@ $(function () {
             } else {
                 $('.glyphicon-user').css('display', 'block');
             }
-            setTimeout(function () {
-                $('.preloader').fadeOut('slow', function () {});
-                $('body').css('overflow-y', 'visible');
-            }, 1500);
+            $(window).load(function () {
+                setTimeout(function () {
+                    $('.preloader').fadeOut('slow', function () {});
+                    $('body').css('overflow-y', 'visible');
+                }, 1500);
+            });
 
-            var pack = getBackpack();
-            if (pack !== null) {
-                if(pack.length === 0){
-                    document.getElementById("footer").style.marginTop = "100px";
-                }
+            if (data.login) {
+                API.getBackpack(function (err, data) {
+                   if (!err) {
+                       Backpack = data.backpack;
+                       if (Backpack.length !== 0) {
+                           initializeFavorites(Backpack);
+                       } else {
+                           //Empty backpack
+                       }
+                   }
+                });
+            } else {
+                //Not login
             }
 
             $("#favourites-scroll").click(function(){
@@ -60,21 +73,19 @@ $(function () {
                     $('body').css('overflow-y', 'visible');
                 }, 2200);
             });
-
-            initializeFavorites();
         }
     });
 });
 
-function initializeFavorites() {
+function initializeFavorites(Backpack) {
     var cities = getCities(Backpack);
-    showCities(cities);
+    showCities(cities, Backpack);
 }
 
-function showCities(list) {
+function showCities(list, Backpack) {
     $cities.html("");
 
-    function showOne(city) {
+    function showOne(city, Backpack) {
         var html_code = Templates.FavouriteCityComments({city: city});
 
         var $node = $(html_code);
@@ -86,7 +97,8 @@ function showCities(list) {
             $('.preloader').css('opacity', '0.75').fadeIn('slow', function () {});
             $('.city-backpack-card').css('visibility', 'hidden');
             setTimeout(function () {
-                initializeComments(city);
+                //Кнопка появилась
+                initializeComments(city, Backpack);
                 $cities.addClass('animated fadeInDown');
                 $('.loader').fadeOut('slow', function () {});
                 setTimeout(function () {
@@ -102,11 +114,12 @@ function showCities(list) {
         });
     }
 
-    list.forEach(showOne);
+    for (var i = 0; i < list.length; i++) {
+        showOne(list[i], Backpack);
+    }
 }
 
 function getCities(back) {
-    console.log(back);
     var cities = [];
     if (back !== null) {
         for (var i = 0; i < back.length; i++) {
@@ -129,41 +142,54 @@ function getCities(back) {
     return cities;
 }
 
-function getBackpack() {
-    var back = Storage.get('backpack');
-    if (back === null) {
-        back = [];
-    }
-    return back;
-}
-
-function initializeComments(city) {
+function initializeComments(city, Backpack) {
     var comments = [];
     $cities.html("");
-    if (Backpack !== null) {
-        for (var i = 0; i < Backpack.length; i++) {
-            if (city.city === Backpack[i].city) {
-                comments.push(Backpack[i]);
-            }
+    //Назад і кнопка зникає
+    for (var i = 0; i < Backpack.length; i++) {
+        if (city.city === Backpack[i].city) {
+            comments.push(Backpack[i]);
         }
     }
     if (comments.length !== 0) {
-        for (var i = 0; i < comments.length; i++) {
-            var html_code2 = Templates.Comment_v2({comment: comments[i]});
+        for (var j = 0; j < comments.length; j++) {
+            var n = j;
+            console.log(comments);
+            var html_code2 = Templates.Comment_v2({comment: comments[j]});
             var $node2 = $(html_code2);
             $cities.append($node2);
-            var k = i;
-            $node2.find('.favorite').click(function () {
-                removeFromStorrage(Backpack, k);
-                initializeComments(city);
+            $node2.find('.favourite-btn').click(function () {
+                for (var k = 0; k < Backpack.length; k++) {
+                    if (comments[n].comment._id == Backpack[k].comment._id) {
+                        comments[n].favorite =!comments[n].favorite;
+                        Backpack.splice(k, 1);
+                        var backpack = {
+                            backpack: Backpack,
+                            city: comments[n].city
+                        };
+                        API.setBackpack(backpack, function (err, data) {
+                            if (!err) {
+                                if (data.success) {
+                                    initializeComments(city, Backpack);
+                                }
+                            }
+                        });
+                    }
+                }
+            });
+            $node2.find('.uploaded-img').click(function () {
+                imageViewer.style.display = "block";
+                $('body').css('overflow-y', 'hidden');
+                largeImg.src = this.src;
+                captionText.innerHTML = this.alt;
+                var spanClose = document.getElementById('img-panel-close');
+                spanClose.onclick = function() {
+                    imageViewer.style.display = "none";
+                    $('body').css('overflow-y', 'visible');
+                }
             });
         }
     } else {
-        initializeFavorites();
+        initializeFavorites(Backpack);
     }
-}
-
-function removeFromStorrage(back, i) {
-    back.splice(i, 1);
-    Storage.set('backpack', back);
 }

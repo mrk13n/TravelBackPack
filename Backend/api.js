@@ -319,7 +319,8 @@ exports.setBackpack = function (req, res) {
                     function () {}
                 );
                 res.send({
-                    success: true
+                    success: true,
+                    backpack: backpack
                 });
             }
         }
