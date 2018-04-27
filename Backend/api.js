@@ -134,8 +134,8 @@ exports.getComment = function (req, res) {
 
     //Видалення усіх коментарів
     //  Comments.remove(function (err, comments) {
-    //      console.log("comments removed")
-    //  });
+      //    console.log("comments removed")
+      //});
 };
 
 exports.login = function (req, res) {
