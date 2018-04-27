@@ -1159,12 +1159,12 @@ var ejs = require('ejs');
 exports.City_OneItem = ejs.compile("<div class=\"col-sm-6 col-md-4 card\">\n    <div class=\"thumbnail city-card\" id=\"<%= city.id%>\" style=\"background-image: url(<%= city.icon%>)\">\n        <h2 class=\"thumb-name\"><%= city.city%></h2>\n    </div>\n</div>");
 exports.Comment_OneItem = ejs.compile("<div class=\"col-md-6 col-xs-12\">\n    <div class=\"col-xs-2\">\n        <div class=\"thumbnail thumb_city user-photo\">\n            <img class=\"img-responsive\" src=\"assets/images/avatars/<%= comment.comment.avatar%>.png\">\n        </div>\n    </div>\n\n    <div class=\"col-xs-10\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span><span class=\"favorite <% if (comment.favorite) { %> glyphicon glyphicon-star <% } else { %> glyphicon glyphicon-star-empty <% } %>\"></span>\n            </div>\n            <div class=\"panel-body\">\n                <%= comment.comment.comment%>\n            </div>\n        </div>\n    </div>\n</div>");
 exports.InfoCity = ejs.compile("<div class=\"new-city-hero container\" style=\"background-image: url(<%= city.icon%>)\">\n    <div class=\"title-box\">\n        <p>experience</p>\n        <h1 class=\"city-name\"><%= city.city%></h1>\n        <p>like a local</p>\n    </div>\n    <div class=\"local-search-container\">\n        <div class=\"search-box\">\n            <input type=\"text\" class=\"form-control\" id=\"searchBox\" placeholder=\"\">\n        </div>\n        <div class=\"btn search-button\">\n            <p class=\"search-icon\">Search</p>\n        </div>\n    </div>\n</div>");
-exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\n    <div class=\"col-xs-10 full-width\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <span class=\"nickname\"></span>\n            </div>\n            <div class=\"panel-heading\">\n                <input type=\"text\" class=\"form-control location-name\" placeholder=\"Enter location name\">\n                <br>\n                <input type=\"text\" class=\"form-control location\" placeholder=\"Enter location coordinates\">\n            </div>\n            <div class=\"panel-body\">\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\" maxlength=\"400\"></textarea>\n                <form enctype=\"multipart/form-data\">\n                    <input id=\"img-1\" type=\"file\" name=\"photo\" accept=\".png, .jpg, jpeg\" multiple />\n                    <input id=\"img-2\" type=\"file\" name=\"photo\" accept=\".png, .jpg, jpeg\" multiple />\n                    <span class=\"btn btn-send\">\n                        Send <span class=\"glyphicon glyphicon-send\"></span>\n                    </span>\n                </form>\n            </div>\n        </div>\n    </div>\n</div>");
+exports.SendForm = ejs.compile("<div class=\"col-md-6 col-xs-12\" id=\"form\">\n    <div class=\"col-xs-10 full-width\">\n        <div class=\"panel panel-default\">\n            <div class=\"panel-heading\">\n                <span class=\"nickname\"></span>\n            </div>\n            <div class=\"panel-heading\">\n                <input type=\"text\" class=\"form-control location-name\" placeholder=\"Enter location name\">\n                <br>\n                <input type=\"text\" class=\"form-control location-address\" placeholder=\"Enter location coordinates\">\n            </div>\n            <div class=\"panel-body\">\n                <textarea class=\"form-control\" rows=\"5\" id=\"comment\" maxlength=\"400\"></textarea>\n                <form enctype=\"multipart/form-data\">\n                    <input id=\"img-1\" type=\"file\" name=\"photo\" accept=\".png, .jpg, jpeg\" multiple />\n                    <input id=\"img-2\" type=\"file\" name=\"photo\" accept=\".png, .jpg, jpeg\" multiple />\n                    <span class=\"btn btn-send\">\n                        Send <span class=\"glyphicon glyphicon-send\"></span>\n                    </span>\n                </form>\n            </div>\n        </div>\n    </div>\n</div>");
 exports.weatherBlock = ejs.compile(" <div class=\"weather\">\n                <div class=\"info\">\n                    <div class=\"temp\">\n                        <small>TEMPERATURE: </small><%= weather.main.temp %>°C\n                    </div>\n                    <div class=\"wind\">\n                        <small>WIND SPEED: </small> <%= weather.wind.speed %>m/s\n                    </div>\n                    <div class=\"description\">\n                        <%= weather.weather[0].description %>\n                    </div>\n                </div>\n                </div>\n");
 exports.additionalInfo = ejs.compile("\n    <div class=\"weather\">\n        <div class=\"info\">\n            <div class=\"temp\">\n                <small>COUNTRY: </small><%= city.country %>\n            </div>\n            <div class=\"wind\">\n                <small>CURRENCY: </small> <%= city.currency %>\n            </div>\n            <div class=\"description\">\n                <small>POPULATION: </small><%= city.population %>\n            </div>\n        </div>\n    </div>");
 exports.FavouriteCityComments = ejs.compile("<div class=\"col-sm-6 col-md-4 backpack-card\">\n    <div class=\"animated thumbnail city-backpack-card\">\n        <h2 class=\"back-name\"><%= city.city%></h2>\n    </div>\n</div>");
 exports.OneFavouriteComment = ejs.compile("<div class=\"panel panel-default\">\n    <div class=\"panel-heading\">\n        <strong><%= comment.comment.nickname%></strong> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span><span class=\"favorite glyphicon glyphicon-star\"></span>\n    </div>\n    <div class=\"panel-body\">\n        <%= comment.comment.comment%>\n    </div>\n</div>");
-exports.Comment_v2 = ejs.compile("<div class=\"comment col-md-6 clo-xs-12\">\n    <div class=\"comment-info-block row\">\n        <div class=\"user-photo col-xs-2\">\n            <img class=\"img-responsive user-photo\" src=\"assets/images/avatars/<%= comment.comment.avatar%>.png\">\n        </div>\n        <div class=\"comment-body col-xs-6\">\n            <div class=\"comment-place-name\">\n                <strong><%= comment.comment.location_name%></strong>\n            </div>\n            <div class=\"comment-author-info\">\n                <%= comment.comment.nickname%> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span>\n            </div>\n        </div>\n        <div class=\"buttons-bar col-xs-4\">\n            <div class=\"fav-count\"><%= comment.comment.count%></div>\n            <img class=\"favourite-btn\" src=\" <% if (comment.favorite) { %> assets/images/icons/icons8-star-filled-96.png <% } else { %> assets/images/icons/icons8-add-to-favorites-96.png <% } %>\">\n        </div>\n    </div>\n    <div class=\"row\"></div>\n    <div class=\"comment-text-body row\">\n        <%= comment.comment.comment%>\n    </div>\n    <div class=\"media-bar row\">\n        <img class=\"uploaded-img\" alt=\"<%= comment.comment.location_name%>\" src=\"https://maps.googleapis.com/maps/api/staticmap?center=<%= comment.comment.location%>&zoom=17&size=640x425&markers=color:red%7C<%= comment.comment.location%>&path=weight:3%7Ccolor:blue%7Cenc:{coaHnetiVjM??_SkM??~R&key=AIzaSyBLsX-VTDp7C82k5Jaw5HnPHxRcCuX9OMQ\">\n        <img class=\"uploaded-img\" alt=\"<%= comment.comment.location_name%>\" src=\"<%= comment.comment.img_1%>\">\n        <img class=\"uploaded-img\" alt=\"<%= comment.comment.location_name%>\" src=\"<%= comment.comment.img_2%>\">\n    </div>\n</div>");
+exports.Comment_v2 = ejs.compile("<div class=\"comment col-md-6 clo-xs-12\">\n    <div class=\"comment-info-block row\">\n        <div class=\"user-photo col-xs-2\">\n            <img class=\"img-responsive user-photo\" src=\"assets/images/avatars/<%= comment.comment.avatar%>.png\">\n        </div>\n        <div class=\"comment-body col-xs-6\">\n            <div class=\"comment-place-name\">\n                <strong><%= comment.comment.location_name%></strong>\n            </div>\n            <div class=\"comment-author-info\">\n                <%= comment.comment.nickname%> <span class=\"text-muted\">commented <%= comment.comment.day%>-<%= comment.comment.month%>-<%= comment.comment.year%></span>\n            </div>\n        </div>\n        <div class=\"buttons-bar col-xs-4\">\n            <div class=\"fav-count\"><%= comment.comment.count%></div>\n            <img class=\"favourite-btn\" src=\" <% if (comment.favorite) { %> assets/images/icons/icons8-star-filled-96.png <% } else { %> assets/images/icons/icons8-add-to-favorites-96.png <% } %>\">\n        </div>\n    </div>\n    <div class=\"row\"></div>\n    <div class=\"comment-text-body row\">\n        <%= comment.comment.comment%>\n    </div>\n    <div class=\"media-bar row\">\n        <img class=\"uploaded-img\" alt=\"<%= comment.comment.location_name%>\" src=\"https://maps.googleapis.com/maps/api/staticmap?center=<%= comment.comment.location%>&zoom=17&size=640x425&markers=color:red%7C<%= comment.comment.location%>&path=weight:3%7Ccolor:blue%7Cenc:{coaHnetiVjM??_SkM??~R&key=AIzaSyBLsX-VTDp7C82k5Jaw5HnPHxRcCuX9OMQ\">\n        <img class=\"uploaded-img\" id=\"img1\" alt=\"<%= comment.comment.location_name%>\" src=\"<%= comment.comment.img_1%>\">\n        <img class=\"uploaded-img\" id=\"img2\" alt=\"<%= comment.comment.location_name%>\" src=\"<%= comment.comment.img_2%>\">\n    </div>\n</div>");
 },{"ejs":11}],8:[function(require,module,exports){
 var Storage = require('./LocalStorage');
 var Templates = require('./Teamplates');
@@ -1263,6 +1263,16 @@ $(function () {
                $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
            });
 
+           $("#filter-transport").click(function () {
+               // $('.preloader').fadeIn('slow', function () {});
+               allNotActive();
+               $("#filter-transport").addClass("active");
+               type = 'transport';
+               initializeComments(type, data.user);
+               $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
+               $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
+           });
+
 
            if (data.login) {
                $('.btn-add').click(function () {
@@ -1307,6 +1317,7 @@ function allNotActive() {
     $("#filter-house").removeClass("active");
     $("#filter-hitchhiking").removeClass("active");
     $("#filter-abandoned").removeClass("active");
+    $("#filter-transport").removeClass("active");
 }
 
 function scrollTo() {
@@ -1402,61 +1413,78 @@ function initializeComments(type, username) {
                 var comment = $('#comment').val();
                 var nickname = username;
                 var location_name = $('.location-name').val();
-                var location = $('.location').val();
+                var address = $('.location-address').val();
+                var location;
+                if (img1 == ""){
+                    img1 = "assets/images/preview_beautiful-nature-view.jpg";
+                }
+                if (img2 == ""){
+                    img2 = "assets/images/preview_beautiful-nature-view.jpg";
+                }
                 var img_1 = img1;
                 var img_2 = img2;
                 var fav_count = 0;
-                var send_comment = {
-                    nickname: nickname,
-                    comment: comment,
-                    location_name: location_name,
-                    location: location,
-                    city: current_city.city,
-                    year: yyyy,
-                    day: dd,
-                    month: mm,
-                    type: type,
-                    count: fav_count,
-                    img_1: img_1,
-                    img_2: img_2
-                };
-                if (comment.length !== 0) {
-                    $('.preloader').css('opacity', '0.75').fadeIn('slow', function () {});
-                    API.writeComment(send_comment, function (err, data) {
-                        var one = {
-                            icon: current_city.icon,
-                            city: current_city.city,
-                            favorite: false,
-                            comment: data
-                        };
-                        $node2.slideToggle(400);
-                        setTimeout(function () {
-                            addOneComment(one);
-                            $('.loader').fadeOut('slow', function () {});
-                            $('.success').fadeIn('slow', function () {});
+                geocoder = new google.maps.Geocoder();
+                geocoder.geocode( { 'address': address}, function(results, status) {
+                    if (status == 'OK') {
+                        location = results[0].geometry.location.lat().toString();
+                        location = location+','+ results[0].geometry.location.lng().toString();
+                    } else {
+                        location = "fail";
+                        alert('Geocode was not successful for the following reason: ' + status);
+                    }
+                    var send_comment = {
+                        nickname: nickname,
+                        comment: comment,
+                        location_name: location_name,
+                        location: location,
+                        city: current_city.city,
+                        year: yyyy,
+                        day: dd,
+                        month: mm,
+                        type: type,
+                        count: fav_count,
+                        img_1: img_1,
+                        img_2: img_2
+                    };
+                    if (comment.length !== 0) {
+                        $('.preloader').css('opacity', '0.75').fadeIn('slow', function () {});
+                        API.writeComment(send_comment, function (err, data) {
+                            var one = {
+                                icon: current_city.icon,
+                                city: current_city.city,
+                                favorite: false,
+                                comment: data
+                            };
+                            $node2.slideToggle(400);
                             setTimeout(function () {
-                                $('.preloader').fadeOut('slow', function () {});
-                            }, 750);
-                            setTimeout(function () {
-                                $('.preloader').css('opacity', '1');
-                                $('.loader').show();
-                                $('.success').hide();
-                            }, 1500);
-                        }, 500);
-                        $node2.find('#comment').val('');
-                        $node2.find('.location-name').val('');
-                        $node2.find('.location').val('');
-                        $node2.find('#img-1').val('');
-                        $node2.find('#img-2').val('');
-                        img1 = '';
-                        img2 = '';
-                        icon_position = true;
-                        $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
-                        $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
-                    });
-                } else {
-                    //Empty comment
-                }
+                                addOneComment(one);
+                                $('.loader').fadeOut('slow', function () {});
+                                $('.success').fadeIn('slow', function () {});
+                                setTimeout(function () {
+                                    $('.preloader').fadeOut('slow', function () {});
+                                }, 750);
+                                setTimeout(function () {
+                                    $('.preloader').css('opacity', '1');
+                                    $('.loader').show();
+                                    $('.success').hide();
+                                }, 1500);
+                            }, 500);
+                            $node2.find('#comment').val('');
+                            $node2.find('.location-name').val('');
+                            $node2.find('.location-address').val('');
+                            $node2.find('#img-1').val('');
+                            $node2.find('#img-2').val('');
+                            img1 = '';
+                            img2 = '';
+                            icon_position = true;
+                            $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
+                            $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
+                        });
+                    } else {
+                        //Empty comment
+                    }
+                });
             });
         }
     });
@@ -1476,6 +1504,7 @@ function addOneComment(comment) {
             $node.hide();
             $node.insertBefore('#form');
             $node.slideToggle(300);
+
             if (data.auth) {
                 $node.find('.favourite-btn').click(function () {
                     if (comment.favorite) {
@@ -1518,7 +1547,6 @@ function addOneComment(comment) {
             } else {
                 $node.find('.favourite-btn').css('cursor', 'not-allowed');
             }
-
             //  Full size image viewer
             $node.find('.uploaded-img').click(function () {
                 imageViewer.style.display = "block";
@@ -1554,6 +1582,7 @@ function readFile2() {
         fr.readAsDataURL(this.files[0]);
     }
 }
+
 },{"./API":1,"./Cities/GetInfoCity":3,"./Cities/GetLocalSearch":4,"./LocalStorage":5,"./LogReg":6,"./Teamplates":7}],9:[function(require,module,exports){
 (function () {
 	// Basil

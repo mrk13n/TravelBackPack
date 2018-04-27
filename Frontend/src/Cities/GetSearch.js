@@ -6,6 +6,9 @@ var trash = require('./AdditionalArrays').trash;
 var wrong_symbols = require('./AdditionalArrays').wrong_symbols;
 var stemmer = require('stemmer');
 var $comments = $('#comments');
+var imageViewer = document.getElementById('fs-img-panel');
+var largeImg = document.getElementById("fs-img-block");
+var captionText = document.getElementById("fs-img-caption");
 
 function getComments(text) {
     API.getCitiesList(function (err, data) {
@@ -248,6 +251,19 @@ function showOneComment(comment) {
         }
         comment.favorite =!comment.favorite;
     });
+
+    $node.find('.uploaded-img').click(function () {
+        imageViewer.style.display = "block";
+        $('body').css('overflow-y', 'hidden');
+        largeImg.src = this.src;
+        captionText.innerHTML = this.alt;
+        var spanClose = document.getElementById('img-panel-close');
+        spanClose.onclick = function() {
+            imageViewer.style.display = "none";
+            $('body').css('overflow-y', 'visible');
+        }
+    });
+
 }
 
 function saveComment(back) {

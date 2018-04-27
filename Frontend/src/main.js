@@ -28,7 +28,6 @@ $(function () {
                 if (e.keyCode === 13) {
                     getComments.getComments(text);
                     comment_list = getComments.getComments(text);
-                    console.log(comment_list);
                 }
             });
             $("#city-scroll").click(function(){
