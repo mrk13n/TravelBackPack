@@ -247,15 +247,15 @@ function initializeComments(type, username) {
                 var location_name = $('.location-name').val();
                 var address = $('.location-address').val();
                 var location;
+                var img_1 = img1;
+                var img_2 = img2;
+                var fav_count = 0;
                 if (img1 == ""){
                     img1 = "assets/images/preview_beautiful-nature-view.jpg";
                 }
                 if (img2 == ""){
                     img2 = "assets/images/preview_beautiful-nature-view.jpg";
                 }
-                var img_1 = img1;
-                var img_2 = img2;
-                var fav_count = 0;
                 geocoder = new google.maps.Geocoder();
                 geocoder.geocode( { 'address': address}, function(results, status) {
                     if (status == 'OK') {
