@@ -45,15 +45,15 @@ var cities = [
         country: "Spain",
         currency: "EUR",
         population: "1,609m",
-        icon: 'assets/images/barselona.jpg'
+        icon: 'assets/images/barcelona.jpg'
     },
     {
         id: 7,
-        city: "Kyiv",
+        city: "Kiev",
         country: "Ukraine",
         currency: "UAH",
         population: "2,804m",
-        icon: 'assets/images/kyiv.jpg'
+        icon: 'assets/images/kiev.jpg'
     },
 
     {
@@ -101,11 +101,11 @@ var cities = [
     /*
     {
         id: 13,
-        city: "Kyiv",
+        city: "Kiev",
         country: "Ukraine",
         currency: "UAH",
         population: "2,804m",
-        icon: 'assets/images/kyiv.jpg'
+        icon: 'assets/images/kiev.jpg'
     },
     {
         id: 14,

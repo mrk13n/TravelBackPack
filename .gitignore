@@ -1,6 +1,3 @@
 node_modules/
 .idea/
-Frontend/www/assets/js/aboutus.js
-Frontend/www/assets/js/backpack.js
-Frontend/www/assets/js/city.js
-Frontend/www/assets/js/main.js
+Frontend/www/assets/js/

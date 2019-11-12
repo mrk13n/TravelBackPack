@@ -484,7 +484,7 @@ function initializeComments(city, Backpack) {
 	};
 
 	// Version
-	Basil.version = '0.4.4';
+	Basil.version = '0.4.10';
 
 	// Utils
 	Basil.utils = {
@@ -528,7 +528,8 @@ function initializeComments(city, Backpack) {
 			return Object.prototype.toString.call(obj).replace(/^\[object\s(.*)\]$/, function ($0, $1) { return $1.toLowerCase(); });
 		}
 	};
-  	// Add some isType methods: isArguments, isBoolean, isFunction, isString, isArray, isNumber, isDate, isRegExp, isUndefined, isNull.
+
+	// Add some isType methods: isArguments, isBoolean, isFunction, isString, isArray, isNumber, isDate, isRegExp, isUndefined, isNull.
 	var types = ['Arguments', 'Boolean', 'Function', 'String', 'Array', 'Number', 'Date', 'RegExp', 'Undefined', 'Null'];
 	for (var i = 0; i < types.length; i++) {
 		Basil.utils['is' + types[i]] = (function (type) {
@@ -545,7 +546,8 @@ function initializeComments(city, Backpack) {
 	Basil.options = Basil.utils.extend({
 		namespace: 'b45i1',
 		storages: ['local', 'cookie', 'session', 'memory'],
-		expireDays: 365
+		expireDays: 365,
+		keyDelimiter: '.'
 	}, window.Basil ? window.Basil.options : {});
 
 	// Storage
@@ -563,20 +565,20 @@ function initializeComments(city, Backpack) {
 					return storages;
 				return Basil.utils.isString(storages) ? [storages] : [];
 			},
-			_toStoredKey = function (namespace, path) {
+			_toStoredKey = function (namespace, path, delimiter) {
 				var key = '';
 				if (_isValidKey(path)) {
 					key += path;
 				} else if (Basil.utils.isArray(path)) {
 					path = Basil.utils.isFunction(path.filter) ? path.filter(_isValidKey) : path;
-					key = path.join('.');
+					key = path.join(delimiter);
 				}
-				return key && _isValidKey(namespace) ? namespace + '.' + key : key;
+				return key && _isValidKey(namespace) ? namespace + delimiter + key : key;
  			},
-			_toKeyName = function (namespace, key) {
+			_toKeyName = function (namespace, key, delimiter) {
 				if (!_isValidKey(namespace))
 					return key;
-				return key.replace(new RegExp('^' + namespace + '.'), '');
+				return key.replace(new RegExp('^' + namespace + delimiter), '');
 			},
 			_toStoredValue = function (value) {
 				return JSON.stringify(value);
@@ -617,12 +619,12 @@ function initializeComments(city, Backpack) {
 					}
 				}
 			},
-			keys: function (namespace) {
+			keys: function (namespace, delimiter) {
 				var keys = [];
 				for (var i = 0, key; i < window[this.engine].length; i++) {
 					key = window[this.engine].key(i);
 					if (!namespace || key.indexOf(namespace) === 0)
-						keys.push(_toKeyName(namespace, key));
+						keys.push(_toKeyName(namespace, key, delimiter));
 				}
 				return keys;
 			}
@@ -660,18 +662,18 @@ function initializeComments(city, Backpack) {
 						this.remove(key);
 				}
 			},
-			keys: function (namespace) {
+			keys: function (namespace, delimiter) {
 				var keys = [];
 				for (var key in this._hash)
 					if (!namespace || key.indexOf(namespace) === 0)
-						keys.push(_toKeyName(namespace, key));
+						keys.push(_toKeyName(namespace, key, delimiter));
 				return keys;
 			}
 		};
 
 		// cookie storage
 		_storages.cookie = {
-			check: function () {
+			check: function (options) {
 				if (!navigator.cookieEnabled)
 					return false;
 				if (window.self !== window.top) {
@@ -679,6 +681,17 @@ function initializeComments(city, Backpack) {
 					var cookie = 'thirdparty.check=' + Math.round(Math.random() * 1000);
 					document.cookie = cookie + '; path=/';
 					return document.cookie.indexOf(cookie) !== -1;
+				}
+				// if cookie secure activated, ensure it works (not the case if we are in http only)
+				if (options && options.secure) {
+					try {
+						this.set(_salt, _salt, options);
+						var hasSecurelyPersited = this.get(_salt) === _salt;
+						this.remove(_salt);
+						return hasSecurelyPersited;
+					} catch (error) {
+						return false;
+					}
 				}
 				return true;
 			},
@@ -704,7 +717,7 @@ function initializeComments(city, Backpack) {
 				}
 				// handle secure
 				if (options.secure === true) {
-					cookie += '; secure';
+					cookie += '; Secure';
 				}
 				document.cookie = cookie + '; path=/';
 			},
@@ -726,7 +739,7 @@ function initializeComments(city, Backpack) {
 				this.set(key, '', { expireDays: -1 });
 				// remove cookie from upper domains
 				var domainParts = document.domain.split('.');
-				for (var i = domainParts.length; i >= 0; i--) {
+				for (var i = domainParts.length; i > 1; i--) {
 					this.set(key, '', { expireDays: -1, domain: '.' + domainParts.slice(- i).join('.') });
 				}
 			},
@@ -739,7 +752,7 @@ function initializeComments(city, Backpack) {
 						this.remove(key);
 				}
 			},
-			keys: function (namespace) {
+			keys: function (namespace, delimiter) {
 				if (!this.check())
 					throw Error('cookies are disabled');
 				var keys = [],
@@ -748,7 +761,7 @@ function initializeComments(city, Backpack) {
 					cookie = cookies[i].replace(/^\s*/, '');
 					key = decodeURIComponent(cookie.substr(0, cookie.indexOf('=')));
 					if (!namespace || key.indexOf(namespace) === 0)
-						keys.push(_toKeyName(namespace, key));
+						keys.push(_toKeyName(namespace, key, delimiter));
 				}
 				return keys;
 			}
@@ -767,12 +780,12 @@ function initializeComments(city, Backpack) {
 			},
 			check: function (storage) {
 				if (this.support(storage))
-					return _storages[storage].check();
+					return _storages[storage].check(this.options);
 				return false;
 			},
 			set: function (key, value, options) {
 				options = Basil.utils.extend({}, this.options, options);
-				if (!(key = _toStoredKey(options.namespace, key)))
+				if (!(key = _toStoredKey(options.namespace, key, options.keyDelimiter)))
 					return false;
 				value = options.raw === true ? value : _toStoredValue(value);
 				var where = null;
@@ -795,7 +808,7 @@ function initializeComments(city, Backpack) {
 			},
 			get: function (key, options) {
 				options = Basil.utils.extend({}, this.options, options);
-				if (!(key = _toStoredKey(options.namespace, key)))
+				if (!(key = _toStoredKey(options.namespace, key, options.keyDelimiter)))
 					return null;
 				var value = null;
 				Basil.utils.tryEach(_toStoragesArray(options.storages), function (storage, index) {
@@ -810,7 +823,7 @@ function initializeComments(city, Backpack) {
 			},
 			remove: function (key, options) {
 				options = Basil.utils.extend({}, this.options, options);
-				if (!(key = _toStoredKey(options.namespace, key)))
+				if (!(key = _toStoredKey(options.namespace, key, options.keyDelimiter)))
 					return;
 				Basil.utils.tryEach(_toStoragesArray(options.storages), function (storage) {
 					_storages[storage].remove(key);
@@ -833,7 +846,7 @@ function initializeComments(city, Backpack) {
 				options = Basil.utils.extend({}, this.options, options);
 				var map = {};
 				Basil.utils.tryEach(_toStoragesArray(options.storages), function (storage) {
-					Basil.utils.each(_storages[storage].keys(options.namespace), function (key) {
+					Basil.utils.each(_storages[storage].keys(options.namespace, options.keyDelimiter), function (key) {
 						map[key] = Basil.utils.isArray(map[key]) ? map[key] : [];
 						map[key].push(storage);
 					}, this);
@@ -919,12 +932,14 @@ var utils = require('./utils');
 
 var scopeOptionWarned = false;
 var _VERSION_STRING = require('../package.json').version;
+var _DEFAULT_OPEN_DELIMITER = '<';
+var _DEFAULT_CLOSE_DELIMITER = '>';
 var _DEFAULT_DELIMITER = '%';
 var _DEFAULT_LOCALS_NAME = 'locals';
 var _NAME = 'ejs';
 var _REGEX_STRING = '(<%%|%%>|<%=|<%-|<%_|<%#|<%|%>|-%>|_%>)';
 var _OPTS_PASSABLE_WITH_DATA = ['delimiter', 'scope', 'context', 'debug', 'compileDebug',
-  'client', '_with', 'rmWhitespace', 'strict', 'filename'];
+  'client', '_with', 'rmWhitespace', 'strict', 'filename', 'async'];
 // We don't allow 'cache' option to be passed in the data obj for
 // the normal `render` call, but this is where Express 2 & 3 put it
 // so we make an exception for `renderFile`
@@ -1004,9 +1019,10 @@ function getIncludePath(path, options) {
   var includePath;
   var filePath;
   var views = options.views;
+  var match = /^[A-Za-z]+:\\|^\//.exec(path);
 
   // Abs path
-  if (path.charAt(0) == '/') {
+  if (match && match.length) {
     includePath = exports.resolveInclude(path.replace(/^\/*/,''), options.root || '/', true);
   }
   // Relative paths
@@ -1234,6 +1250,7 @@ function stripSemi(str){
  *
  * @return {(TemplateFunction|ClientFunction)}
  * Depending on the value of `opts.client`, either type might be returned.
+ * Note that the return type of the function also depends on the value of `opts.async`.
  * @public
  */
 
@@ -1266,7 +1283,8 @@ exports.compile = function compile(template, opts) {
  * @param {String}   template EJS template
  * @param {Object}  [data={}] template data
  * @param {Options} [opts={}] compilation and rendering options
- * @return {String}
+ * @return {(String|Promise<String>)}
+ * Return value type depends on `opts.async`.
  * @public
  */
 
@@ -1354,6 +1372,12 @@ exports.renderFile = function () {
  * @public
  */
 
+/**
+ * EJS template class
+ * @public
+ */
+exports.Template = Template;
+
 exports.clearCache = function () {
   exports.cache.reset();
 };
@@ -1368,18 +1392,22 @@ function Template(text, opts) {
   this.source = '';
   this.dependencies = [];
   options.client = opts.client || false;
-  options.escapeFunction = opts.escape || utils.escapeXML;
+  options.escapeFunction = opts.escape || opts.escapeFunction || utils.escapeXML;
   options.compileDebug = opts.compileDebug !== false;
   options.debug = !!opts.debug;
   options.filename = opts.filename;
+  options.openDelimiter = opts.openDelimiter || exports.openDelimiter || _DEFAULT_OPEN_DELIMITER;
+  options.closeDelimiter = opts.closeDelimiter || exports.closeDelimiter || _DEFAULT_CLOSE_DELIMITER;
   options.delimiter = opts.delimiter || exports.delimiter || _DEFAULT_DELIMITER;
   options.strict = opts.strict || false;
   options.context = opts.context;
   options.cache = opts.cache || false;
   options.rmWhitespace = opts.rmWhitespace;
   options.root = opts.root;
+  options.outputFunctionName = opts.outputFunctionName;
   options.localsName = opts.localsName || exports.localsName || _DEFAULT_LOCALS_NAME;
   options.views = opts.views;
+  options.async = opts.async;
 
   if (options.strict) {
     options._with = false;
@@ -1405,7 +1433,11 @@ Template.prototype = {
   createRegex: function () {
     var str = _REGEX_STRING;
     var delim = utils.escapeRegExpChars(this.opts.delimiter);
-    str = str.replace(/%/g, delim);
+    var open = utils.escapeRegExpChars(this.opts.openDelimiter);
+    var close = utils.escapeRegExpChars(this.opts.closeDelimiter);
+    str = str.replace(/%/g, delim)
+      .replace(/</g, open)
+      .replace(/>/g, close);
     return new RegExp(str);
   },
 
@@ -1416,10 +1448,14 @@ Template.prototype = {
     var prepended = '';
     var appended = '';
     var escapeFn = opts.escapeFunction;
+    var ctor;
 
     if (!this.source) {
       this.generateSource();
       prepended += '  var __output = [], __append = __output.push.bind(__output);' + '\n';
+      if (opts.outputFunctionName) {
+        prepended += '  var ' + opts.outputFunctionName + ' = __append;' + '\n';
+      }
       if (opts._with !== false) {
         prepended +=  '  with (' + opts.localsName + ' || {}) {' + '\n';
         appended += '  }' + '\n';
@@ -1458,7 +1494,25 @@ Template.prototype = {
     }
 
     try {
-      fn = new Function(opts.localsName + ', escapeFn, include, rethrow', src);
+      if (opts.async) {
+        // Have to use generated function for this, since in envs without support,
+        // it breaks in parsing
+        try {
+          ctor = (new Function('return (async function(){}).constructor;'))();
+        }
+        catch(e) {
+          if (e instanceof SyntaxError) {
+            throw new Error('This environment does not support async/await');
+          }
+          else {
+            throw e;
+          }
+        }
+      }
+      else {
+        ctor = Function;
+      }
+      fn = new ctor(opts.localsName + ', escapeFn, include, rethrow', src);
     }
     catch(e) {
       // istanbul ignore else
@@ -1469,6 +1523,10 @@ Template.prototype = {
         e.message += ' while compiling ejs\n\n';
         e.message += 'If the above error is not helpful, you may want to try EJS-Lint:\n';
         e.message += 'https://github.com/RyanZim/EJS-Lint';
+        if (!e.async) {
+          e.message += '\n';
+          e.message += 'Or, if you meant to create an async function, pass async: true as an option.';
+        }
       }
       throw e;
     }
@@ -1500,9 +1558,9 @@ Template.prototype = {
 
     if (opts.rmWhitespace) {
       // Have to use two separate replace here as `^` and `$` operators don't
-      // work well with `\r`.
+      // work well with `\r` and empty lines don't work well with the `m` flag.
       this.templateText =
-        this.templateText.replace(/\r/g, '').replace(/^\s+|\s+$/gm, '');
+        this.templateText.replace(/[\r\n]+/g, '\n').replace(/^\s+|\s+$/gm, '');
     }
 
     // Slurp spaces and tabs before <%_ and after _%>
@@ -1512,6 +1570,8 @@ Template.prototype = {
     var self = this;
     var matches = this.parseTemplateText();
     var d = this.opts.delimiter;
+    var o = this.opts.openDelimiter;
+    var c = this.opts.closeDelimiter;
 
     if (matches && matches.length) {
       matches.forEach(function (line, index) {
@@ -1523,12 +1583,12 @@ Template.prototype = {
         var includeSrc;
         // If this is an opening tag, check for closing tags
         // FIXME: May end up with some false positives here
-        // Better to store modes as k/v with '<' + delimiter as key
+        // Better to store modes as k/v with openDelimiter + delimiter as key
         // Then this can simply check against the map
-        if ( line.indexOf('<' + d) === 0        // If it is a tag
-          && line.indexOf('<' + d + d) !== 0) { // and is not escaped
+        if ( line.indexOf(o + d) === 0        // If it is a tag
+          && line.indexOf(o + d + d) !== 0) { // and is not escaped
           closing = matches[index + 2];
-          if (!(closing == d + '>' || closing == '-' + d + '>' || closing == '_' + d + '>')) {
+          if (!(closing == d + c || closing == '-' + d + c || closing == '_' + d + c)) {
             throw new Error('Could not find matching close tag for "' + line + '".');
           }
         }
@@ -1536,7 +1596,7 @@ Template.prototype = {
         if ((include = line.match(/^\s*include\s+(\S+)/))) {
           opening = matches[index - 1];
           // Must be in EVAL or RAW mode
-          if (opening && (opening == '<' + d || opening == '<' + d + '-' || opening == '<' + d + '_')) {
+          if (opening && (opening == o + d || opening == o + d + '-' || opening == o + d + '_')) {
             includeOpts = utils.shallowCopy({}, self.opts);
             includeObj = includeSource(include[1], includeOpts);
             if (self.opts.compileDebug) {
@@ -1604,11 +1664,6 @@ Template.prototype = {
       line = line.replace(/^(?:\r\n|\r|\n)/, '');
       this.truncate = false;
     }
-    else if (this.opts.rmWhitespace) {
-      // rmWhitespace has already removed trailing spaces, just need
-      // to remove linebreaks
-      line = line.replace(/^\n/, '');
-    }
     if (!line) {
       return line;
     }
@@ -1629,35 +1684,37 @@ Template.prototype = {
   scanLine: function (line) {
     var self = this;
     var d = this.opts.delimiter;
+    var o = this.opts.openDelimiter;
+    var c = this.opts.closeDelimiter;
     var newLineCount = 0;
 
     newLineCount = (line.split('\n').length - 1);
 
     switch (line) {
-    case '<' + d:
-    case '<' + d + '_':
+    case o + d:
+    case o + d + '_':
       this.mode = Template.modes.EVAL;
       break;
-    case '<' + d + '=':
+    case o + d + '=':
       this.mode = Template.modes.ESCAPED;
       break;
-    case '<' + d + '-':
+    case o + d + '-':
       this.mode = Template.modes.RAW;
       break;
-    case '<' + d + '#':
+    case o + d + '#':
       this.mode = Template.modes.COMMENT;
       break;
-    case '<' + d + d:
+    case o + d + d:
       this.mode = Template.modes.LITERAL;
-      this.source += '    ; __append("' + line.replace('<' + d + d, '<' + d) + '")' + '\n';
+      this.source += '    ; __append("' + line.replace(o + d + d, o + d) + '")' + '\n';
       break;
-    case d + d + '>':
+    case d + d + c:
       this.mode = Template.modes.LITERAL;
-      this.source += '    ; __append("' + line.replace(d + d + '>', d + '>') + '")' + '\n';
+      this.source += '    ; __append("' + line.replace(d + d + c, d + c) + '")' + '\n';
       break;
-    case d + '>':
-    case '-' + d + '>':
-    case '_' + d + '>':
+    case d + c:
+    case '-' + d + c:
+    case '_' + d + c:
       if (this.mode == Template.modes.LITERAL) {
         this._addOutput(line);
       }
@@ -1741,6 +1798,7 @@ exports.__express = exports.renderFile;
 /* istanbul ignore else */
 if (require.extensions) {
   require.extensions['.ejs'] = function (module, flnm) {
+    console.log('Deprecated: this API will go away in EJS v2.8');
     var filename = flnm || /* istanbul ignore next */ module.filename;
     var options = {
       filename: filename,
@@ -1938,6 +1996,9 @@ exports.cache = {
   get: function (key) {
     return this._data[key];
   },
+  remove: function (key) {
+    delete this._data[key];
+  },
   reset: function () {
     this._data = {};
   }
@@ -1945,28 +2006,29 @@ exports.cache = {
 
 },{}],10:[function(require,module,exports){
 module.exports={
-  "_from": "ejs@^2.5.9",
-  "_id": "ejs@2.5.9",
+  "_from": "ejs@2.7.1",
+  "_id": "ejs@2.7.1",
   "_inBundle": false,
-  "_integrity": "sha512-GJCAeDBKfREgkBtgrYSf9hQy9kTb3helv0zGdzqhM7iAkW8FA/ZF97VQDbwFiwIT8MQLLOe5VlPZOEvZAqtUAQ==",
+  "_integrity": "sha512-kS/gEPzZs3Y1rRsbGX4UOSjtP/CeJP0CxSNZHYxGfVM/VgLcv0ZqM7C45YyTj2DI2g7+P9Dd24C+IMIg6D0nYQ==",
   "_location": "/ejs",
   "_phantomChildren": {},
   "_requested": {
-    "type": "range",
+    "type": "version",
     "registry": true,
-    "raw": "ejs@^2.5.9",
+    "raw": "ejs@2.7.1",
     "name": "ejs",
     "escapedName": "ejs",
-    "rawSpec": "^2.5.9",
+    "rawSpec": "2.7.1",
     "saveSpec": null,
-    "fetchSpec": "^2.5.9"
+    "fetchSpec": "2.7.1"
   },
   "_requiredBy": [
+    "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.9.tgz",
-  "_shasum": "7ba254582a560d267437109a68354112475b0ce5",
-  "_spec": "ejs@^2.5.9",
+  "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.7.1.tgz",
+  "_shasum": "5b5ab57f718b79d4aca9254457afecd36fa80228",
+  "_spec": "ejs@2.7.1",
   "_where": "/home/mrk13/Documents/GitHub/TravelBackPack",
   "author": {
     "name": "Matthew Eernisse",
@@ -2021,7 +2083,7 @@ module.exports={
     "lint": "eslint \"**/*.js\" Jakefile",
     "test": "jake test"
   },
-  "version": "2.5.9"
+  "version": "2.7.1"
 }
 
 },{}],11:[function(require,module,exports){

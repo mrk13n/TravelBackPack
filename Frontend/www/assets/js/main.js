@@ -1416,7 +1416,7 @@ function scrollTo() {
 	};
 
 	// Version
-	Basil.version = '0.4.4';
+	Basil.version = '0.4.10';
 
 	// Utils
 	Basil.utils = {
@@ -1460,7 +1460,8 @@ function scrollTo() {
 			return Object.prototype.toString.call(obj).replace(/^\[object\s(.*)\]$/, function ($0, $1) { return $1.toLowerCase(); });
 		}
 	};
-  	// Add some isType methods: isArguments, isBoolean, isFunction, isString, isArray, isNumber, isDate, isRegExp, isUndefined, isNull.
+
+	// Add some isType methods: isArguments, isBoolean, isFunction, isString, isArray, isNumber, isDate, isRegExp, isUndefined, isNull.
 	var types = ['Arguments', 'Boolean', 'Function', 'String', 'Array', 'Number', 'Date', 'RegExp', 'Undefined', 'Null'];
 	for (var i = 0; i < types.length; i++) {
 		Basil.utils['is' + types[i]] = (function (type) {
@@ -1477,7 +1478,8 @@ function scrollTo() {
 	Basil.options = Basil.utils.extend({
 		namespace: 'b45i1',
 		storages: ['local', 'cookie', 'session', 'memory'],
-		expireDays: 365
+		expireDays: 365,
+		keyDelimiter: '.'
 	}, window.Basil ? window.Basil.options : {});
 
 	// Storage
@@ -1495,20 +1497,20 @@ function scrollTo() {
 					return storages;
 				return Basil.utils.isString(storages) ? [storages] : [];
 			},
-			_toStoredKey = function (namespace, path) {
+			_toStoredKey = function (namespace, path, delimiter) {
 				var key = '';
 				if (_isValidKey(path)) {
 					key += path;
 				} else if (Basil.utils.isArray(path)) {
 					path = Basil.utils.isFunction(path.filter) ? path.filter(_isValidKey) : path;
-					key = path.join('.');
+					key = path.join(delimiter);
 				}
-				return key && _isValidKey(namespace) ? namespace + '.' + key : key;
+				return key && _isValidKey(namespace) ? namespace + delimiter + key : key;
  			},
-			_toKeyName = function (namespace, key) {
+			_toKeyName = function (namespace, key, delimiter) {
 				if (!_isValidKey(namespace))
 					return key;
-				return key.replace(new RegExp('^' + namespace + '.'), '');
+				return key.replace(new RegExp('^' + namespace + delimiter), '');
 			},
 			_toStoredValue = function (value) {
 				return JSON.stringify(value);
@@ -1549,12 +1551,12 @@ function scrollTo() {
 					}
 				}
 			},
-			keys: function (namespace) {
+			keys: function (namespace, delimiter) {
 				var keys = [];
 				for (var i = 0, key; i < window[this.engine].length; i++) {
 					key = window[this.engine].key(i);
 					if (!namespace || key.indexOf(namespace) === 0)
-						keys.push(_toKeyName(namespace, key));
+						keys.push(_toKeyName(namespace, key, delimiter));
 				}
 				return keys;
 			}
@@ -1592,18 +1594,18 @@ function scrollTo() {
 						this.remove(key);
 				}
 			},
-			keys: function (namespace) {
+			keys: function (namespace, delimiter) {
 				var keys = [];
 				for (var key in this._hash)
 					if (!namespace || key.indexOf(namespace) === 0)
-						keys.push(_toKeyName(namespace, key));
+						keys.push(_toKeyName(namespace, key, delimiter));
 				return keys;
 			}
 		};
 
 		// cookie storage
 		_storages.cookie = {
-			check: function () {
+			check: function (options) {
 				if (!navigator.cookieEnabled)
 					return false;
 				if (window.self !== window.top) {
@@ -1611,6 +1613,17 @@ function scrollTo() {
 					var cookie = 'thirdparty.check=' + Math.round(Math.random() * 1000);
 					document.cookie = cookie + '; path=/';
 					return document.cookie.indexOf(cookie) !== -1;
+				}
+				// if cookie secure activated, ensure it works (not the case if we are in http only)
+				if (options && options.secure) {
+					try {
+						this.set(_salt, _salt, options);
+						var hasSecurelyPersited = this.get(_salt) === _salt;
+						this.remove(_salt);
+						return hasSecurelyPersited;
+					} catch (error) {
+						return false;
+					}
 				}
 				return true;
 			},
@@ -1636,7 +1649,7 @@ function scrollTo() {
 				}
 				// handle secure
 				if (options.secure === true) {
-					cookie += '; secure';
+					cookie += '; Secure';
 				}
 				document.cookie = cookie + '; path=/';
 			},
@@ -1658,7 +1671,7 @@ function scrollTo() {
 				this.set(key, '', { expireDays: -1 });
 				// remove cookie from upper domains
 				var domainParts = document.domain.split('.');
-				for (var i = domainParts.length; i >= 0; i--) {
+				for (var i = domainParts.length; i > 1; i--) {
 					this.set(key, '', { expireDays: -1, domain: '.' + domainParts.slice(- i).join('.') });
 				}
 			},
@@ -1671,7 +1684,7 @@ function scrollTo() {
 						this.remove(key);
 				}
 			},
-			keys: function (namespace) {
+			keys: function (namespace, delimiter) {
 				if (!this.check())
 					throw Error('cookies are disabled');
 				var keys = [],
@@ -1680,7 +1693,7 @@ function scrollTo() {
 					cookie = cookies[i].replace(/^\s*/, '');
 					key = decodeURIComponent(cookie.substr(0, cookie.indexOf('=')));
 					if (!namespace || key.indexOf(namespace) === 0)
-						keys.push(_toKeyName(namespace, key));
+						keys.push(_toKeyName(namespace, key, delimiter));
 				}
 				return keys;
 			}
@@ -1699,12 +1712,12 @@ function scrollTo() {
 			},
 			check: function (storage) {
 				if (this.support(storage))
-					return _storages[storage].check();
+					return _storages[storage].check(this.options);
 				return false;
 			},
 			set: function (key, value, options) {
 				options = Basil.utils.extend({}, this.options, options);
-				if (!(key = _toStoredKey(options.namespace, key)))
+				if (!(key = _toStoredKey(options.namespace, key, options.keyDelimiter)))
 					return false;
 				value = options.raw === true ? value : _toStoredValue(value);
 				var where = null;
@@ -1727,7 +1740,7 @@ function scrollTo() {
 			},
 			get: function (key, options) {
 				options = Basil.utils.extend({}, this.options, options);
-				if (!(key = _toStoredKey(options.namespace, key)))
+				if (!(key = _toStoredKey(options.namespace, key, options.keyDelimiter)))
 					return null;
 				var value = null;
 				Basil.utils.tryEach(_toStoragesArray(options.storages), function (storage, index) {
@@ -1742,7 +1755,7 @@ function scrollTo() {
 			},
 			remove: function (key, options) {
 				options = Basil.utils.extend({}, this.options, options);
-				if (!(key = _toStoredKey(options.namespace, key)))
+				if (!(key = _toStoredKey(options.namespace, key, options.keyDelimiter)))
 					return;
 				Basil.utils.tryEach(_toStoragesArray(options.storages), function (storage) {
 					_storages[storage].remove(key);
@@ -1765,7 +1778,7 @@ function scrollTo() {
 				options = Basil.utils.extend({}, this.options, options);
 				var map = {};
 				Basil.utils.tryEach(_toStoragesArray(options.storages), function (storage) {
-					Basil.utils.each(_storages[storage].keys(options.namespace), function (key) {
+					Basil.utils.each(_storages[storage].keys(options.namespace, options.keyDelimiter), function (key) {
 						map[key] = Basil.utils.isArray(map[key]) ? map[key] : [];
 						map[key].push(storage);
 					}, this);
@@ -1851,12 +1864,14 @@ var utils = require('./utils');
 
 var scopeOptionWarned = false;
 var _VERSION_STRING = require('../package.json').version;
+var _DEFAULT_OPEN_DELIMITER = '<';
+var _DEFAULT_CLOSE_DELIMITER = '>';
 var _DEFAULT_DELIMITER = '%';
 var _DEFAULT_LOCALS_NAME = 'locals';
 var _NAME = 'ejs';
 var _REGEX_STRING = '(<%%|%%>|<%=|<%-|<%_|<%#|<%|%>|-%>|_%>)';
 var _OPTS_PASSABLE_WITH_DATA = ['delimiter', 'scope', 'context', 'debug', 'compileDebug',
-  'client', '_with', 'rmWhitespace', 'strict', 'filename'];
+  'client', '_with', 'rmWhitespace', 'strict', 'filename', 'async'];
 // We don't allow 'cache' option to be passed in the data obj for
 // the normal `render` call, but this is where Express 2 & 3 put it
 // so we make an exception for `renderFile`
@@ -1936,9 +1951,10 @@ function getIncludePath(path, options) {
   var includePath;
   var filePath;
   var views = options.views;
+  var match = /^[A-Za-z]+:\\|^\//.exec(path);
 
   // Abs path
-  if (path.charAt(0) == '/') {
+  if (match && match.length) {
     includePath = exports.resolveInclude(path.replace(/^\/*/,''), options.root || '/', true);
   }
   // Relative paths
@@ -2166,6 +2182,7 @@ function stripSemi(str){
  *
  * @return {(TemplateFunction|ClientFunction)}
  * Depending on the value of `opts.client`, either type might be returned.
+ * Note that the return type of the function also depends on the value of `opts.async`.
  * @public
  */
 
@@ -2198,7 +2215,8 @@ exports.compile = function compile(template, opts) {
  * @param {String}   template EJS template
  * @param {Object}  [data={}] template data
  * @param {Options} [opts={}] compilation and rendering options
- * @return {String}
+ * @return {(String|Promise<String>)}
+ * Return value type depends on `opts.async`.
  * @public
  */
 
@@ -2286,6 +2304,12 @@ exports.renderFile = function () {
  * @public
  */
 
+/**
+ * EJS template class
+ * @public
+ */
+exports.Template = Template;
+
 exports.clearCache = function () {
   exports.cache.reset();
 };
@@ -2300,18 +2324,22 @@ function Template(text, opts) {
   this.source = '';
   this.dependencies = [];
   options.client = opts.client || false;
-  options.escapeFunction = opts.escape || utils.escapeXML;
+  options.escapeFunction = opts.escape || opts.escapeFunction || utils.escapeXML;
   options.compileDebug = opts.compileDebug !== false;
   options.debug = !!opts.debug;
   options.filename = opts.filename;
+  options.openDelimiter = opts.openDelimiter || exports.openDelimiter || _DEFAULT_OPEN_DELIMITER;
+  options.closeDelimiter = opts.closeDelimiter || exports.closeDelimiter || _DEFAULT_CLOSE_DELIMITER;
   options.delimiter = opts.delimiter || exports.delimiter || _DEFAULT_DELIMITER;
   options.strict = opts.strict || false;
   options.context = opts.context;
   options.cache = opts.cache || false;
   options.rmWhitespace = opts.rmWhitespace;
   options.root = opts.root;
+  options.outputFunctionName = opts.outputFunctionName;
   options.localsName = opts.localsName || exports.localsName || _DEFAULT_LOCALS_NAME;
   options.views = opts.views;
+  options.async = opts.async;
 
   if (options.strict) {
     options._with = false;
@@ -2337,7 +2365,11 @@ Template.prototype = {
   createRegex: function () {
     var str = _REGEX_STRING;
     var delim = utils.escapeRegExpChars(this.opts.delimiter);
-    str = str.replace(/%/g, delim);
+    var open = utils.escapeRegExpChars(this.opts.openDelimiter);
+    var close = utils.escapeRegExpChars(this.opts.closeDelimiter);
+    str = str.replace(/%/g, delim)
+      .replace(/</g, open)
+      .replace(/>/g, close);
     return new RegExp(str);
   },
 
@@ -2348,10 +2380,14 @@ Template.prototype = {
     var prepended = '';
     var appended = '';
     var escapeFn = opts.escapeFunction;
+    var ctor;
 
     if (!this.source) {
       this.generateSource();
       prepended += '  var __output = [], __append = __output.push.bind(__output);' + '\n';
+      if (opts.outputFunctionName) {
+        prepended += '  var ' + opts.outputFunctionName + ' = __append;' + '\n';
+      }
       if (opts._with !== false) {
         prepended +=  '  with (' + opts.localsName + ' || {}) {' + '\n';
         appended += '  }' + '\n';
@@ -2390,7 +2426,25 @@ Template.prototype = {
     }
 
     try {
-      fn = new Function(opts.localsName + ', escapeFn, include, rethrow', src);
+      if (opts.async) {
+        // Have to use generated function for this, since in envs without support,
+        // it breaks in parsing
+        try {
+          ctor = (new Function('return (async function(){}).constructor;'))();
+        }
+        catch(e) {
+          if (e instanceof SyntaxError) {
+            throw new Error('This environment does not support async/await');
+          }
+          else {
+            throw e;
+          }
+        }
+      }
+      else {
+        ctor = Function;
+      }
+      fn = new ctor(opts.localsName + ', escapeFn, include, rethrow', src);
     }
     catch(e) {
       // istanbul ignore else
@@ -2401,6 +2455,10 @@ Template.prototype = {
         e.message += ' while compiling ejs\n\n';
         e.message += 'If the above error is not helpful, you may want to try EJS-Lint:\n';
         e.message += 'https://github.com/RyanZim/EJS-Lint';
+        if (!e.async) {
+          e.message += '\n';
+          e.message += 'Or, if you meant to create an async function, pass async: true as an option.';
+        }
       }
       throw e;
     }
@@ -2432,9 +2490,9 @@ Template.prototype = {
 
     if (opts.rmWhitespace) {
       // Have to use two separate replace here as `^` and `$` operators don't
-      // work well with `\r`.
+      // work well with `\r` and empty lines don't work well with the `m` flag.
       this.templateText =
-        this.templateText.replace(/\r/g, '').replace(/^\s+|\s+$/gm, '');
+        this.templateText.replace(/[\r\n]+/g, '\n').replace(/^\s+|\s+$/gm, '');
     }
 
     // Slurp spaces and tabs before <%_ and after _%>
@@ -2444,6 +2502,8 @@ Template.prototype = {
     var self = this;
     var matches = this.parseTemplateText();
     var d = this.opts.delimiter;
+    var o = this.opts.openDelimiter;
+    var c = this.opts.closeDelimiter;
 
     if (matches && matches.length) {
       matches.forEach(function (line, index) {
@@ -2455,12 +2515,12 @@ Template.prototype = {
         var includeSrc;
         // If this is an opening tag, check for closing tags
         // FIXME: May end up with some false positives here
-        // Better to store modes as k/v with '<' + delimiter as key
+        // Better to store modes as k/v with openDelimiter + delimiter as key
         // Then this can simply check against the map
-        if ( line.indexOf('<' + d) === 0        // If it is a tag
-          && line.indexOf('<' + d + d) !== 0) { // and is not escaped
+        if ( line.indexOf(o + d) === 0        // If it is a tag
+          && line.indexOf(o + d + d) !== 0) { // and is not escaped
           closing = matches[index + 2];
-          if (!(closing == d + '>' || closing == '-' + d + '>' || closing == '_' + d + '>')) {
+          if (!(closing == d + c || closing == '-' + d + c || closing == '_' + d + c)) {
             throw new Error('Could not find matching close tag for "' + line + '".');
           }
         }
@@ -2468,7 +2528,7 @@ Template.prototype = {
         if ((include = line.match(/^\s*include\s+(\S+)/))) {
           opening = matches[index - 1];
           // Must be in EVAL or RAW mode
-          if (opening && (opening == '<' + d || opening == '<' + d + '-' || opening == '<' + d + '_')) {
+          if (opening && (opening == o + d || opening == o + d + '-' || opening == o + d + '_')) {
             includeOpts = utils.shallowCopy({}, self.opts);
             includeObj = includeSource(include[1], includeOpts);
             if (self.opts.compileDebug) {
@@ -2536,11 +2596,6 @@ Template.prototype = {
       line = line.replace(/^(?:\r\n|\r|\n)/, '');
       this.truncate = false;
     }
-    else if (this.opts.rmWhitespace) {
-      // rmWhitespace has already removed trailing spaces, just need
-      // to remove linebreaks
-      line = line.replace(/^\n/, '');
-    }
     if (!line) {
       return line;
     }
@@ -2561,35 +2616,37 @@ Template.prototype = {
   scanLine: function (line) {
     var self = this;
     var d = this.opts.delimiter;
+    var o = this.opts.openDelimiter;
+    var c = this.opts.closeDelimiter;
     var newLineCount = 0;
 
     newLineCount = (line.split('\n').length - 1);
 
     switch (line) {
-    case '<' + d:
-    case '<' + d + '_':
+    case o + d:
+    case o + d + '_':
       this.mode = Template.modes.EVAL;
       break;
-    case '<' + d + '=':
+    case o + d + '=':
       this.mode = Template.modes.ESCAPED;
       break;
-    case '<' + d + '-':
+    case o + d + '-':
       this.mode = Template.modes.RAW;
       break;
-    case '<' + d + '#':
+    case o + d + '#':
       this.mode = Template.modes.COMMENT;
       break;
-    case '<' + d + d:
+    case o + d + d:
       this.mode = Template.modes.LITERAL;
-      this.source += '    ; __append("' + line.replace('<' + d + d, '<' + d) + '")' + '\n';
+      this.source += '    ; __append("' + line.replace(o + d + d, o + d) + '")' + '\n';
       break;
-    case d + d + '>':
+    case d + d + c:
       this.mode = Template.modes.LITERAL;
-      this.source += '    ; __append("' + line.replace(d + d + '>', d + '>') + '")' + '\n';
+      this.source += '    ; __append("' + line.replace(d + d + c, d + c) + '")' + '\n';
       break;
-    case d + '>':
-    case '-' + d + '>':
-    case '_' + d + '>':
+    case d + c:
+    case '-' + d + c:
+    case '_' + d + c:
       if (this.mode == Template.modes.LITERAL) {
         this._addOutput(line);
       }
@@ -2673,6 +2730,7 @@ exports.__express = exports.renderFile;
 /* istanbul ignore else */
 if (require.extensions) {
   require.extensions['.ejs'] = function (module, flnm) {
+    console.log('Deprecated: this API will go away in EJS v2.8');
     var filename = flnm || /* istanbul ignore next */ module.filename;
     var options = {
       filename: filename,
@@ -2870,6 +2928,9 @@ exports.cache = {
   get: function (key) {
     return this._data[key];
   },
+  remove: function (key) {
+    delete this._data[key];
+  },
   reset: function () {
     this._data = {};
   }
@@ -2877,28 +2938,29 @@ exports.cache = {
 
 },{}],13:[function(require,module,exports){
 module.exports={
-  "_from": "ejs@^2.5.9",
-  "_id": "ejs@2.5.9",
+  "_from": "ejs@2.7.1",
+  "_id": "ejs@2.7.1",
   "_inBundle": false,
-  "_integrity": "sha512-GJCAeDBKfREgkBtgrYSf9hQy9kTb3helv0zGdzqhM7iAkW8FA/ZF97VQDbwFiwIT8MQLLOe5VlPZOEvZAqtUAQ==",
+  "_integrity": "sha512-kS/gEPzZs3Y1rRsbGX4UOSjtP/CeJP0CxSNZHYxGfVM/VgLcv0ZqM7C45YyTj2DI2g7+P9Dd24C+IMIg6D0nYQ==",
   "_location": "/ejs",
   "_phantomChildren": {},
   "_requested": {
-    "type": "range",
+    "type": "version",
     "registry": true,
-    "raw": "ejs@^2.5.9",
+    "raw": "ejs@2.7.1",
     "name": "ejs",
     "escapedName": "ejs",
-    "rawSpec": "^2.5.9",
+    "rawSpec": "2.7.1",
     "saveSpec": null,
-    "fetchSpec": "^2.5.9"
+    "fetchSpec": "2.7.1"
   },
   "_requiredBy": [
+    "#USER",
     "/"
   ],
-  "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.5.9.tgz",
-  "_shasum": "7ba254582a560d267437109a68354112475b0ce5",
-  "_spec": "ejs@^2.5.9",
+  "_resolved": "https://registry.npmjs.org/ejs/-/ejs-2.7.1.tgz",
+  "_shasum": "5b5ab57f718b79d4aca9254457afecd36fa80228",
+  "_spec": "ejs@2.7.1",
   "_where": "/home/mrk13/Documents/GitHub/TravelBackPack",
   "author": {
     "name": "Matthew Eernisse",
@@ -2953,7 +3015,7 @@ module.exports={
     "lint": "eslint \"**/*.js\" Jakefile",
     "test": "jake test"
   },
-  "version": "2.5.9"
+  "version": "2.7.1"
 }
 
 },{}],14:[function(require,module,exports){
@@ -3371,14 +3433,11 @@ process.chdir = function (dir) {
 process.umask = function() { return 0; };
 
 },{}],16:[function(require,module,exports){
-'use strict';
+'use strict'
 
-module.exports = stemmer;
+module.exports = stemmer
 
-/* Character code for `y`. */
-var CC_Y = 'y'.charCodeAt(0);
-
-/* Standard suffix manipulations. */
+// Standard suffix manipulations.
 var step2list = {
   ational: 'ate',
   tional: 'tion',
@@ -3401,7 +3460,7 @@ var step2list = {
   iviti: 'ive',
   biliti: 'ble',
   logi: 'log'
-};
+}
 
 var step3list = {
   icate: 'ic',
@@ -3411,149 +3470,136 @@ var step3list = {
   ical: 'ic',
   ful: '',
   ness: ''
-};
+}
 
-/* Consonant-vowel sequences. */
-var consonant = '[^aeiou]';
-var vowel = '[aeiouy]';
-var consonantSequence = '(' + consonant + '[^aeiouy]*)';
-var vowelSequence = '(' + vowel + '[aeiou]*)';
+// Consonant-vowel sequences.
+var consonant = '[^aeiou]'
+var vowel = '[aeiouy]'
+var consonants = '(' + consonant + '[^aeiouy]*)'
+var vowels = '(' + vowel + '[aeiou]*)'
 
-var MEASURE_GT_0 = new RegExp(
-  '^' + consonantSequence + '?' + vowelSequence + consonantSequence
-);
+var gt0 = new RegExp('^' + consonants + '?' + vowels + consonants)
+var eq1 = new RegExp(
+  '^' + consonants + '?' + vowels + consonants + vowels + '?$'
+)
+var gt1 = new RegExp('^' + consonants + '?(' + vowels + consonants + '){2,}')
+var vowelInStem = new RegExp('^' + consonants + '?' + vowel)
+var consonantLike = new RegExp('^' + consonants + vowel + '[^aeiouwxy]$')
 
-var MEASURE_EQ_1 = new RegExp(
-  '^' + consonantSequence + '?' + vowelSequence + consonantSequence +
-  vowelSequence + '?$'
-);
+// Exception expressions.
+var sfxLl = /ll$/
+var sfxE = /^(.+?)e$/
+var sfxY = /^(.+?)y$/
+var sfxIon = /^(.+?(s|t))(ion)$/
+var sfxEdOrIng = /^(.+?)(ed|ing)$/
+var sfxAtOrBlOrIz = /(at|bl|iz)$/
+var sfxEED = /^(.+?)eed$/
+var sfxS = /^.+?[^s]s$/
+var sfxSsesOrIes = /^.+?(ss|i)es$/
+var sfxMultiConsonantLike = /([^aeiouylsz])\1$/
+var step2 = new RegExp(
+  '^(.+?)(ational|tional|enci|anci|izer|bli|alli|entli|eli|ousli|ization|ation|ator|alism|iveness|fulness|ousness|aliti|iviti|biliti|logi)$'
+)
+var step3 = /^(.+?)(icate|ative|alize|iciti|ical|ful|ness)$/
+var step4 = new RegExp(
+  '^(.+?)(al|ance|ence|er|ic|able|ible|ant|ement|ment|ent|ou|ism|ate|iti|ous|ive|ize)$'
+)
 
-var MEASURE_GT_1 = new RegExp(
-  '^' + consonantSequence + '?' +
-  '(' + vowelSequence + consonantSequence + '){2,}'
-);
-
-var VOWEL_IN_STEM = new RegExp(
-  '^' + consonantSequence + '?' + vowel
-);
-
-var CONSONANT_LIKE = new RegExp(
-  '^' + consonantSequence + vowel + '[^aeiouwxy]$'
-);
-
-/* Exception expressions. */
-var SUFFIX_LL = /ll$/;
-var SUFFIX_E = /^(.+?)e$/;
-var SUFFIX_Y = /^(.+?)y$/;
-var SUFFIX_ION = /^(.+?(s|t))(ion)$/;
-var SUFFIX_ED_OR_ING = /^(.+?)(ed|ing)$/;
-var SUFFIX_AT_OR_BL_OR_IZ = /(at|bl|iz)$/;
-var SUFFIX_EED = /^(.+?)eed$/;
-var SUFFIX_S = /^.+?[^s]s$/;
-var SUFFIX_SSES_OR_IES = /^.+?(ss|i)es$/;
-var SUFFIX_MULTI_CONSONANT_LIKE = /([^aeiouylsz])\1$/;
-var STEP_2 = new RegExp(
-  '^(.+?)(ational|tional|enci|anci|izer|bli|alli|entli|eli|ousli|' +
-  'ization|ation|ator|alism|iveness|fulness|ousness|aliti|iviti|' +
-  'biliti|logi)$'
-);
-var STEP_3 = /^(.+?)(icate|ative|alize|iciti|ical|ful|ness)$/;
-var STEP_4 = new RegExp(
-  '^(.+?)(al|ance|ence|er|ic|able|ible|ant|ement|ment|ent|ou|ism|ate|' +
-  'iti|ous|ive|ize)$'
-);
-
-/* Stem `value`. */
+// Stem `value`.
+// eslint-disable-next-line complexity
 function stemmer(value) {
-  var firstCharacterWasLowerCaseY;
-  var match;
+  var firstCharacterWasLowerCaseY
+  var match
 
-  value = String(value).toLowerCase();
+  value = String(value).toLowerCase()
 
-  /* Exit early. */
+  // Exit early.
   if (value.length < 3) {
-    return value;
+    return value
   }
 
-  /* Detect initial `y`, make sure it never matches. */
-  if (value.charCodeAt(0) === CC_Y) {
-    firstCharacterWasLowerCaseY = true;
-    value = 'Y' + value.substr(1);
-  }
-
-  /* Step 1a. */
-  if (SUFFIX_SSES_OR_IES.test(value)) {
-    /* Remove last two characters. */
-    value = value.substr(0, value.length - 2);
-  } else if (SUFFIX_S.test(value)) {
-    /* Remove last character. */
-    value = value.substr(0, value.length - 1);
-  }
-
-  /* Step 1b. */
-  if (match = SUFFIX_EED.exec(value)) {
-    if (MEASURE_GT_0.test(match[1])) {
-      /* Remove last character. */
-      value = value.substr(0, value.length - 1);
-    }
-  } else if ((match = SUFFIX_ED_OR_ING.exec(value)) && VOWEL_IN_STEM.test(match[1])) {
-    value = match[1];
-
-    if (SUFFIX_AT_OR_BL_OR_IZ.test(value)) {
-      /* Append `e`. */
-      value += 'e';
-    } else if (SUFFIX_MULTI_CONSONANT_LIKE.test(value)) {
-      /* Remove last character. */
-      value = value.substr(0, value.length - 1);
-    } else if (CONSONANT_LIKE.test(value)) {
-      /* Append `e`. */
-      value += 'e';
-    }
-  }
-
-  /* Step 1c. */
-  if ((match = SUFFIX_Y.exec(value)) && VOWEL_IN_STEM.test(match[1])) {
-    /* Remove suffixing `y` and append `i`. */
-    value = match[1] + 'i';
-  }
-
-  /* Step 2. */
-  if ((match = STEP_2.exec(value)) && MEASURE_GT_0.test(match[1])) {
-    value = match[1] + step2list[match[2]];
-  }
-
-  /* Step 3. */
-  if ((match = STEP_3.exec(value)) && MEASURE_GT_0.test(match[1])) {
-    value = match[1] + step3list[match[2]];
-  }
-
-  /* Step 4. */
-  if (match = STEP_4.exec(value)) {
-    if (MEASURE_GT_1.test(match[1])) {
-      value = match[1];
-    }
-  } else if ((match = SUFFIX_ION.exec(value)) && MEASURE_GT_1.test(match[1])) {
-    value = match[1];
-  }
-
-  /* Step 5. */
+  // Detect initial `y`, make sure it never matches.
   if (
-    (match = SUFFIX_E.exec(value)) &&
-    (MEASURE_GT_1.test(match[1]) || (MEASURE_EQ_1.test(match[1]) && !CONSONANT_LIKE.test(match[1])))
+    value.charCodeAt(0) === 121 // Lowercase Y
   ) {
-    value = match[1];
+    firstCharacterWasLowerCaseY = true
+    value = 'Y' + value.substr(1)
   }
 
-  if (SUFFIX_LL.test(value) && MEASURE_GT_1.test(value)) {
-    value = value.substr(0, value.length - 1);
+  // Step 1a.
+  if (sfxSsesOrIes.test(value)) {
+    // Remove last two characters.
+    value = value.substr(0, value.length - 2)
+  } else if (sfxS.test(value)) {
+    // Remove last character.
+    value = value.substr(0, value.length - 1)
   }
 
-  /* Turn initial `Y` back to `y`. */
+  // Step 1b.
+  if ((match = sfxEED.exec(value))) {
+    if (gt0.test(match[1])) {
+      // Remove last character.
+      value = value.substr(0, value.length - 1)
+    }
+  } else if ((match = sfxEdOrIng.exec(value)) && vowelInStem.test(match[1])) {
+    value = match[1]
+
+    if (sfxAtOrBlOrIz.test(value)) {
+      // Append `e`.
+      value += 'e'
+    } else if (sfxMultiConsonantLike.test(value)) {
+      // Remove last character.
+      value = value.substr(0, value.length - 1)
+    } else if (consonantLike.test(value)) {
+      // Append `e`.
+      value += 'e'
+    }
+  }
+
+  // Step 1c.
+  if ((match = sfxY.exec(value)) && vowelInStem.test(match[1])) {
+    // Remove suffixing `y` and append `i`.
+    value = match[1] + 'i'
+  }
+
+  // Step 2.
+  if ((match = step2.exec(value)) && gt0.test(match[1])) {
+    value = match[1] + step2list[match[2]]
+  }
+
+  // Step 3.
+  if ((match = step3.exec(value)) && gt0.test(match[1])) {
+    value = match[1] + step3list[match[2]]
+  }
+
+  // Step 4.
+  if ((match = step4.exec(value))) {
+    if (gt1.test(match[1])) {
+      value = match[1]
+    }
+  } else if ((match = sfxIon.exec(value)) && gt1.test(match[1])) {
+    value = match[1]
+  }
+
+  // Step 5.
+  if (
+    (match = sfxE.exec(value)) &&
+    (gt1.test(match[1]) ||
+      (eq1.test(match[1]) && !consonantLike.test(match[1])))
+  ) {
+    value = match[1]
+  }
+
+  if (sfxLl.test(value) && gt1.test(value)) {
+    value = value.substr(0, value.length - 1)
+  }
+
+  // Turn initial `Y` back to `y`.
   if (firstCharacterWasLowerCaseY) {
-    value = 'y' + value.substr(1);
+    value = 'y' + value.substr(1)
   }
 
-  return value;
+  return value
 }
 
 },{}]},{},[8]);
