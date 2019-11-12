@@ -1,6 +1,6 @@
-//var API_URL = 'http://localhost:4040';
+const API_URL = '127.0.0.1';
 
-function backendGet(url, callback) {
+function backendGet(API_URL, callback) {
     $.ajax({
         url: url,
         type: 'GET',
