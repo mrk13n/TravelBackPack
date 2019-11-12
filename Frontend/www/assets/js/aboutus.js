@@ -1,9 +1,9 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-//var API_URL = 'http://localhost:4040';
+const API_URL = '127.0.0.1:4040';
 
-function backendGet(url, callback) {
+function backendGet(API_URL, callback) {
     $.ajax({
-        url: url,
+        url: API_URL,
         type: 'GET',
         success: function(data){
             callback(null, data);
@@ -14,9 +14,9 @@ function backendGet(url, callback) {
     })
 }
 
-function backendPost(url, data, callback) {
+function backendPost(API_URL, data, callback) {
     $.ajax({
-        url: url,
+        url: API_URL,
         type: 'POST',
         contentType : 'application/json',
         data: JSON.stringify(data),
