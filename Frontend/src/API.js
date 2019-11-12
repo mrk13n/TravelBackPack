@@ -1,8 +1,8 @@
-const API_URL = '127.0.0.1';
+const API_URL = '127.0.0.1:80';
 
 function backendGet(API_URL, callback) {
     $.ajax({
-        url: url,
+        url: API_URL,
         type: 'GET',
         success: function(data){
             callback(null, data);
@@ -13,9 +13,9 @@ function backendGet(API_URL, callback) {
     })
 }
 
-function backendPost(url, data, callback) {
+function backendPost(API_URL, data, callback) {
     $.ajax({
-        url: url,
+        url: API_URL,
         type: 'POST',
         contentType : 'application/json',
         data: JSON.stringify(data),
