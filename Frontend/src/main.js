@@ -20,7 +20,7 @@ $(function () {
             }
             $(window).load(function () {
                 setTimeout(function () {
-                    $('.preloader').fadeOut('slow', function () {});
+                    $('.preloader').fadeOut('slow');
                     $('body').css('overflow-y', 'visible');
                 }, 1500);
             });
