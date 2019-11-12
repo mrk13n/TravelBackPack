@@ -95,6 +95,16 @@ $(function () {
                $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
            });
 
+           $("#filter-transport").click(function () {
+               // $('.preloader').fadeIn('slow', function () {});
+               allNotActive();
+               $("#filter-transport").addClass("active");
+               type = 'transport';
+               initializeComments(type, data.user);
+               $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
+               $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
+           });
+
 
            if (data.login) {
                $('.btn-add').click(function () {
@@ -141,6 +151,7 @@ function allNotActive() {
     $("#filter-house").removeClass("active");
     $("#filter-hitchhiking").removeClass("active");
     $("#filter-abandoned").removeClass("active");
+    $("#filter-transport").removeClass("active");
 }
 
 function scrollTo() {
@@ -236,7 +247,8 @@ function initializeComments(type, username) {
                 var comment = $('#comment').val();
                 var nickname = username;
                 var location_name = $('.location-name').val();
-                var location = $('.location').val();
+                var address = $('.location-address').val();
+                var location;
                 var img_1 = img1;
                 var img_2 = img2;
                 var fav_count = 0;
@@ -300,10 +312,77 @@ function initializeComments(type, username) {
                             $('#helpLocationName').css('display', 'block');
                         }
                     }
+                    if (img1 == ""){
+                        img1 = "assets/images/preview_beautiful-nature-view.jpg";
+                    }
+                    if (img2 == ""){
+                        img2 = "assets/images/preview_beautiful-nature-view.jpg";
+                    }
+                    geocoder = new google.maps.Geocoder();
+                    geocoder.geocode( { 'address': address}, function(results, status) {
+                        if (status == 'OK') {
+                            location = results[0].geometry.location.lat().toString();
+                            location = location+','+ results[0].geometry.location.lng().toString();
+                        } else {
+                            location = "fail";
+                            alert('Geocode was not successful for the following reason: ' + status);
+                        }
+                        var send_comment = {
+                            nickname: nickname,
+                            comment: comment,
+                            location_name: location_name,
+                            location: location,
+                            city: current_city.city,
+                            year: yyyy,
+                            day: dd,
+                            month: mm,
+                            type: type,
+                            count: fav_count,
+                            img_1: img_1,
+                            img_2: img_2
+                        };
+                        if (comment.length !== 0) {
+                            $('.preloader').css('opacity', '0.75').fadeIn('slow', function () {});
+                            API.writeComment(send_comment, function (err, data) {
+                                var one = {
+                                    icon: current_city.icon,
+                                    city: current_city.city,
+                                    favorite: false,
+                                    comment: data
+                                };
+                                $node2.slideToggle(400);
+                                setTimeout(function () {
+                                    addOneComment(one);
+                                    $('.loader').fadeOut('slow', function () {});
+                                    $('.success').fadeIn('slow', function () {});
+                                    setTimeout(function () {
+                                        $('.preloader').fadeOut('slow', function () {});
+                                    }, 750);
+                                    setTimeout(function () {
+                                        $('.preloader').css('opacity', '1');
+                                        $('.loader').show();
+                                        $('.success').hide();
+                                    }, 1500);
+                                }, 500);
+                                $node2.find('#comment').val('');
+                                $node2.find('.location-name').val('');
+                                $node2.find('.location-address').val('');
+                                $node2.find('#img-1').val('');
+                                $node2.find('#img-2').val('');
+                                img1 = '';
+                                img2 = '';
+                                icon_position = true;
+                                $('#right').removeClass('glyphicon glyphicon-chevron-up img-circle');
+                                $('#right').addClass('glyphicon glyphicon-chevron-right img-circle');
+                            });
+                        } else {
+                            //Empty comment
+                        }
+                    });
                 }
             });
         }
-    });
+    })
 }
 
 function showComments(list) {
@@ -320,6 +399,7 @@ function addOneComment(comment) {
             $node.hide();
             $node.insertBefore('#form');
             $node.slideToggle(300);
+
             if (data.auth) {
                 $node.find('.favourite-btn').click(function () {
                     if (comment.favorite) {
@@ -350,7 +430,6 @@ function addOneComment(comment) {
             } else {
                 $node.find('.favourite-btn').css('cursor', 'not-allowed');
             }
-
             //  Full size image viewer
             $node.find('.uploaded-img').click(function () {
                 imageViewer.style.display = "block";
