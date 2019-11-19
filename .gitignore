@@ -1,4 +1,4 @@
 node_modules/
 .idea/
 Frontend/www/assets/js/
-./package-lock.json
+package-lock.json
