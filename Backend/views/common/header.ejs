@@ -17,15 +17,15 @@
                     <% } else if (aboutActive) { %>
                     <li id="team-scroll"><a>Our Team</a></li>
                     <% } %>
-                    <li><a href="/backpack.html">BackPack</a></li>
-                    <li><a href="/about.html">About us</a></li>
+                    <li><a href="/backpack">BackPack</a></li>
+                    <li><a href="/about">About us</a></li>
                     <li id="staff" ><a>Nice stuff</a></li>
                 </ul>
             </nav>
         </div>
         <div class="col-md-2 col-sm-1">
-            <span class="logined"><span class="glyphicon glyphicon-off" onClick="getElementById('exit-menu').style.display='block';"></span><span class="username">Hello, <strong class="name"></strong></span></span>
-            <span class="glyphicon glyphicon-user" onClick="getElementById('log-menu').style.display='block';"></span>
+            <span class="logined"><span class="glyphicon glyphicon-off"></span><span class="username">Hello, <strong class="name"></strong></span></span>
+            <span class="glyphicon glyphicon-user"></span>
         </div>
     </div>
 </div>
@@ -33,41 +33,54 @@
 <div id="log-menu">
     <div class="overlay"></div>
     <div class="visible">
+<!--        Login block-->
         <div class="inner-container" id="login">
-            <span class="glyphicon glyphicon-remove" onClick="getElementById('log-menu').style.display='none';"></span>
+            <span class="glyphicon glyphicon-remove"></span>
             <form role="form">
                 <div class="for-login form-group login-form">
                     <label>Login</label>
                     <input type="text" class="form-control" id="inputLogin" placeholder="Enter login">
                     <span id="helpLogin" class="help-block">User not found</span>
+                    <span id="helpLoginInvalid" class="help-block">Invalid login</span>
                 </div>
                 <div class="for-login form-group password-form">
                     <label>Password</label>
                     <input type="password" class="form-control" id="inputPassword" placeholder="Password">
                     <span id="helpPassword" class="help-block">Incorrect password</span>
+                    <span id="helpPasswordInvalid" class="help-block">Not less than 6 symbols</span>
                 </div>
                 <span class="btn btn-default log">Sign in</span>
-                <span class="btn btn-default to-reg" onClick="getElementById('login').style.display='none'; getElementById('registration').style.display='block';">Sign up</span>
+                <span class="btn btn-default to-reg">Sign up</span>
             </form>
         </div>
+<!--        Registration block-->
         <div class="inner-container" id="registration">
-            <span class="glyphicon glyphicon-remove" onClick="getElementById('log-menu').style.display='none';"></span>
+            <span class="glyphicon glyphicon-remove"></span>
             <form role="form">
                 <div class="for-registration form-group login-form">
                     <label>Login</label>
                     <input type="text" class="form-control" id="inputNewLogin" placeholder="Enter login">
                     <span id="helpNewLogin" class="help-block">User with this login is registered</span>
+                    <span id="helpNewLoginInvalid" class="help-block">Invalid login</span>
                 </div>
                 <div class="for-registration form-group email-form">
                     <label>Email</label>
                     <input type="text" class="form-control" id="inputNewEmail" placeholder="Enter email">
+                    <span id="helpNewEmail" class="help-block">User with this email is registered</span>
+                    <span id="helpNewEmailInvalid" class="help-block">Invalid email</span>
                 </div>
                 <div class="for-registration form-group password-form">
                     <label>Password</label>
                     <input type="password" class="form-control" id="inputNewPassword" placeholder="Password">
                     <span id="helpNewPassword" class="help-block">Not less than 6 symbols</span>
                 </div>
-                <span class="btn btn-default back" onClick="getElementById('login').style.display='block'; getElementById('registration').style.display='none';">Back</span>
+                <div class="for-registration form-group confirm-password-form">
+                    <label>Confirm password</label>
+                    <input type="password" class="form-control" id="inputNewConfirmPassword" placeholder="Confirm password">
+                    <span id="helpNewConfirmPassword" class="help-block">Passwords don`t match</span>
+                    <span id="helpNewConfirmPasswordInvalid" class="help-block">Not less than 6 symbols</span>
+                </div>
+                <span class="btn btn-default back">Back</span>
                 <span class="btn btn-default reg">Create account</span>
             </form>
         </div>
@@ -79,7 +92,7 @@
     <div class="visible-logout">
         <div class="inner-container" id="logout">
             <span class="exit">Do you want to exit?</span>
-            <span class="btn btn-default not-end" onClick="getElementById('exit-menu').style.display='none';">No</span>
+            <span class="btn btn-default not-end">No</span>
             <span class="btn btn-default end">Yes</span>
         </div>
     </div>
