@@ -22,6 +22,19 @@
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
 @import url(https://fonts.googleapis.com/css?family=Chewy);
 
+body{
+  overflow-x: hidden;
+  overflow-y: hidden;
+  font-family: 'Open Sans', sans-serif;
+}
+
+footer {
+  margin-top: 0;
+  p {
+    font-family: 'Satisfy', cursive;
+  }
+}
+
 .preloader {
   position: fixed;
   left: 0;
@@ -60,17 +73,6 @@
   }
 }
 
-body{
-  overflow-x: hidden;
-  overflow-y: hidden;
-  font-family: 'Open Sans', sans-serif;
-}
-footer {
-  margin-top: 0;
-  p {
-    font-family: 'Satisfy', cursive;
-  }
-}
 .text-about {
   p {
     font-family: 'Open Sans', sans-serif;
@@ -146,7 +148,6 @@ h2{
 .visible {
   background: #fff;
   position: fixed;
-  top: 25%;
   left: 25%;
   border-radius: 30px;
   overflow: hidden;
@@ -184,7 +185,7 @@ h2{
   padding: 30px;
 }
 
-#helpNewPassword, #helpNewLogin, #helpLogin, #helpPassword {
+#helpNewLogin, #helpNewLoginInvalid, #helpNewEmail, #helpNewEmailInvalid, #helpNewPassword, #helpNewConfirmPassword, #helpNewConfirmPasswordInvalid, #helpLogin, #helpLoginInvalid, #helpPasswordInvalid, #helpPassword {
   display: none;
 }
 

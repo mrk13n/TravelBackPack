@@ -1,21 +1,20 @@
-var Templates = require('../Teamplates');
-var Cities;
-var API = require('../API');
-var $cities = $("#cities");
-var Storage = require('../LocalStorage');
+const API = require('../API');
+const Templates = require('../Teamplates');
+const Storage = require('../LocalStorage');
+const $cities = $("#cities");
 
 function showCities(list) {
     $cities.html("");
 
     function showOneCity(city) {
-        var html_code = Templates.City_OneItem({city: city});
+        const html_code = Templates.City_OneItem({city: city});
 
-        var $node = $(html_code);
+        const $node = $(html_code);
 
         $node.find('.city-card').click(function () {
-            var id = this.id;
+            const id = this.id;
             Storage.set('id', id);
-            document.location.href = '/city.html'
+            document.location.href = '/city';
         });
 
         $cities.append($node);
@@ -24,12 +23,11 @@ function showCities(list) {
     list.forEach(showOneCity);
 }
 
-function initialiseCities() {
-    API.getCitiesList(function (err, data) {
-       if (!err) {
-           Cities = data;
-           showCities(Cities);
-       }
+async function initialiseCities() {
+    await API.getCitiesList(function (err, data) {
+        if (err) throw new Error(err);
+        showCities(data);
     });
 }
+
 exports.initialiseCities = initialiseCities;
