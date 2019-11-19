@@ -1,28 +1,18 @@
-var Cities = require('./data/Cities');
-var db = require('./database');
-var crypto = require('crypto');
-var Comments = db.Comments;
-var One_Comment = db.One_Comment;
-var Users = db.Users;
-
-
-function sha1(string) {
-    var sha1 = crypto.createHash('sha1');
-    sha1.update(string);
-    return sha1.digest('base64');
-}
+const Cities = require('./data/Cities');
+const db = require('./database');
+const bcrypt = require('bcrypt');
+const saltRounds  = 10;
+const Comments = db.Comments;
+const One_Comment = db.One_Comment;
+const Users = db.Users;
 
 exports.getCities = function(req, res) {
     res.send(Cities);
 };
 
 exports.checkLogin = function (req, res) {
-    //ВИдалення усіх користувачів
-    //  Users.remove(function (err, users) {
-    //      console.log("users removed")
-    //  });
-    var auth = false;
-    var username;
+    let auth = false;
+    let username;
     if (req.session.username) {
         auth = true;
         username = req.session.username;
@@ -31,6 +21,90 @@ exports.checkLogin = function (req, res) {
         login: auth,
         user: username
     })
+};
+
+exports.registration = function (req, res) {
+    const username = req.body.username;
+    const email = req.body.email;
+    const password = req.body.password;
+    const avatar = req.body.avatar;
+    const backpack = [];
+
+    Users.findOne(
+        {
+            username: username
+        },
+        function (err, user) {
+            if (err) throw new Error(err);
+            if (user) {
+                res.send({
+                    isExist: true
+                });
+            } else {
+                bcrypt.genSalt(saltRounds, function (err, salt) {
+                    bcrypt.hash(password, salt, function (err, hash) {
+                        const newUser = new Users({
+                            username: username,
+                            email: email,
+                            password: hash,
+                            avatar: avatar,
+                            backpack: backpack
+                        });
+
+                        newUser.save(function (err, user) {
+                            if (err) throw new Error(err);
+                            req.session.username = user.username;
+                            req.session.avatar = user.avatar;
+                            res.send({
+                                newUser: true,
+                            });
+                        });
+                    });
+                });
+            }
+        }
+    );
+};
+
+exports.login = function (req, res) {
+    const username = req.body.username;
+    const password = req.body.password;
+
+    Users.findOne(
+        {
+            username: username
+        },
+        async function (err, user) {
+            if (err) throw new Error(err);
+            if (user) {
+                const checkPassword = await bcrypt.compare(password, user.password);
+                if (checkPassword) {
+                    req.session.username = user.username;
+                    req.session.avatar = user.avatar;
+                    res.send({
+                        success: true
+                    });
+                } else {
+                    res.send({
+                        incorrectPassword: true
+                    });
+                }
+            } else {
+                res.send({
+                    notFound: true
+                });
+            }
+        }
+    );
+};
+
+exports.logout = function (req, res) {
+    req.session.destroy(function (err) {
+        if (err) throw new Error(err);
+        res.send({
+            end: true
+        });
+    });
 };
 
 exports.writeComment = function (req, res) {
@@ -136,89 +210,6 @@ exports.getComment = function (req, res) {
      // Comments.remove(function (err, comments) {
        //   console.log("comments removed")
       //});
-};
-
-exports.login = function (req, res) {
-  var username = req.body.username;
-  var password = req.body.password;
-  password = sha1(password);
-
-  Users.findOne(
-      {
-          username: username
-      },
-      function (err, user) {
-          if (user) {
-              var checkPassword = password === user.password;
-              if (checkPassword) {
-                  req.session.username = user.username;
-                  req.session.avatar = user.avatar;
-                  res.send({
-                      success: true
-                  });
-              } else {
-                  res.send({
-                      incorrectPassword: true
-                  });
-              }
-          } else {
-              res.send({
-                  notFound: true
-              });
-          }
-      }
-  );
-};
-
-exports.registration = function (req, res) {
-    var username = req.body.username;
-    var email = req.body.email;
-    var password = req.body.password;
-    var avatar = req.body.avatar;
-    var backpack = [];
-    password = sha1(password);
-
-    Users.findOne(
-        {
-            username: username
-        },
-        function (err, user) {
-            if (user) {
-                res.send({
-                    isExist: true
-                });
-            } else {
-                req.session.username = username;
-                req.session.avatar = avatar;
-                var newUser = new Users({
-                    username: username,
-                    email: email,
-                    password: password,
-                    avatar: avatar,
-                    backpack: backpack
-                });
-
-                newUser.save(function (err) {
-                   if (!err) {
-                       res.send({
-                           newUser: true
-                       });
-                   }
-                });
-            }
-        }
-    );
-};
-
-exports.logout = function (req, res) {
-  req.session.destroy(function (err) {
-      if (err) {
-          res.negotiate(err);
-      }
-      res.send({
-          end: true
-      });
-  });
 };
 
 exports.getBackpack = function (req, res) {

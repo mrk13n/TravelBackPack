@@ -1,19 +1,19 @@
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://127.0.0.1:27017/DataBase');
+const mongoose = require('mongoose');
+mongoose.connect('mongodb://127.0.0.1:27017/TravelBackPack');
 mongoose.Promise = global.Promise;
-var db = mongoose.connection;
+const db = mongoose.connection;
 
 db.on('error', function (err) {
     console.log('connection error:', err.message);
 });
-db.once('open', function callback () {
+db.once('open', function () {
     console.log("Connected to DB!");
 });
 
-var one_comment = new mongoose.Schema({
-    nickname: {type: String},
-    comment: {type: String},
-    location_name:{type:String},
+const one_comment = new mongoose.Schema({
+    nickname: {type: String, required: true},
+    comment: {type: String, required: true},
+    location_name:{type:String, required: true},
     location:{type:String},
     year: {type: String},
     day: {type: String},
@@ -26,22 +26,22 @@ var one_comment = new mongoose.Schema({
     users_liked: []
 });
 
-var comments = new mongoose.Schema({
-    city: {type: String, unique: true},
+const comments = new mongoose.Schema({
+    city: {type: String, unique: true, required: true},
     comments: [one_comment]
 });
 
-var userSchema = new mongoose.Schema({
-    username: {type: String, unique: true},
-    email: {type: String},
-    password: {type: String},
+const userSchema = new mongoose.Schema({
+    username: {type: String, unique: true, required: true},
+    email: {type: String, unique: true, required: true},
+    password: {type: String, required: true},
     avatar: {type: String},
     backpack: []
 });
 
-var Comments = mongoose.model('comments', comments);
-var One_Comment = mongoose.model('one_comment', one_comment);
-var Users = mongoose.model('users', userSchema);
+const Comments = mongoose.model('comments', comments);
+const One_Comment = mongoose.model('one_comment', one_comment);
+const Users = mongoose.model('users', userSchema);
 
 exports.Comments = Comments;
 exports.One_Comment = One_Comment;

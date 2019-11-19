@@ -1,10 +1,10 @@
-var express = require('express');
-var path = require('path');
-var morgan = require('morgan');
-var multer = require('multer');
-var bodyParser = require('body-parser');
-var session = require('express-session');
-var upload = require('express-fileupload');
+const express = require('express');
+const path = require('path');
+const morgan = require('morgan');
+const multer = require('multer');
+const bodyParser = require('body-parser');
+const session = require('express-session');
+const upload = require('express-fileupload');
 var uploadedImgArray = [];
 var imgURI;
 
@@ -22,8 +22,8 @@ var imgURI;
 // });
 
 function configureEndpoints(app) {
-    var pages = require('./pages');
-    var api = require('./api');
+    const pages = require('./pages');
+    const api = require('./api');
 
     app.post('/api/get-comments/', api.getComment);
     app.post('/api/write-comments/', api.writeComment);
@@ -36,15 +36,18 @@ function configureEndpoints(app) {
     app.get('/api/get-backpack/', api.getBackpack);
 
     app.get('/', pages.mainPage);
-    app.get('/city.html', pages.cityPage);
-    app.get('/backpack.html',pages.backpackPage);
-    app.get('/about.html', pages.aboutUs);
+    app.get('/city', pages.cityPage);
+    app.get('/backpack',pages.backpackPage);
+    app.get('/about', pages.aboutUs);
+    app.get('/home', function (req, res) {
+        res.redirect('/');
+    });
 
     app.use(express.static(path.join(__dirname, '../Frontend/www')));
 }
 
 function startServer(port) {
-    var app = express();
+    const app = express();
 
     app.set('views', path.join(__dirname, 'views'));
     app.set('view engine', 'ejs');

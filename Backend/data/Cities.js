@@ -1,4 +1,4 @@
-var cities = [
+const cities = [
     {
         id: 1,
         city: "Paris",
