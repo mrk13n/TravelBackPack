@@ -11,12 +11,12 @@
   "dependencies": {
     "basil": "0.0.5",
     "basil.js": "^0.4.10",
+    "bcrypt": "^3.0.7",
     "body-parser": "^1.19.0",
     "brfs": "^1.6.1",
     "connect": "^3.7.0",
     "cookie": "^0.3.1",
     "cookie-parser": "^1.4.4",
-    "crypto": "^1.0.1",
     "dirname": "^0.1.0",
     "ejs": "^2.7.1",
     "events": "^1.1.1",
