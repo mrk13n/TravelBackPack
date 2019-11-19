@@ -1,7 +1,6 @@
-const API_URL = '127.0.0.1:80';
-
-function backendGet(API_URL, callback) {
-    $.ajax({
+// const API_URL = '127.0.0.1:4040';
+async function backendGet(API_URL, callback) {
+    await $.ajax({
         url: API_URL,
         type: 'GET',
         success: function(data){
@@ -13,8 +12,8 @@ function backendGet(API_URL, callback) {
     })
 }
 
-function backendPost(API_URL, data, callback) {
-    $.ajax({
+async function backendPost(API_URL, data, callback) {
+    await $.ajax({
         url: API_URL,
         type: 'POST',
         contentType : 'application/json',
@@ -28,8 +27,24 @@ function backendPost(API_URL, data, callback) {
     })
 }
 
-exports.getCitiesList = function(callback) {
-    backendGet('/api/get-cities/', callback);
+exports.checkLogin = async function (callback) {
+    await backendGet('/api/check-login/', callback);
+};
+
+exports.getCitiesList = async function(callback) {
+    await backendGet('/api/get-cities/', callback);
+};
+
+exports.registration = async function (user, callback) {
+    await backendPost('/api/registration/', user, callback);
+};
+
+exports.login = async function (user, callback) {
+    await backendPost('/api/login/', user, callback);
+};
+
+exports.logout = async function (callback) {
+    await backendGet('/api/logout/', callback);
 };
 
 exports.getComments = function (city, callback) {
@@ -38,22 +53,6 @@ exports.getComments = function (city, callback) {
 
 exports.writeComment = function (comment, callback) {
   backendPost('/api/write-comments/', comment, callback);
-};
-
-exports.login = function (user, callback) {
-  backendPost('/api/login/', user, callback);
-};
-
-exports.registration = function (user, callback) {
-  backendPost('/api/registration/', user, callback);
-};
-
-exports.logout = function (callback) {
-    backendGet('/api/logout/', callback);
-};
-
-exports.checkLogin = function (callback) {
-  backendGet('/api/check-login/', callback);
 };
 
 exports.getBackpack = function (callback) {

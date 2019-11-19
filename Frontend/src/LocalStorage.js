@@ -1,4 +1,4 @@
-var basil = require('basil.js');
+let basil = require('basil.js');
 basil = new basil();
 
 exports.get = function (key) {
