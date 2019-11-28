@@ -3,14 +3,14 @@ const db = require('./database');
 const bcrypt = require('bcrypt');
 const saltRounds  = 10;
 const Comments = db.Comments;
-const One_Comment = db.One_Comment;
+const OneComment = db.OneComment;
 const Users = db.Users;
 
-exports.getCities = function(req, res) {
+exports.getCities = (req, res) => {
     res.send(Cities);
 };
 
-exports.checkLogin = function (req, res) {
+exports.checkLogin = (req, res) => {
     let auth = false;
     let username;
     if (req.session.username) {
@@ -23,7 +23,7 @@ exports.checkLogin = function (req, res) {
     })
 };
 
-exports.registration = function (req, res) {
+exports.registration = (req, res) => {
     const username = req.body.username;
     const email = req.body.email;
     const password = req.body.password;
@@ -34,15 +34,15 @@ exports.registration = function (req, res) {
         {
             username: username
         },
-        function (err, user) {
+        (err, user) => {
             if (err) throw new Error(err);
             if (user) {
                 res.send({
                     isExist: true
                 });
             } else {
-                bcrypt.genSalt(saltRounds, function (err, salt) {
-                    bcrypt.hash(password, salt, function (err, hash) {
+                bcrypt.genSalt(saltRounds, (err, salt) => {
+                    bcrypt.hash(password, salt, (err, hash) => {
                         const newUser = new Users({
                             username: username,
                             email: email,
@@ -51,7 +51,7 @@ exports.registration = function (req, res) {
                             backpack: backpack
                         });
 
-                        newUser.save(function (err, user) {
+                        newUser.save((err, user) => {
                             if (err) throw new Error(err);
                             req.session.username = user.username;
                             req.session.avatar = user.avatar;
@@ -66,7 +66,7 @@ exports.registration = function (req, res) {
     );
 };
 
-exports.login = function (req, res) {
+exports.login = (req, res) => {
     const username = req.body.username;
     const password = req.body.password;
 
@@ -74,7 +74,7 @@ exports.login = function (req, res) {
         {
             username: username
         },
-        async function (err, user) {
+        async (err, user) => {
             if (err) throw new Error(err);
             if (user) {
                 const checkPassword = await bcrypt.compare(password, user.password);
@@ -98,8 +98,8 @@ exports.login = function (req, res) {
     );
 };
 
-exports.logout = function (req, res) {
-    req.session.destroy(function (err) {
+exports.logout = (req, res) => {
+    req.session.destroy((err) => {
         if (err) throw new Error(err);
         res.send({
             end: true
@@ -107,114 +107,83 @@ exports.logout = function (req, res) {
     });
 };
 
-exports.writeComment = function (req, res) {
-    var nickname = req.body.nickname;
-    var comment = req.body.comment;
-    var location_name = req.body.location_name;
-    var location = req.body.location;
-    var city = req.body.city;
-    var year = req.body.year;
-    var day = req.body.day;
-    var month = req.body.month;
-    var type = req.body.type;
-    var avatar = req.session.avatar;
-    var count = req.body.count;
-    var img_1 = req.body.img_1;
-    var img_2 = req.body.img_2;
-    var current_comment;
+exports.writeComment = (req, res) => {
+    const nickname = req.body.nickname;
+    const comment = req.body.comment;
+    const locationName = req.body.locationName;
+    const city = req.body.city;
+    const date = req.body.date;
+    const type = req.body.type;
+    const avatar = req.session.avatar;
+    const img = req.body.img;
+    let currentComment = new OneComment({
+        nickname: nickname,
+        comment: comment,
+        locationName: locationName,
+        date: date,
+        type: type,
+        avatar: avatar,
+        img: img,
+        likes: []
+    });
 
     Comments.findOne(
         {
             city: city
         },
-        function (err, current_city) {
+        (err, current_city) => {
             if (current_city) {
-                current_comment = new One_Comment({
-                    nickname: nickname,
-                    comment: comment,
-                    location_name: location_name,
-                    location: location,
-                    year: year,
-                    day: day,
-                    month: month,
-                    type: type,
-                    avatar: avatar,
-                    count: count,
-                    img_1: img_1,
-                    img_2: img_2
-                });
-                var a = current_city.comments;
-                a.push(current_comment);
+                let comments = current_city.comments;
+                comments.push(currentComment);
                 Comments.update(
                     {
                         city: city
                     },
                     {
-                        comments: a
+                        comments: comments
                     },
-                    function () {}
+                    (err) => {
+                        if (err) throw new Error(err);
+                        res.send(currentComment);
+                    }
                 );
-                res.send(current_comment);
             } else {
-                current_comment = new One_Comment({
-                    nickname: nickname,
-                    comment: comment,
-                    location_name:location_name,
-                    location: location,
-                    year: year,
-                    day: day,
-                    month: month,
-                    type: type,
-                    avatar: avatar,
-                    count: count,
-                    img_1: img_1,
-                    img_2: img_2
-                });
-
-                var newCity = new Comments({
+                const newCity = new Comments({
                     city: city,
-                    comments: [current_comment]
+                    comments: [currentComment]
                 });
 
-                newCity.save(function (err) {
-                   if (!err) {
-                       res.send(current_comment);
-                   }
+                newCity.save((err) => {
+                    if (err) throw new Error(err);
+                    res.send(currentComment);
                 });
             }
         }
     );
 };
 
-exports.getComment = function (req, res) {
-    var city = req.body.city;
-    var comments = [];
+exports.getComments = (req, res) => {
+    const city = req.body.city;
+    const type = req.body.type;
+    let comments = [];
 
     Comments.findOne(
         {
             city: city
         },
-        function (err, current_city) {
+        (err, current_city) => {
+            if (err) throw new Error(err);
             if (current_city) {
-                comments = current_city.comments;
-                res.send(comments);
-            } else {
-                res.send({
-                    emptyForm: true
-                });
+                comments = current_city.comments.filter(oneComment => oneComment.type === type);
             }
+            res.send(comments);
         }
     );
-
-    //Видалення усіх коментарів
-     // Comments.remove(function (err, comments) {
-       //   console.log("comments removed")
-      //});
 };
 
-exports.getBackpack = function (req, res) {
-    var username = req.session.username;
-    var backpack = [];
+exports.getBackpack = (req, res) => {
+    const username = req.session.username;
+    let backpack = [];
     if (!username) {
         res.send({
             auth: false,
@@ -225,7 +194,8 @@ exports.getBackpack = function (req, res) {
             {
                 username: username
             },
-            function (err, user) {
+            (err, user) => {
+                if (err) throw new Error(err);
                 if (user) {
                     backpack = user.backpack;
                     res.send({
@@ -238,82 +208,112 @@ exports.getBackpack = function (req, res) {
     }
 };
 
-exports.setBackpack = function (req, res) {
-    var username = req.session.username;
-    var backpack = req.body.backpack;
-    var add = req.body.add;
-    var city = req.body.city;
-    var comments = [];
-    var liked_comment;
-    var liked_users = [];
-    var liked;
+exports.setBackpack = (req, res) => {
+    const username = req.session.username;
+    const likedComment = req.body.comment;
+    const city = req.body.city;
+    const add = req.body.add;
+    let userId;
+    let backpack = [];
+    let newBackpack = [];
+    let newComments = [];
+    let backpackComments = [];
+    let comments = [];
+
     Users.findOne(
         {
             username: username
         },
-        function (err, user) {
-            if (user) {
-                if (add) {
-                    Comments.findOne(
-                        {
-                            city: city
-                        },
-                        function (err, current_city) {
-                            if (current_city) {
-                                comments = current_city.comments;
-                                liked_comment = backpack[backpack.length-1].comment;
-                                for (var i = 0; i < comments.length; i++) {
-                                    if (comments[i]._id == liked_comment._id) {
-                                        liked_users = comments[i].users_liked;
-                                        liked = comments[i].count;
-                                        var find = false;
-                                        for (var j = 0; j < liked_users.length; j++) {
-                                            if (liked_users[j] === username) {
-                                                find = true;
-                                                break;
-                                            }
-                                        }
-                                        var new_comments = comments;
-                                        if (!find) {
-                                            liked_users.push(username);
-                                            liked++;
-                                            for (var k = 0; k < new_comments.length; k++) {
-                                                if (new_comments[k]._id == liked_comment._id) {
-                                                    new_comments[k].users_liked = liked_users;
-                                                    new_comments[k].count = liked;
-                                                    Comments.update(
-                                                        {
-                                                            city: city
-                                                        },
-                                                        {
-                                                            comments: new_comments
-                                                        },
-                                                        function () {}
-                                                    );
-                                                }
-                                            }
-                                        }
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                    );
-                }
-                Users.update(
-                    {
-                        username: username
-                    },
-                    {
-                        backpack: backpack
-                    },
-                    function () {}
-                );
+        (err, user) => {
+            if (err) throw new Error(err);
+            if (!user) {
                 res.send({
-                    success: true,
-                    backpack: backpack
+                    auth: false,
+                    backpack: newBackpack
                 });
             }
+            backpack = user.backpack;
+            userId = user._id.toString();
+            if (add) {
+                backpack.forEach(oneBackpack => {
+                    if (oneBackpack.city === city) {
+                        backpackComments = oneBackpack.comments;
+                    }
+                });
+                if (backpackComments.length === 0) {
+                    backpackComments.push(likedComment);
+                    let oneItem = {
+                        city: city,
+                        comments: backpackComments
+                    };
+                    backpack.push(oneItem);
+                    newBackpack = backpack;
+                } else {
+                    newBackpack = backpack.map(oneBackpack => {
+                        if (oneBackpack.city === city) {
+                            oneBackpack.comments.push(likedComment);
+                        }
+                        return oneBackpack;
+                    });
+                }
+                Comments.findOne(
+                    {
+                        city: city
+                    },
+                    (err, current_city) => {
+                        if (err) throw new Error(err);
+                        comments = current_city.comments;
+                        newComments = comments.map(oneComment => {
+                            if (oneComment._id == likedComment._id) {
+                                let find = false;
+                                oneComment.likes.forEach(oneLike => {
+                                    if (oneLike === userId) find = true;
+                                });
+                                if (!find) {
+                                    oneComment.likes.push(userId);
+                                }
+                            }
+                            return oneComment;
+                        });
+
+                        Comments.update(
+                            {
+                                city: city
+                            },
+                            {
+                                comments: newComments
+                            },
+                            (err) => {
+                                if (err) throw new Error(err);
+                            }
+                        );
+                    }
+                );
+            } else {
+                backpack.forEach(oneBackpack => {
+                    if (oneBackpack.city === city) {
+                        oneBackpack.comments = oneBackpack.comments.filter(
+                            oneBackpackComment => oneBackpackComment._id != likedComment._id
+                        );
+                    }
+                });
+                newBackpack = backpack.filter(oneBackpack => oneBackpack.comments.length !== 0);
+            }
+            Users.update(
+                {
+                    username: username
+                },
+                {
+                    backpack: newBackpack
+                },
+                (err) => {
+                    if (err) throw new Error(err);
+                    res.send({
+                        auth: true,
+                        backpack: newBackpack
+                    });
+                }
+            );
         }
     );
 };

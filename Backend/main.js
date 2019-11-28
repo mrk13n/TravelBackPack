@@ -1,31 +1,15 @@
 const express = require('express');
 const path = require('path');
 const morgan = require('morgan');
-const multer = require('multer');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const upload = require('express-fileupload');
-var uploadedImgArray = [];
-var imgURI;
-
-
-// var storage = multer.diskStorage({
-//     destination: 'Frontend/www/assets/images/uploaded_images',
-//     filename: function (req, file, callback) {
-//         imgURI = file.fieldname + "_" + Date.now() + "_" + file.originalname;
-//         callback(null, imgURI);
-//     }
-// });
-//
-// var upload = multer({
-//     storage: storage
-// });
 
 function configureEndpoints(app) {
     const pages = require('./pages');
     const api = require('./api');
 
-    app.post('/api/get-comments/', api.getComment);
+    app.post('/api/get-comments/', api.getComments);
     app.post('/api/write-comments/', api.writeComment);
     app.post('/api/login/', api.login);
     app.post('/api/registration/', api.registration);
