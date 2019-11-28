@@ -4,20 +4,16 @@
             <div class="panel-heading">
                 <span class="nickname"></span>
             </div>
-            <div class="panel-heading">
-                <input type="text" class="form-control location-name" placeholder="Enter location name">
+            <div class="panel-heading form-location-name">
+                <input type="text" class="form-control location-name" maxlength="50" placeholder="Enter location name">
                 <span id="helpLocationName" class="help-block">Please write location name</span>
-                <br>
-                <input type="text" class="form-control location-address" placeholder="Enter location coordinates">
             </div>
-            <div class="panel-body">
-                <textarea class="form-control" rows="5" id="comment" maxlength="400"></textarea>
+            <div class="panel-body form-comment">
+                <textarea class="form-control" rows="5" id="comment" maxlength="400" placeholder="Enter comment there"></textarea>
+                <span id="helpComment" class="help-block">Comment cannot be empty</span>
                 <form enctype="multipart/form-data">
-                    <input id="img-1" type="file" name="photo" accept=".png, .jpg, jpeg" multiple />
-                    <input id="img-2" type="file" name="photo" accept=".png, .jpg, jpeg" multiple />
-                    <span class="btn btn-send">
-                        Send <span class="glyphicon glyphicon-send"></span>
-                    </span>
+                    <input id="img" type="file" name="photo" accept=".png, .jpg, jpeg" multiple />
+                    <span class="btn btn-send"> Send <span class="glyphicon glyphicon-send"></span> </span>
                 </form>
             </div>
         </div>
