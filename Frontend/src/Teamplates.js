@@ -1,5 +1,5 @@
-var fs = require('fs');
-var ejs = require('ejs');
+const fs = require('fs');
+const ejs = require('ejs');
 
 
 exports.City_OneItem = ejs.compile(fs.readFileSync('./Frontend/templates/City_OneItem.ejs', "utf8"));
