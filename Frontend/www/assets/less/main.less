@@ -16,7 +16,7 @@
 @import "structure/backpack";
 @import "structure/about";
 @import "structure/footer";
-//@import "structure/ad-template";
+@import "structure/templateAd";
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:700);
 @import url(https://fonts.googleapis.com/css?family=Satisfy);
 @import url(https://fonts.googleapis.com/css?family=Open+Sans);
@@ -175,7 +175,7 @@ h2{
   float: right;
 }
 
-#log-menu, #registration, #exit-menu, #helpLocationName {
+#log-menu, #registration, #exit-menu, #helpLocationName, #helpComment {
   display: none;
 }
 
@@ -204,4 +204,8 @@ h2{
 .btn-default:hover {
   color: @g;
   background-color: @mainColor;
+}
+
+.comment-text-container {
+  margin: 4%;
 }
