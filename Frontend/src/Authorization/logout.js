@@ -9,13 +9,13 @@ async function logout(page) {
                     document.location.href = '/';
                     break;
                 case 'city':
-                    document.location.href = '/city.html';
+                    document.location.href = '/city';
                     break;
                 case 'backpack':
-                    document.location.href = '/backpack.html';
+                    document.location.href = '/backpack';
                     break;
                 case 'about':
-                    document.location.href = '/about.html';
+                    document.location.href = '/about';
                     break;
             }
         }
