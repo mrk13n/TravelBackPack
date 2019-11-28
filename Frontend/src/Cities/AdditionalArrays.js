@@ -1,4 +1,4 @@
-var trash = [
+const trash = [
     'a',
     'able',
     'about',
@@ -656,7 +656,7 @@ var trash = [
     'zero'
 ];
 
-var wrong_symbols = [
+const wrong_symbols = [
     ',',
     '.',
     '!',
