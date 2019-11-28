@@ -8,12 +8,10 @@ function showCities(list) {
 
     function showOneCity(city) {
         const html_code = Templates.City_OneItem({city: city});
-
         const $node = $(html_code);
 
         $node.find('.city-card').click(function () {
-            const id = this.id;
-            Storage.set('id', id);
+            Storage.set('id', Number(this.id));
             document.location.href = '/city';
         });
 
@@ -24,10 +22,10 @@ function showCities(list) {
 }
 
 async function initialiseCities() {
-    await API.getCitiesList(function (err, data) {
+    await API.getCitiesList((err, data) => {
         if (err) throw new Error(err);
         showCities(data);
     });
 }
 
-exports.initialiseCities = initialiseCities;
+module.exports = initialiseCities;
