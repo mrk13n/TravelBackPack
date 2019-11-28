@@ -26,10 +26,6 @@ $(function () {
         await GetComments(type, city);
         await GetSendForm(user, city, type);
 
-        $("#comments-scroll").click(() => {
-            scrollTo();
-        });
-
         $("#filter-food").click(async () => {
             $('.preloader').fadeIn('slow', () => {});
             allNotActive();
@@ -83,6 +79,10 @@ $(function () {
             await GetComments(type, city);
             await GetSendForm(user, city, type);
             $('.preloader').fadeOut('slow', () => {});
+        });
+
+        $("#comments-scroll").click(() => {
+            scrollTo();
         });
 
         common(login, user, page);
