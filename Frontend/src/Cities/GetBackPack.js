@@ -19,9 +19,11 @@ function showFavouriteCities(list) {
             $('.city-backpack-card').css('visibility', 'hidden');
 
             await initializeComments(oneBackpack);
-            $cities.addClass('animated fadeInDown');
-            waitToLoad();
-            $cities.fadeIn();
+            setTimeout(() => {
+                waitToLoad();
+                $cities.fadeIn();
+                $cities.addClass('animated fadeInDown');
+            }, 500);
         });
 
         $cities.append($node);
@@ -59,7 +61,7 @@ async function initializeComments(oneBackpack) {
                     if (oneItem.city === comment.city) oneBackpack = oneItem;
                 });
             });
-            initializeComments(oneBackpack);
+            await initializeComments(oneBackpack);
             waitToLoad();
         });
 
