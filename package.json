@@ -23,7 +23,7 @@
     "export": "^0.1.337",
     "exports": "0.0.1",
     "express": "^4.17.1",
-    "express-fileupload": "^0.4.0",
+    "express-fileupload": "^1.1.9",
     "express-session": "^1.17.0",
     "fs": "0.0.1-security",
     "get": "^1.4.0",
