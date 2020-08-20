@@ -11,7 +11,7 @@
   "dependencies": {
     "basil": "0.0.5",
     "basil.js": "^0.4.10",
-    "bcrypt": "^3.0.7",
+    "bcrypt": "^5.0.0",
     "body-parser": "^1.19.0",
     "brfs": "^1.6.1",
     "connect": "^3.7.0",
